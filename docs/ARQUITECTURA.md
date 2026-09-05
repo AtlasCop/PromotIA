@@ -61,8 +61,8 @@ flowchart LR
 1. **Publicación**: el demandante llena el formulario de Intención de Demanda (ID) — ver estructura completa en la sección 5.
 2. **Clasificación**: la ID queda etiquetada por industria/subcategoría (taxonomía controlada, no texto libre), ciudad, país, rango de presupuesto y nivel de urgencia.
 3. **Feed filtrado**: cada oferente ve, según su industria y cobertura, un feed de IDs en su versión **pública** (teaser) — título, industria, ciudad, rango de presupuesto, urgencia, descripción y una miniatura de cada adjunto como gancho, pero **sin** datos de contacto ni los archivos originales. El orden del feed y las alertas prioritarias los define el **Índice de Afinidad Comercial (IAC)** — ver sección 6.
-4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan (ver sección 6) y es el paso crítico de todo el negocio — el detalle técnico está en la sección 6.
-5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 7).
+4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan y es el paso crítico de todo el negocio — el detalle técnico está en la sección 8.
+5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 9).
 6. **Cierre y feedback**: se registra si hubo negocio cerrado, con qué oferente y por qué valor estimado — esto alimenta tanto la calificación del oferente como la inteligencia de mercado agregada.
 
 **Nota importante:** a diferencia de un modelo de "matching algorítmico" que empuja la necesidad a proveedores elegidos por el sistema, el MVP es un modelo de **marketplace auto-servicio**: el sistema filtra el feed por industria/ciudad, pero es el oferente quien decide qué oportunidades desbloquear. El matching automático/con IA (sugerir a qué oferentes notificar proactivamente) queda para una fase posterior (ver roadmap).
@@ -104,7 +104,7 @@ Una función **exclusiva** de Promot IA: un puntaje calculado automáticamente q
 | Capacidad operativa | Tamaño de la empresa frente a la escala de la ID | `usuarios_oferente.empleados` vs `necesidades.presupuesto` |
 | Historial en la plataforma | Antigüedad y actividad reciente | fecha de registro, frecuencia de uso |
 | Valor de proyectos realizados | Valor acumulado de negocios cerrados vía la plataforma | `desbloqueos` cerrados × presupuesto real |
-| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 8) |
+| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 9) |
 | Evaluaciones | Calificación de clientes anteriores | `calificaciones` |
 
 Ningún factor requiere capturar información nueva — el IAC combina datos que el resto de este documento ya define que se recolectan.
@@ -122,7 +122,32 @@ Ningún factor requiere capturar información nueva — el IAC combina datos que
 
 **Integridad del cálculo:** varios factores (años de experiencia, número de empleados, certificaciones) son datos que el propio oferente declara — no deben pesar en el IAC hasta cruzarse con el estado de verificación (ver perfil de reputación en la landing, Módulo 4): un dato no verificado pesa menos o no cuenta todavía. Los pesos exactos de cada factor y el umbral para "alerta prioritaria" se calibran en la Fase 2 con datos reales de uso — fijar pesos arbitrarios antes de tener volumen que calibrar sería prematuro. Un MVP puede lanzar con una versión simple (solo especialidad + ciudad) mientras se acumula el historial que el IAC completo necesita.
 
-## 7. Mecanismo de desbloqueo, créditos y planes
+## 7. Índice de Oportunidad (IO)
+
+Otra función exclusiva, complementaria al IAC pero midiendo algo distinto: **el IAC mide qué tan bien encaja una empresa con una necesidad** (score personalizado, por par); **el IO mide qué tan buena es la oportunidad en sí misma** — el mismo puntaje para cualquier oferente que la vea, sin importar su perfil. No todas las necesidades publicadas valen lo mismo el tiempo de una empresa, y el IO es lo que lo hace visible antes de que el oferente invierta un crédito.
+
+### Factores que lo componen
+
+| Factor | Qué mide | De dónde sale |
+|---|---|---|
+| Valor estimado del proyecto | Tamaño del presupuesto | `necesidades.presupuesto_min/max` |
+| Urgencia | Qué tan probable es un cierre rápido | `necesidades.urgencia` |
+| Probabilidad de contratación | Qué tan probable es que esta necesidad termine en un negocio real | Heurística inicial — candidato a modelo predictivo real una vez haya historial de cierres (Capa 4 del MID, ver `docs/MOTOR-INTELIGENCIA-DEMANDA.md`) |
+| Calidad de la información | Qué tan completa y específica es la publicación | Completitud de los 3 campos guiados de contexto, presencia de adjuntos, fecha y presupuesto definidos |
+| Disponibilidad de presupuesto | Si el demandante especificó un rango de presupuesto o lo dejó vacío | `necesidades.presupuesto_min/max` (definido o nulo) |
+| Nivel de competencia | Cuántos oferentes ya desbloquearon la misma ID | Conteo de `desbloqueos` para esa ID |
+
+### Cómo se usa
+
+- Se calcula al publicarse la ID (igual que el IAC) y se recalcula cuando cambian sus insumos — por ejemplo, cada vez que otro oferente la desbloquea, sube el nivel de competencia.
+- Se muestra en el feed como una **señal complementaria al IAC**, pensada como un nivel (Alta / Media / Baja oportunidad) en vez de otro porcentaje — para no saturar la tarjeta con dos números que compitan por la atención.
+- Ayuda al oferente a decidir en qué orden invertir su tiempo y sus créditos cuando varias necesidades tienen un IAC similar: lo ideal es priorizar donde IAC **y** IO son altos.
+
+**Sobre "probabilidad de contratación":** es el factor más difícil de estimar sin historial. Arranca como una heurística simple (calidad de información + presupuesto disponible + si el demandante tiene la cuenta verificada) y, una vez la Capa 4 del MID tenga suficientes casos reales de "cerrado" vs. "perdido" para comparar, puede convertirse en un modelo predictivo entrenado con esos datos — no antes, por la misma razón que el IAC no fija pesos arbitrarios sin evidencia real.
+
+**Integridad:** un nivel de competencia alto no debe usarse para ocultar una necesidad legítima — puede significar que el mercado ya validó que vale la pena. El IO es un apoyo para priorizar, no un filtro: el oferente sigue viendo todo su feed; el IO solo ayuda a decidir por dónde empezar.
+
+## 8. Mecanismo de desbloqueo, créditos y planes
 
 Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude/errores.
 
@@ -149,7 +174,7 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 
 Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
 
-## 8. Chat interno
+## 9. Chat interno
 
 Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — el objetivo explícito es que **toda la relación comercial ocurra dentro de Promot IA** para poder medirla:
 
@@ -164,7 +189,7 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **Calidad del oferente**: score compuesto de tiempo de respuesta + tasa de conversión + calificación post-cierre — esto es lo que a futuro puede usarse para dar visibilidad preferente a los mejores oferentes en el feed.
 - **Valor estimado del negocio**: cruce entre el presupuesto de la ID y si hubo cierre — esta es una de las métricas que alimenta directamente el producto de inteligencia de mercado.
 
-## 9. Modelo de datos (alto nivel)
+## 10. Modelo de datos (alto nivel)
 
 - **usuarios_demandante** — cuenta, rol, datos de contacto
 - **usuarios_oferente** — cuenta, industria(s) que atiende, cobertura geográfica, plan activo
@@ -181,8 +206,9 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 
 **Estructura completa — Motor de Inteligencia de Demanda (MID):** esta lista es el resumen de alto nivel. El detalle completo de columnas, y las 4 capas del MID (Captura de datos, Perfil de empresas, Inteligencia de mercado agregada, Predicción de tendencias) están en `docs/MOTOR-INTELIGENCIA-DEMANDA.md` — incluye los campos nuevos que expanden `necesidades` (subindustria, fecha requerida, tipo de servicio, palabras clave, tipo de cliente) y `usuarios_oferente` (especialidades, ciudades de operación, tamaño, certificaciones, sectores atendidos, tecnologías, rango de proyectos), más las vistas agregadas y la tabla de tendencias que no existían en esta lista.
 - **iac_scores** — necesidad ↔ oferente, puntaje calculado, desglose por factor, fecha de cálculo, si se envió alerta prioritaria (sección 6)
+- **io_scores** — necesidad, puntaje, desglose por factor, fecha de cálculo — un puntaje por ID (no por par, a diferencia del IAC), recalculado cuando cambian sus insumos (sección 7)
 
-## 10. Arquitectura técnica recomendada
+## 11. Arquitectura técnica recomendada
 
 Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa Supabase con roles y RLS):
 
@@ -197,10 +223,10 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 | Hosting | Vercel (frontend) + Supabase (datos) | Mismo patrón ya usado en otros proyectos |
 | Notificaciones | Email transaccional + notificaciones in-app | Avisar al demandante de nuevo interés, al oferente de nuevos mensajes y alertas prioritarias del IAC |
 
-## 11. Seguridad e integridad — principios desde el día 1
+## 12. Seguridad e integridad — principios desde el día 1
 
 1. **Row Level Security (RLS)**: un oferente no puede leer los datos de contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado, aplicado a nivel de base de datos — no solo ocultando el botón en el frontend.
-2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 6): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
+2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 8): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
 3. **Autenticación real y roles claros**: demandante, oferente y admin son roles distintos con permisos distintos, verificados en cada operación sensible.
 4. **Cifrado en tránsito y en reposo**: HTTPS en todo; adjuntos y datos de contacto cifrados en la base de datos donde aplique.
 5. **Protección de datos personales (Habeas Data, Ley 1581 de 2012)**: se necesita una política de tratamiento de datos propia de Promot IA (no reutilizar la de Atlas Corporation) — el mecanismo central del producto (revelar datos de contacto de un tercero a cambio de un pago que hace otra empresa) debe quedar explícitamente autorizado por el demandante desde el momento de publicar su ID. Ver borrador en `docs/POLITICA-DATOS.md`.
@@ -212,8 +238,9 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 11. **Backups y continuidad**: copias de seguridad automáticas desde el primer entorno de producción.
 12. **Revisión de seguridad continua**: antes de cada lanzamiento importante, especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.
 13. **Integridad del IAC**: los factores que el propio oferente declara (experiencia, empleados, certificaciones) no deben pesar en el cálculo hasta cruzarse con el estado de verificación — evita que una empresa infle su puntaje con datos no verificados.
+14. **Integridad del IO**: el "nivel de competencia" no debe usarse para ocultar necesidades legítimas del feed — el IO prioriza, no filtra; y "probabilidad de contratación" no debe presentarse como una predicción fuerte mientras siga siendo una heurística sin historial real que la respalde.
 
-## 12. Modelo de negocio
+## 13. Modelo de negocio
 
 **Motor principal (MVP): venta de créditos por plan.** El oferente paga por acceder a intenciones de demanda calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial. Bronce (1 crédito / $19), Plata (10 créditos / $99), Oro (ilimitado / $299).
 
@@ -221,14 +248,14 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 
 **A validar más adelante:** comisión adicional sobre negocios cerrados (encima del cobro por desbloqueo) — no es necesaria para el MVP y puede introducir fricción si se combina mal con el modelo de créditos; se recomienda no mezclarla hasta tener datos reales de conversión.
 
-## 13. Roadmap por fases
+## 14. Roadmap por fases
 
 - **Fase 0 — Validación (ahora)**: landing page de presentación + captura de lista de espera (demandantes y oferentes interesados) para validar interés real.
-- **Fase 1 — MVP marketplace completo**: registro demandante/oferente, formulario de ID con adjuntos, feed filtrado por industria/ciudad (arrancando en Ingeniería + Construcción, con una versión simple del IAC basada en especialidad+ciudad), mecanismo de desbloqueo con créditos, planes Bronce/Plata/Oro vía Stripe, chat interno básico (mensajería + adjuntos + historial). Esto ya es un producto vendible, no un prototipo — el modelo de créditos no requiere intervención manual del equipo para funcionar.
-- **Fase 2 — Automatización e inteligencia**: **Índice de Afinidad Comercial (IAC) completo** — los 8 factores (sección 6), alertas prioritarias automáticas a las empresas mejor calificadas, clasificación automática de industria/urgencia con IA, llamada programada integrada.
+- **Fase 1 — MVP marketplace completo**: registro demandante/oferente, formulario de ID con adjuntos, feed filtrado por industria/ciudad (arrancando en Ingeniería + Construcción, con versiones simples del IAC y del IO), mecanismo de desbloqueo con créditos, planes Bronce/Plata/Oro vía Stripe, chat interno básico (mensajería + adjuntos + historial). Esto ya es un producto vendible, no un prototipo — el modelo de créditos no requiere intervención manual del equipo para funcionar.
+- **Fase 2 — Automatización e inteligencia**: **IAC completo** (los 8 factores, sección 6) con alertas prioritarias automáticas, **IO completo** (sección 7) con "probabilidad de contratación" ya modelada con datos reales de cierre, clasificación automática de industria/urgencia con IA, llamada programada integrada.
 - **Fase 3 — Inteligencia de mercado**: panel de reportes agregados como producto adicional; explorar más verticales y fuentes públicas (ej. procesos SECOP) para entidades públicas/constructoras.
 
-## 14. Estructura del proyecto sugerida
+## 15. Estructura del proyecto sugerida
 
 ```
 PromotIA/
@@ -238,7 +265,7 @@ PromotIA/
 └── (fase 1+) app/             ← aplicación completa (marketplace, créditos, chat)
 ```
 
-## 15. Próximos pasos inmediatos
+## 16. Próximos pasos inmediatos
 
 1. **Revisar el borrador de política de datos actualizado** (`docs/POLITICA-DATOS.md`) — ya refleja a Atlas Corporation S.A.S. como responsable y el mecanismo de miniaturas públicas; sigue pendiente de revisión legal antes de publicarse.
 2. **Definir la taxonomía inicial de Ingeniería + Construcción** (subcategorías concretas) — condiciona el formulario de ID y el filtro del feed.

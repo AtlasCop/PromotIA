@@ -124,7 +124,9 @@ Con suficiente historial acumulado en la Capa 3, el sistema puede comparar un pe
 
 Se calcula con un **job periódico** (ej. mensual) que compara las vistas de la Capa 3 entre periodos consecutivos y genera un registro cuando la variación supera un umbral configurable — no se genera un insight por cada variación mínima, solo cuando es lo suficientemente significativa para ser útil.
 
-Con historial suficiente, esta tabla es el producto directo del "motor secundario de negocio: inteligencia de mercado" ya descrito en `docs/ARQUITECTURA.md` (sección 12) — vendible como reportes a gremios, constructoras grandes o entidades públicas.
+Con historial suficiente, esta tabla es el producto directo del "motor secundario de negocio: inteligencia de mercado" ya descrito en `docs/ARQUITECTURA.md` (sección 13) — vendible como reportes a gremios, constructoras grandes o entidades públicas.
+
+**Conexión con el Índice de Oportunidad (IO):** el factor más difícil del IO (`docs/ARQUITECTURA.md`, sección 7) es "probabilidad de contratación" — arranca como heurística, pero es exactamente el tipo de predicción que esta capa habilita una vez haya suficientes casos históricos de necesidades "cerradas" vs. "perdidas" para comparar. El mismo dato que alimenta `tendencias_mercado` (agregado) también puede entrenar ese factor (a nivel de ID individual) — son dos consumos distintos del mismo historial.
 
 ---
 

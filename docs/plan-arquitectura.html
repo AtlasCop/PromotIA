@@ -290,6 +290,7 @@
     <a href="#flujo">Flujo central</a>
     <a href="#id">La Intención de Demanda</a>
     <a href="#iac">Índice de Afinidad (IAC)</a>
+    <a href="#io">Índice de Oportunidad (IO)</a>
     <a href="#desbloqueo">Créditos y desbloqueo</a>
     <a href="#chat">Chat interno</a>
     <a href="#datos">Modelo de datos</a>
@@ -423,7 +424,7 @@
           </g>
         </svg>
       </div>
-      <p class="flow-caption">El oferente solo ve la versión pública del feed (título, industria, ciudad, presupuesto, urgencia y descripción — sin contacto ni adjuntos) hasta que decide pagar por desbloquearla, ordenada por el Índice de Afinidad Comercial (sección 5). El resultado real de cada cierre alimenta tanto la calificación del oferente como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
+      <p class="flow-caption">El oferente solo ve la versión pública del feed (título, industria, ciudad, presupuesto, urgencia y descripción — sin contacto ni adjuntos) hasta que decide pagar por desbloquearla, ordenada por el Índice de Afinidad Comercial y el Índice de Oportunidad (secciones 5 y 6). El resultado real de cada cierre alimenta tanto la calificación del oferente como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
     </section>
 
     <section id="id">
@@ -496,8 +497,28 @@
       <p class="flow-caption" style="margin-top:16px">Los factores autodeclarados (experiencia, empleados, certificaciones) no deben pesar hasta cruzarse con el estado de verificación del perfil de reputación. Los pesos exactos y el umbral de alerta se calibran en la Fase 2 con datos reales — un MVP puede lanzar con una versión simple (solo especialidad + ciudad).</p>
     </section>
 
+    <section id="io">
+      <h2><span class="num">06</span> Índice de Oportunidad (IO)</h2>
+      <p class="section-intro">Complementario al IAC, pero mide algo distinto: el IAC dice qué tan bien encaja una empresa con una necesidad; el IO dice qué tan buena es la oportunidad en sí misma — el mismo puntaje para cualquier oferente que la vea.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Factor</th><th>Qué mide</th><th>De dónde sale</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Valor estimado</td><td>Tamaño del presupuesto</td><td class="why">Presupuesto de la ID</td></tr>
+            <tr><td class="layer">Urgencia</td><td>Probabilidad de cierre rápido</td><td class="why">Urgencia de la ID</td></tr>
+            <tr><td class="layer">Probabilidad de contratación</td><td>Qué tan probable es que termine en negocio real</td><td class="why">Heurística → modelo predictivo (fase 2)</td></tr>
+            <tr><td class="layer">Calidad de la información</td><td>Qué tan completa es la publicación</td><td class="why">Los 3 campos guiados + adjuntos</td></tr>
+            <tr><td class="layer">Disponibilidad de presupuesto</td><td>Si el rango fue especificado o no</td><td class="why">Presupuesto definido vs. vacío</td></tr>
+            <tr><td class="layer">Nivel de competencia</td><td>Cuántos oferentes ya la desbloquearon</td><td class="why">Conteo de desbloqueos</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout" style="margin-top:24px"><strong>Cómo se usa:</strong> se muestra en el feed como un nivel (Alta / Media / Baja oportunidad), no otro porcentaje — para no saturar la tarjeta. Ideal: priorizar donde IAC y IO son altos a la vez.</div>
+      <p class="flow-caption" style="margin-top:16px">"Probabilidad de contratación" arranca como heurística (calidad de información + presupuesto disponible + cuenta verificada) y se vuelve un modelo predictivo real una vez el MID (Capa 4) tenga suficientes casos de "cerrado" vs. "perdido". Un nivel de competencia alto no debe ocultar una necesidad — puede significar que el mercado ya la validó.</p>
+    </section>
+
     <section id="desbloqueo">
-      <h2><span class="num">06</span> Mecanismo de desbloqueo, créditos y planes</h2>
+      <h2><span class="num">07</span> Mecanismo de desbloqueo, créditos y planes</h2>
       <p class="section-intro">El mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude.</p>
       <div class="sec-list" style="margin-bottom:32px">
         <div class="sec-item"><span class="chip">01</span><div><h4>Verificación en servidor</h4><p>Se confirma que el oferente tiene ≥1 crédito disponible o plan ilimitado — nunca se confía en el cliente.</p></div></div>
@@ -517,7 +538,7 @@
     </section>
 
     <section id="chat">
-      <h2><span class="num">07</span> Chat interno</h2>
+      <h2><span class="num">08</span> Chat interno</h2>
       <p class="section-intro">Mensajería propia de la plataforma, no un enlace externo — toda la relación comercial ocurre dentro de Promot IA para poder medirla.</p>
       <div class="actor-cols">
         <div class="actor-card neutral">
@@ -559,6 +580,7 @@
         <div class="entity"><span class="name mono">calificaciones</span><span class="desc">Feedback post-cierre, alimenta el score del oferente.</span></div>
         <div class="entity"><span class="name mono">eventos_auditoria</span><span class="desc">Quién hizo qué y cuándo.</span></div>
         <div class="entity"><span class="name mono">iac_scores</span><span class="desc">ID ↔ oferente, puntaje, desglose, alerta enviada.</span></div>
+        <div class="entity"><span class="name mono">io_scores</span><span class="desc">Un puntaje por ID (no por par), desglose, recalculado.</span></div>
       </div>
     </section>
 
@@ -574,7 +596,7 @@
             <tr><td class="layer">Autenticación</td><td>Supabase Auth + roles</td><td class="why">Demandante / oferente / admin ven y hacen solo lo que corresponde a su rol.</td></tr>
             <tr><td class="layer">Pagos</td><td>Stripe Billing</td><td class="why">Cobro recurrente + PCI compliance + confirmación server-side antes de asignar créditos.</td></tr>
             <tr><td class="layer">Clasificación (fase 2)</td><td>API de un modelo de lenguaje + reglas propias</td><td class="why">La IA sugiere industria/urgencia, la taxonomía controla.</td></tr>
-            <tr><td class="layer">Cálculo del IAC</td><td>Función serverless (Edge Function / trigger de Postgres)</td><td class="why">Se recalcula automáticamente al publicar una ID, sin intervención manual.</td></tr>
+            <tr><td class="layer">Cálculo del IAC / IO</td><td>Función serverless (Edge Function / trigger de Postgres)</td><td class="why">Se recalculan automáticamente al publicar o desbloquear una ID, sin intervención manual.</td></tr>
             <tr><td class="layer">Hosting</td><td>Vercel + Supabase</td><td class="why">Mismo patrón ya usado en otros proyectos.</td></tr>
             <tr><td class="layer">Notificaciones</td><td>Email transaccional + in-app</td><td class="why">Nuevo interés al demandante, nuevos mensajes al oferente.</td></tr>
           </tbody>
@@ -599,6 +621,7 @@
         <div class="sec-item"><span class="chip">11</span><div><h4>Backups y continuidad</h4><p>Copias de seguridad automáticas desde el primer entorno de producción.</p></div></div>
         <div class="sec-item"><span class="chip">12</span><div><h4>Revisión de seguridad continua</h4><p>Especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.</p></div></div>
         <div class="sec-item"><span class="chip">13</span><div><h4>Integridad del IAC</h4><p>Los factores autodeclarados (experiencia, empleados, certificaciones) no pesan hasta cruzarse con el estado de verificación.</p></div></div>
+        <div class="sec-item"><span class="chip">14</span><div><h4>Integridad del IO</h4><p>El nivel de competencia prioriza, no oculta necesidades; "probabilidad de contratación" no se presenta como predicción fuerte sin historial real.</p></div></div>
       </div>
     </section>
 
@@ -615,8 +638,8 @@
       <h2><span class="num">13</span> Roadmap por fases</h2>
       <div class="roadmap">
         <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para demandantes y oferentes.</p></div>
-        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed por industria/ciudad con IAC simple, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
-        <div class="phase"><span class="phase-name">Fase 2</span><h4>IAC completo + IA</h4><p>Los 8 factores del IAC, alertas prioritarias automáticas, clasificación con IA, llamada programada integrada.</p></div>
+        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed con IAC e IO simples, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
+        <div class="phase"><span class="phase-name">Fase 2</span><h4>IAC + IO completos</h4><p>Los 8 factores del IAC, alertas prioritarias, IO con "probabilidad de contratación" modelada con datos reales, clasificación con IA.</p></div>
         <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; más verticales y fuentes públicas (SECOP).</p></div>
       </div>
     </section>
