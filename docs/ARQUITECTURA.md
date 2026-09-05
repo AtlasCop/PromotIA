@@ -178,6 +178,8 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **llamadas_programadas** — desbloqueo asociado, fecha/hora, estado
 - **calificaciones** — feedback post-cierre, alimenta el score del oferente
 - **eventos_auditoria** — quién hizo qué y cuándo (seguridad e integridad de todo lo anterior)
+
+**Estructura completa — Motor de Inteligencia de Demanda (MID):** esta lista es el resumen de alto nivel. El detalle completo de columnas, y las 4 capas del MID (Captura de datos, Perfil de empresas, Inteligencia de mercado agregada, Predicción de tendencias) están en `docs/MOTOR-INTELIGENCIA-DEMANDA.md` — incluye los campos nuevos que expanden `necesidades` (subindustria, fecha requerida, tipo de servicio, palabras clave, tipo de cliente) y `usuarios_oferente` (especialidades, ciudades de operación, tamaño, certificaciones, sectores atendidos, tecnologías, rango de proyectos), más las vistas agregadas y la tabla de tendencias que no existían en esta lista.
 - **iac_scores** — necesidad ↔ oferente, puntaje calculado, desglose por factor, fecha de cálculo, si se envió alerta prioritaria (sección 6)
 
 ## 10. Arquitectura técnica recomendada
