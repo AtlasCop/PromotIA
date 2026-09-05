@@ -65,8 +65,8 @@ flowchart LR
 1. **Publicación**: el demandante llena el formulario de Intención de Demanda (ID) — ver estructura completa en la sección 5.
 2. **Clasificación**: la ID queda etiquetada por industria/subcategoría (taxonomía controlada, no texto libre), ciudad, país, rango de presupuesto y nivel de urgencia.
 3. **Feed filtrado**: cada oferente ve, según su industria y cobertura, un feed de IDs en su versión **pública** (teaser) — título, industria, ciudad, rango de presupuesto, urgencia, descripción y una miniatura de cada adjunto como gancho, pero **sin** datos de contacto ni los archivos originales. El orden del feed y las alertas prioritarias los define el **Índice de Afinidad Comercial (IAC)** — ver sección 6.
-4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan y es el paso crítico de todo el negocio — el detalle técnico está en la sección 9.
-5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 10).
+4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan y es el paso crítico de todo el negocio — el detalle técnico está en la sección 10.
+5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 11).
 6. **Cierre y feedback**: se registra si hubo negocio cerrado, con qué oferente y por qué valor estimado — esto alimenta tanto la calificación del oferente como la inteligencia de mercado agregada.
 
 **Nota importante:** a diferencia de un modelo de "matching algorítmico" que empuja la necesidad a proveedores elegidos por el sistema, el MVP es un modelo de **marketplace auto-servicio**: el sistema filtra el feed por industria/ciudad, pero es el oferente quien decide qué oportunidades desbloquear. El matching automático/con IA (sugerir a qué oferentes notificar proactivamente) queda para una fase posterior (ver roadmap).
@@ -92,7 +92,7 @@ Formulario que llena el demandante al publicar:
 
 > **Nota técnica:** generar la miniatura (thumbnail) de forma automática al subir el adjunto — para PDFs/planos, renderizar la primera página como imagen; para fotos, una versión reducida/recortada; para video, un frame o miniatura estática. La miniatura se sirve públicamente, el archivo original queda protegido por RLS igual que el resto del contenido post-desbloqueo.
 
-**Estados de una ID:** Publicada → Desbloqueada (por 1 o más oferentes) → En conversación → Cerrada / Perdida / Cancelada.
+**Estados de una ID (workflow operativo):** Publicada → Desbloqueada (por 1 o más oferentes) → En conversación → Cerrada / Perdida / Cancelada. Es distinto del **nivel de confianza** de Demanda Verificada (sección 9) — el estado dice en qué punto del proceso está la ID; el nivel de confianza dice qué tan auténtica y activa es.
 
 ## 6. Índice de Afinidad Comercial (IAC)
 
@@ -108,7 +108,7 @@ Una función **exclusiva** de Promot IA: un puntaje calculado automáticamente q
 | Capacidad operativa | Tamaño de la empresa frente a la escala de la ID | `usuarios_oferente.empleados` vs `necesidades.presupuesto` |
 | Historial en la plataforma | Antigüedad y actividad reciente | fecha de registro, frecuencia de uso |
 | Valor de proyectos realizados | Valor acumulado de negocios cerrados vía la plataforma | `desbloqueos` cerrados × presupuesto real |
-| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 10) |
+| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 11) |
 | Evaluaciones | Calificación de clientes anteriores | `calificaciones` |
 
 Ningún factor requiere capturar información nueva — el IAC combina datos que el resto de este documento ya define que se recolectan.
@@ -167,7 +167,7 @@ El producto concreto del tercer actor (sección 3): un panel ejecutivo con indic
 | Servicios más solicitados | Industrias/subindustrias con más necesidades publicadas | `vista_demanda_industria_ciudad` |
 | Valor estimado del mercado generado | Suma del punto medio de presupuesto de las necesidades del periodo | Nueva vista `vista_valor_mercado_generado` |
 
-> **Definición a confirmar:** "valor del mercado generado" puede leerse como el valor de *todas* las oportunidades publicadas (tamaño de la demanda visible) o solo el de los negocios efectivamente *cerrados* (valor realmente capturado). Este documento asume la primera lectura (más amplia, mejor indicador de tamaño de mercado) — vale la pena confirmar cuál quieres destacar como titular del panel; ambas pueden convivir como dos indicadores distintos.
+> **Confirmado:** "valor del mercado generado" es el valor de las **oportunidades publicadas** (tamaño de la demanda visible), no solo el de los negocios cerrados — por ahora. Si más adelante se quiere destacar también el valor efectivamente capturado, puede convivir como un segundo indicador separado.
 
 ### Privacidad (hereda las reglas de la Capa 3 del MID)
 
@@ -179,9 +179,37 @@ No todos los indicadores tienen la misma cadencia: los conteos simples (oportuni
 
 ### Modelo de acceso
 
-Es la forma concreta del "motor secundario de negocio" ya descrito (sección 14): una versión gratuita limitada (algunos indicadores, alto nivel) funciona como vitrina de marca; el acceso completo — histórico, filtros por ciudad/industria, exportación — se vende a gremios, constructoras grandes o entidades públicas. A confirmar contigo antes de construirlo: ¿el Observatorio nace gratuito para todos desde el día 1 (juega a favor de la marca y de atraer más demandantes/oferentes) o de pago desde el principio?
+Es la forma concreta del "motor secundario de negocio" ya descrito (sección 15). **Confirmado:** el Observatorio se lanza **gratuito** inicialmente — juega a favor de la marca y de atraer más demandantes/oferentes. El acceso completo de pago (histórico, filtros por ciudad/industria, exportación) para gremios, constructoras grandes o entidades públicas queda como una evolución posterior, no como condición para lanzarlo.
 
-## 9. Mecanismo de desbloqueo, créditos y planes
+## 9. Demanda Verificada
+
+No todas las publicaciones valen lo mismo — algunas son necesidades reales y bien documentadas, otras pueden quedar sin confirmar. Demanda Verificada es un sistema de **niveles de confianza** que se muestra al oferente antes de decidir si desbloquea — una capa adicional, no un reemplazo, del estado operativo ya definido (sección 5).
+
+### Niveles de confianza
+
+| Nivel | Qué significa | Cuándo se alcanza |
+|---|---|---|
+| Demanda publicada | Necesidad recién registrada, sin verificar todavía | Al publicarse la ID |
+| Demanda verificada | Se confirmó que la información es auténtica | Verificación automática (y, si aplica, revisión manual) — ver criterios abajo |
+| Demanda activa | El demandante está recibiendo propuestas | Al menos un oferente la desbloqueó |
+| Proyecto adjudicado | Ya eligió un proveedor | El demandante marca la ID como cerrada con un oferente específico |
+
+### Qué significa "verificar" en la práctica
+
+- **Contacto confirmado**: el correo y/o teléfono del demandante fueron confirmados (ej. código de verificación) — no solo capturados en un formulario.
+- **Identidad válida**: si el tipo de cliente es empresa o entidad, el NIT se valida contra un registro — la misma lógica ya usada para verificar oferentes en el perfil de reputación (Módulo 4 de la landing).
+- **Contenido legítimo**: la descripción no es spam ni contenido duplicado — se cruza con "calidad de la información", ya definida como factor del IO (sección 7).
+
+### Por qué importa
+
+Le da al oferente una señal distinta del IAC y del IO: no "¿me sirve esto?" ni "¿vale la pena mi tiempo?", sino "¿es real?". Una necesidad de IAC/IO más bajo pero verificada puede seguir siendo más confiable que una de puntajes altos sin verificar todavía.
+
+### Integridad
+
+- La verificación no debe convertirse en una barrera que retrase la publicación — una ID aparece en el feed como "publicada, sin verificar todavía" mientras se confirma; no espera la verificación para ser visible.
+- El nivel de confianza se comunica de forma clara y visible al oferente (ej. una etiqueta), nunca ambiguo — es información que afecta directamente su decisión de gastar un crédito.
+
+## 10. Mecanismo de desbloqueo, créditos y planes
 
 Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude/errores.
 
@@ -208,7 +236,7 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 
 Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
 
-## 10. Chat interno
+## 11. Chat interno
 
 Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — el objetivo explícito es que **toda la relación comercial ocurra dentro de Promot IA** para poder medirla:
 
@@ -223,11 +251,11 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **Calidad del oferente**: score compuesto de tiempo de respuesta + tasa de conversión + calificación post-cierre — esto es lo que a futuro puede usarse para dar visibilidad preferente a los mejores oferentes en el feed.
 - **Valor estimado del negocio**: cruce entre el presupuesto de la ID y si hubo cierre — esta es una de las métricas que alimenta directamente el producto de inteligencia de mercado.
 
-## 11. Modelo de datos (alto nivel)
+## 12. Modelo de datos (alto nivel)
 
 - **usuarios_demandante** — cuenta, rol, datos de contacto
 - **usuarios_oferente** — cuenta, industria(s) que atiende, cobertura geográfica, plan activo
-- **necesidades (ID)** — título, industria, país, ciudad, presupuesto_min/max, descripción, urgencia, estado
+- **necesidades (ID)** — título, industria, país, ciudad, presupuesto_min/max, descripción, urgencia, estado, nivel_confianza (Demanda Verificada, sección 9)
 - **adjuntos** — archivo original (privado, post-desbloqueo), miniatura/preview (pública), tipo, necesidad asociada
 - **industrias** — taxonomía controlada y jerárquica (arranca con Ingeniería + Construcción)
 - **planes** — Bronce/Plata/Oro: nombre, créditos, precio
@@ -242,7 +270,7 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **iac_scores** — necesidad ↔ oferente, puntaje calculado, desglose por factor, fecha de cálculo, si se envió alerta prioritaria (sección 6)
 - **io_scores** — necesidad, puntaje, desglose por factor, fecha de cálculo — un puntaje por ID (no por par, a diferencia del IAC), recalculado cuando cambian sus insumos (sección 7)
 
-## 12. Arquitectura técnica recomendada
+## 13. Arquitectura técnica recomendada
 
 Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa Supabase con roles y RLS):
 
@@ -257,10 +285,10 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 | Hosting | Vercel (frontend) + Supabase (datos) | Mismo patrón ya usado en otros proyectos |
 | Notificaciones | Email transaccional + notificaciones in-app | Avisar al demandante de nuevo interés, al oferente de nuevos mensajes y alertas prioritarias del IAC |
 
-## 13. Seguridad e integridad — principios desde el día 1
+## 14. Seguridad e integridad — principios desde el día 1
 
 1. **Row Level Security (RLS)**: un oferente no puede leer los datos de contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado, aplicado a nivel de base de datos — no solo ocultando el botón en el frontend.
-2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 9): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
+2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 10): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
 3. **Autenticación real y roles claros**: demandante, oferente y admin son roles distintos con permisos distintos, verificados en cada operación sensible.
 4. **Cifrado en tránsito y en reposo**: HTTPS en todo; adjuntos y datos de contacto cifrados en la base de datos donde aplique.
 5. **Protección de datos personales (Habeas Data, Ley 1581 de 2012)**: se necesita una política de tratamiento de datos propia de Promot IA (no reutilizar la de Atlas Corporation) — el mecanismo central del producto (revelar datos de contacto de un tercero a cambio de un pago que hace otra empresa) debe quedar explícitamente autorizado por el demandante desde el momento de publicar su ID. Ver borrador en `docs/POLITICA-DATOS.md`.
@@ -273,23 +301,33 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 12. **Revisión de seguridad continua**: antes de cada lanzamiento importante, especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.
 13. **Integridad del IAC**: los factores que el propio oferente declara (experiencia, empleados, certificaciones) no deben pesar en el cálculo hasta cruzarse con el estado de verificación — evita que una empresa infle su puntaje con datos no verificados.
 14. **Integridad del IO**: el "nivel de competencia" no debe usarse para ocultar necesidades legítimas del feed — el IO prioriza, no filtra; y "probabilidad de contratación" no debe presentarse como una predicción fuerte mientras siga siendo una heurística sin historial real que la respalde.
+15. **Integridad de Demanda Verificada**: la verificación no puede ser una barrera de publicación (una ID no verificada sigue siendo visible, solo etiquetada como tal) ni un proceso opaco — el criterio de qué cuenta como "verificado" debe ser público y consistente, no discrecional caso a caso.
 
-## 14. Modelo de negocio
+## 15. Modelo de negocio
 
-**Motor principal (MVP): venta de créditos por plan.** El oferente paga por acceder a intenciones de demanda calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial. Bronce (1 crédito / $19), Plata (10 créditos / $99), Oro (ilimitado / $299).
+Varias líneas de ingreso independientes — la meta explícita es que Promot IA no dependa de una sola fuente.
 
-**Motor secundario (fase posterior): inteligencia de mercado.** Reportes y dashboards de tendencias de demanda agregadas y anonimizadas, vendidos a gremios, constructoras grandes o entidades públicas — no depende del volumen de desbloqueos, es un producto de datos independiente.
+| Línea | Para quién | Descripción |
+|---|---|---|
+| **Suscripción por plan** (motor principal, MVP) | Oferente | Bronce (1 crédito/$19), Plata (10 créditos/$99), Oro (ilimitado/$299) — mensual, créditos renovables |
+| **Créditos adicionales** | Oferente | Comprar créditos extra sin cambiar de plan, para picos de demanda puntuales |
+| **Perfil empresarial destacado** | Oferente | Posicionamiento/visual premium en el feed y el perfil de reputación — ver nota de integridad abajo |
+| **Observatorio de la Demanda** (motor secundario, fase posterior) | Terceros / gremios / entidades | El acceso completo de pago descrito en la sección 8 |
+| **Integraciones con ERP/CRM** | Oferente (empresas grandes) | Acceso vía API para llevar las oportunidades desbloqueadas al software que ya usan |
+| **Verificación reforzada** | Oferente | Un nivel de verificación más riguroso que el básico y gratuito ya descrito para el perfil de reputación (Módulo 4) — pensado para quien quiere un sello de confianza más fuerte frente a demandantes exigentes |
 
 **A validar más adelante:** comisión adicional sobre negocios cerrados (encima del cobro por desbloqueo) — no es necesaria para el MVP y puede introducir fricción si se combina mal con el modelo de créditos; se recomienda no mezclarla hasta tener datos reales de conversión.
 
-## 15. Roadmap por fases
+**Integridad del "perfil destacado":** pagar por destacarse debe ser un tratamiento visual (ej. una etiqueta de "promocionado"), nunca una forma de alterar el orden real del IAC/IO — una empresa con mal encaje no debería poder comprar su camino a una posición engañosa; eso rompería la confianza que sostiene todo lo demás en este documento.
+
+## 16. Roadmap por fases
 
 - **Fase 0 — Validación (ahora)**: landing page de presentación + captura de lista de espera (demandantes y oferentes interesados) para validar interés real.
-- **Fase 1 — MVP marketplace completo**: registro demandante/oferente, formulario de ID con adjuntos, feed filtrado por industria/ciudad (arrancando en Ingeniería + Construcción, con versiones simples del IAC y del IO), mecanismo de desbloqueo con créditos, planes Bronce/Plata/Oro vía Stripe, chat interno básico (mensajería + adjuntos + historial). Esto ya es un producto vendible, no un prototipo — el modelo de créditos no requiere intervención manual del equipo para funcionar.
+- **Fase 1 — MVP marketplace completo**: registro demandante/oferente, formulario de ID con adjuntos, niveles básicos de Demanda Verificada, feed filtrado por industria/ciudad (arrancando en Ingeniería + Construcción, con versiones simples del IAC y del IO), mecanismo de desbloqueo con créditos, planes Bronce/Plata/Oro vía Stripe, chat interno básico (mensajería + adjuntos + historial). Esto ya es un producto vendible, no un prototipo — el modelo de créditos no requiere intervención manual del equipo para funcionar.
 - **Fase 2 — Automatización e inteligencia**: **IAC completo** (los 8 factores, sección 6) con alertas prioritarias automáticas, **IO completo** (sección 7) con "probabilidad de contratación" ya modelada con datos reales de cierre, clasificación automática de industria/urgencia con IA, llamada programada integrada.
 - **Fase 3 — Observatorio de la Demanda**: el panel de indicadores en tiempo real (sección 8) como producto adicional; explorar más verticales y fuentes públicas (ej. procesos SECOP) para entidades públicas/constructoras.
 
-## 16. Estructura del proyecto sugerida
+## 17. Estructura del proyecto sugerida
 
 ```
 PromotIA/
@@ -299,7 +337,7 @@ PromotIA/
 └── (fase 1+) app/             ← aplicación completa (marketplace, créditos, chat)
 ```
 
-## 17. Próximos pasos inmediatos
+## 18. Próximos pasos inmediatos
 
 1. **Revisar el borrador de política de datos actualizado** (`docs/POLITICA-DATOS.md`) — ya refleja a Atlas Corporation S.A.S. como responsable y el mecanismo de miniaturas públicas; sigue pendiente de revisión legal antes de publicarse.
 2. **Definir la taxonomía inicial de Ingeniería + Construcción** (subcategorías concretas) — condiciona el formulario de ID y el filtro del feed.

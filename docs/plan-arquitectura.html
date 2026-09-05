@@ -292,6 +292,7 @@
     <a href="#iac">Índice de Afinidad (IAC)</a>
     <a href="#io">Índice de Oportunidad (IO)</a>
     <a href="#observatorio">Observatorio de la Demanda</a>
+    <a href="#verificada">Demanda Verificada</a>
     <a href="#desbloqueo">Créditos y desbloqueo</a>
     <a href="#chat">Chat interno</a>
     <a href="#datos">Modelo de datos</a>
@@ -537,11 +538,33 @@
         </table>
       </div>
       <div class="callout" style="margin-top:24px"><strong>Privacidad:</strong> todo agregado, nunca una necesidad o empresa individual — un cruce con pocas muestras (ej. ciudad + industria muy específica) simplemente no se muestra.</div>
-      <p class="flow-caption" style="margin-top:16px">Es la forma concreta del motor secundario de negocio (sección 13): versión gratuita limitada como vitrina de marca, acceso completo — histórico, filtros, exportación — vendido a gremios, constructoras grandes o entidades públicas. <strong>A confirmar:</strong> ¿gratuito desde el día 1, o de pago desde el principio?</p>
+      <p class="flow-caption" style="margin-top:16px">Es la forma concreta del motor secundario de negocio (sección 14). <strong>Confirmado:</strong> se lanza gratuito inicialmente — el acceso completo de pago (histórico, filtros, exportación) para gremios, constructoras grandes o entidades públicas es una evolución posterior.</p>
+    </section>
+
+    <section id="verificada">
+      <h2><span class="num">08</span> Demanda Verificada</h2>
+      <p class="section-intro">No todas las publicaciones valen lo mismo. Un sistema de niveles de confianza, adicional al estado operativo de la ID (sección 4) — le dice al oferente qué tan auténtica y activa es una necesidad antes de decidir si la desbloquea.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nivel</th><th>Qué significa</th><th>Cuándo se alcanza</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Demanda publicada</td><td>Recién registrada, sin verificar</td><td class="why">Al publicarse la ID</td></tr>
+            <tr><td class="layer">Demanda verificada</td><td>Información confirmada como auténtica</td><td class="why">Verificación automática + revisión manual si aplica</td></tr>
+            <tr><td class="layer">Demanda activa</td><td>Recibiendo propuestas</td><td class="why">Al menos un desbloqueo</td></tr>
+            <tr><td class="layer">Proyecto adjudicado</td><td>Ya eligió un proveedor</td><td class="why">Demandante cierra la ID con un oferente</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sec-list" style="margin-top:24px">
+        <div class="sec-item"><span class="chip">✓</span><div><h4>Contacto confirmado</h4><p>Correo y/o teléfono validados, no solo capturados en el formulario.</p></div></div>
+        <div class="sec-item"><span class="chip">✓</span><div><h4>Identidad válida</h4><p>NIT validado contra un registro, si el tipo de cliente es empresa o entidad.</p></div></div>
+        <div class="sec-item"><span class="chip">✓</span><div><h4>Contenido legítimo</h4><p>Sin spam ni duplicados — cruza con "calidad de la información" del IO (sección 6).</p></div></div>
+      </div>
+      <div class="callout" style="margin-top:24px"><strong>Integridad:</strong> una ID no verificada sigue siendo visible en el feed, solo etiquetada como tal — la verificación nunca es una barrera de publicación.</div>
     </section>
 
     <section id="desbloqueo">
-      <h2><span class="num">08</span> Mecanismo de desbloqueo, créditos y planes</h2>
+      <h2><span class="num">09</span> Mecanismo de desbloqueo, créditos y planes</h2>
       <p class="section-intro">El mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude.</p>
       <div class="sec-list" style="margin-bottom:32px">
         <div class="sec-item"><span class="chip">01</span><div><h4>Verificación en servidor</h4><p>Se confirma que el oferente tiene ≥1 crédito disponible o plan ilimitado — nunca se confía en el cliente.</p></div></div>
@@ -561,7 +584,7 @@
     </section>
 
     <section id="chat">
-      <h2><span class="num">09</span> Chat interno</h2>
+      <h2><span class="num">10</span> Chat interno</h2>
       <p class="section-intro">Mensajería propia de la plataforma, no un enlace externo — toda la relación comercial ocurre dentro de Promot IA para poder medirla.</p>
       <div class="actor-cols">
         <div class="actor-card neutral">
@@ -587,12 +610,12 @@
     </section>
 
     <section id="datos">
-      <h2><span class="num">10</span> Modelo de datos — alto nivel</h2>
+      <h2><span class="num">11</span> Modelo de datos — alto nivel</h2>
       <p class="section-intro">Entidades principales; el detalle de columnas se define al iniciar la fase 1.</p>
       <div class="entity-grid">
         <div class="entity"><span class="name mono">usuarios_demandante</span><span class="desc">Cuenta, rol, contacto.</span></div>
         <div class="entity"><span class="name mono">usuarios_oferente</span><span class="desc">Cuenta, industrias, cobertura, plan activo.</span></div>
-        <div class="entity"><span class="name mono">necesidades (ID)</span><span class="desc">Título, industria, ciudad, presupuesto, urgencia, estado.</span></div>
+        <div class="entity"><span class="name mono">necesidades (ID)</span><span class="desc">Título, industria, ciudad, presupuesto, urgencia, estado, nivel_confianza.</span></div>
         <div class="entity"><span class="name mono">adjuntos</span><span class="desc">Archivo original (privado) + miniatura pública.</span></div>
         <div class="entity"><span class="name mono">industrias</span><span class="desc">Taxonomía controlada (arranca en Ingeniería + Construcción).</span></div>
         <div class="entity"><span class="name mono">planes</span><span class="desc">Bronce / Plata / Oro: créditos, precio.</span></div>
@@ -608,7 +631,7 @@
     </section>
 
     <section id="arquitectura">
-      <h2><span class="num">11</span> Arquitectura técnica recomendada</h2>
+      <h2><span class="num">12</span> Arquitectura técnica recomendada</h2>
       <p class="section-intro">Continuidad con el stack que ya conoces (Tablero Piscinas usa Supabase con roles y RLS) para avanzar rápido con buenas prácticas ya validadas.</p>
       <div class="table-wrap">
         <table>
@@ -628,7 +651,7 @@
     </section>
 
     <section id="seguridad">
-      <h2><span class="num">12</span> Seguridad e integridad — desde el día 1</h2>
+      <h2><span class="num">13</span> Seguridad e integridad — desde el día 1</h2>
       <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
       <div class="sec-list">
         <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer el contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado.</p></div></div>
@@ -645,30 +668,36 @@
         <div class="sec-item"><span class="chip">12</span><div><h4>Revisión de seguridad continua</h4><p>Especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.</p></div></div>
         <div class="sec-item"><span class="chip">13</span><div><h4>Integridad del IAC</h4><p>Los factores autodeclarados (experiencia, empleados, certificaciones) no pesan hasta cruzarse con el estado de verificación.</p></div></div>
         <div class="sec-item"><span class="chip">14</span><div><h4>Integridad del IO</h4><p>El nivel de competencia prioriza, no oculta necesidades; "probabilidad de contratación" no se presenta como predicción fuerte sin historial real.</p></div></div>
+        <div class="sec-item"><span class="chip">15</span><div><h4>Integridad de Demanda Verificada</h4><p>La verificación no es una barrera de publicación, y el criterio de qué cuenta como "verificado" es público y consistente, no discrecional.</p></div></div>
       </div>
     </section>
 
     <section id="negocio">
-      <h2><span class="num">13</span> Modelo de negocio</h2>
+      <h2><span class="num">14</span> Modelo de negocio</h2>
+      <p class="section-intro">Varias líneas independientes — la meta es no depender de una sola fuente de ingresos.</p>
       <div class="biz-grid">
-        <div class="biz-card"><span class="tag">Motor principal · MVP</span><h4>Venta de créditos por plan</h4><p>El oferente paga por acceder a IDs calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial.</p></div>
-        <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Observatorio de la Demanda</h4><p>Panel de inteligencia de mercado agregada y anonimizada — gratuito limitado como vitrina, completo vendido a gremios, constructoras o entidades públicas.</p></div>
+        <div class="biz-card"><span class="tag">Motor principal · MVP</span><h4>Suscripción por plan</h4><p>Bronce/Plata/Oro — el oferente paga por acceder a IDs calificadas de su industria.</p></div>
+        <div class="biz-card"><span class="tag">Oferente</span><h4>Créditos adicionales</h4><p>Comprar créditos extra sin cambiar de plan, para picos de demanda puntuales.</p></div>
+        <div class="biz-card"><span class="tag">Oferente</span><h4>Perfil destacado</h4><p>Posicionamiento visual premium — nunca altera el orden real de IAC/IO.</p></div>
+        <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Observatorio de la Demanda</h4><p>Acceso completo (histórico, filtros, exportación) vendido a gremios, constructoras o entidades públicas.</p></div>
+        <div class="biz-card"><span class="tag">Oferente</span><h4>Integraciones ERP/CRM</h4><p>Acceso vía API para llevar las oportunidades al software que ya usan.</p></div>
+        <div class="biz-card"><span class="tag">Oferente</span><h4>Verificación reforzada</h4><p>Un sello de confianza más fuerte que el básico y gratuito del perfil de reputación.</p></div>
         <div class="biz-card"><span class="tag">A validar</span><h4>Comisión por cierre</h4><p>Un porcentaje adicional sobre negocios cerrados — no se recomienda para el MVP hasta tener datos reales de conversión.</p></div>
       </div>
     </section>
 
     <section id="roadmap">
-      <h2><span class="num">14</span> Roadmap por fases</h2>
+      <h2><span class="num">15</span> Roadmap por fases</h2>
       <div class="roadmap">
         <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para demandantes y oferentes.</p></div>
-        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed con IAC e IO simples, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
+        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, niveles básicos de Demanda Verificada, feed con IAC e IO simples, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
         <div class="phase"><span class="phase-name">Fase 2</span><h4>IAC + IO completos</h4><p>Los 8 factores del IAC, alertas prioritarias, IO con "probabilidad de contratación" modelada con datos reales, clasificación con IA.</p></div>
         <div class="phase"><span class="phase-name">Fase 3</span><h4>Observatorio de la Demanda</h4><p>Panel de indicadores en tiempo real; más verticales y fuentes públicas (SECOP).</p></div>
       </div>
     </section>
 
     <section id="estructura">
-      <h2><span class="num">15</span> Estructura del proyecto</h2>
+      <h2><span class="num">16</span> Estructura del proyecto</h2>
       <pre class="tree"><span class="mono">PromotIA/
 ├── docs/              <span style="color:var(--muted)">← este plan, política de datos y futura documentación</span>
 ├── assets/            <span style="color:var(--muted)">← logo, imágenes de marca</span>
@@ -677,7 +706,7 @@
     </section>
 
     <section id="siguientes">
-      <h2><span class="num">16</span> Próximos pasos inmediatos</h2>
+      <h2><span class="num">17</span> Próximos pasos inmediatos</h2>
       <div class="steps">
         <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos actualizado</strong> (<code>docs/POLITICA-DATOS.md</code>) — ya refleja a Atlas Corporation S.A.S. como responsable; pendiente de revisión legal antes de publicarse.</p></div>
         <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de Ingeniería + Construcción — condiciona el formulario de ID y el feed.</p></div>
