@@ -190,6 +190,19 @@
     background:linear-gradient(135deg,var(--blue),var(--violet)); color:#fff; flex:none;
   }
 
+  /* ---- Pantalla 2: selector ¿Qué deseas hacer hoy? ---- */
+  .role-card{
+    flex:1; border:1.5px solid var(--line); border-radius:20px; padding:32px 26px; text-align:center;
+    background:var(--paper-raised); transition:all .2s;
+  }
+  .role-card:hover{border-color:var(--blue); transform:translateY(-3px); box-shadow:0 16px 32px -18px rgba(59,108,244,.3);}
+  .role-card-icon{
+    width:64px; height:64px; border-radius:18px; display:flex; align-items:center; justify-content:center;
+    margin:0 auto 20px; color:#fff;
+  }
+  .role-card-icon.grad{background:linear-gradient(135deg,var(--blue),var(--violet));}
+  .role-card-icon.cyan{background:linear-gradient(135deg,var(--cyan),var(--blue));}
+
   /* ---- Módulo 5: recomendación con IA ---- */
   .notif-banner{
     display:flex; align-items:center; gap:12px; background:var(--accent-soft); border:1px solid var(--line);
@@ -371,11 +384,36 @@
 
       <div class="text-center mb-8">
         <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Regístrate</p>
-        <h2 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Cuéntanos qué necesitas</h2>
-        <p class="mt-3 text-[15px]" style="color:var(--muted)">Dos minutos — estos datos nos ayudan a construir un perfil útil desde el primer día.</p>
+        <h2 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">¿Qué deseas hacer hoy?</h2>
+        <p class="mt-3 text-[15px]" style="color:var(--muted)">Selecciona la opción que mejor te describe para personalizar tu experiencia.</p>
       </div>
 
-      <div class="flex gap-3 mb-8">
+      <div id="registroSelector" class="flex flex-col sm:flex-row gap-5">
+        <div class="role-card">
+          <div class="role-card-icon grad">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[17px]" style="color:var(--ink)">Tengo una necesidad</h3>
+          <p class="mt-2 text-[13.5px]" style="color:var(--muted)">Quiero encontrar una empresa que resuelva mi proyecto.</p>
+          <button type="button" id="selectorDemandante" class="btn-primary w-full text-white font-semibold text-[14px] px-6 py-3 rounded-xl mt-6 transition">Seleccionar</button>
+        </div>
+        <div class="role-card">
+          <div class="role-card-icon cyan">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01M9 8h.01M15 8h.01"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-[17px]" style="color:var(--ink)">Soy una empresa</h3>
+          <p class="mt-2 text-[13.5px]" style="color:var(--muted)">Quiero descubrir oportunidades de negocio y conectar con clientes.</p>
+          <button type="button" id="selectorOferente" class="btn-secondary w-full font-semibold text-[14px] px-6 py-3 rounded-xl mt-6 transition" style="background:var(--paper-raised)">Seleccionar</button>
+        </div>
+      </div>
+
+      <div id="registroWizard" hidden>
+
+      <div class="flex gap-3 mb-8 mt-2">
         <button type="button" id="roleBtnDemandante" class="role-btn active">Tengo una necesidad</button>
         <button type="button" id="roleBtnOferente" class="role-btn">Busco oportunidades</button>
       </div>
@@ -515,6 +553,8 @@
         <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Listo, recibimos tu registro!</h3>
         <p class="mt-2 text-[14.5px] max-w-[42ch] mx-auto" style="color:var(--muted)">Promot IA todavía está en construcción — te escribiremos a tu correo apenas abramos el acceso anticipado.</p>
         <button type="button" id="btnIrPublicar" class="btn-primary mt-6 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl" hidden>Publicar mi primera necesidad →</button>
+      </div>
+
       </div>
 
     </div>
@@ -859,6 +899,8 @@
   var btnSubmit = document.getElementById('btnSubmit');
   var form = document.getElementById('registroForm');
   var successState = document.getElementById('successState');
+  var registroSelector = document.getElementById('registroSelector');
+  var registroWizard = document.getElementById('registroWizard');
 
   function currentPanel(){ return role === 'demandante' ? panelDemandante : panelOferente; }
 
@@ -883,10 +925,13 @@
   function selectRole(newRole){
     role = newRole; step = 1;
     form.hidden = false; successState.hidden = true;
+    registroSelector.hidden = true; registroWizard.hidden = false;
     render();
   }
   roleBtnDemandante.addEventListener('click', function(){ selectRole('demandante'); });
   roleBtnOferente.addEventListener('click', function(){ selectRole('oferente'); });
+  document.getElementById('selectorDemandante').addEventListener('click', function(){ selectRole('demandante'); });
+  document.getElementById('selectorOferente').addEventListener('click', function(){ selectRole('oferente'); });
 
   function validateStep(){
     var panel = currentPanel().querySelector('.step-panel[data-step="'+step+'"]');
