@@ -127,6 +127,38 @@
   }
   .actor-card.demand li::before{background:var(--blue);}
   .actor-card.supply li::before{background:var(--violet);}
+  .actor-card.neutral li::before{background:var(--cyan);}
+
+  /* ---- ID field table callout ---- */
+  .callout{
+    margin-top:18px; padding:14px 16px; border-radius:12px; background:var(--accent-soft);
+    border:1px solid var(--line); font-size:13.5px; color:var(--muted);
+  }
+  .callout strong{color:var(--ink);}
+
+  /* ---- teaser card mockup (fixed dark UI, represents an actual app screen) ---- */
+  .mockup-wrap{display:flex; justify-content:center; margin:22px 0 6px;}
+  .teaser-card{
+    width:100%; max-width:420px; background:#15181d; border-radius:20px; padding:26px;
+    color:#f4f5f7; font-family:'Sora',sans-serif; box-shadow:0 20px 50px -20px rgba(0,0,0,.45);
+  }
+  .teaser-card .row-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .teaser-card .eyebrow2{font-size:12px; color:#9aa1ad; font-weight:500; margin:0 0 6px;}
+  .teaser-card h5{font-size:21px; margin:0; font-weight:700; line-height:1.25;}
+  .teaser-card .tag{
+    border:1px solid #2fae66; color:#3ecf7a; font-size:11.5px; font-weight:600; padding:5px 12px;
+    border-radius:999px; white-space:nowrap;
+  }
+  .teaser-card .meta{display:flex; justify-content:space-between; align-items:center; margin-top:16px; font-size:13.5px; color:#c7cbd3;}
+  .teaser-card .meta .price{color:#3ecf7a; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:13.5px;}
+  .teaser-card hr{border:none; border-top:1px solid #2a2e35; margin:16px 0;}
+  .teaser-card .desc{font-size:13.5px; color:#b6bac2; line-height:1.6; font-family:'Source Sans 3',sans-serif;}
+  .teaser-card .foot{display:flex; justify-content:space-between; align-items:center; margin-top:18px; font-size:12px; color:#8a909c;}
+  .teaser-card .unlock{
+    background:#f4f5f7; color:#15181d; font-size:13px; font-weight:600; padding:10px 18px;
+    border-radius:999px; font-family:'Sora',sans-serif;
+  }
+  .mockup-caption{text-align:center; font-size:12.5px; color:var(--muted); margin-top:12px;}
 
   /* ---- flow diagram ---- */
   .flow-wrap{
@@ -247,8 +279,11 @@
       <span>Promot IA</span>
     </div>
     <a href="#problema">El problema</a>
-    <a href="#actores">Actores</a>
+    <a href="#ecosistemas">Ecosistemas</a>
     <a href="#flujo">Flujo central</a>
+    <a href="#id">La Intención de Demanda</a>
+    <a href="#desbloqueo">Créditos y desbloqueo</a>
+    <a href="#chat">Chat interno</a>
     <a href="#datos">Modelo de datos</a>
     <a href="#arquitectura">Arquitectura</a>
     <a href="#seguridad">Seguridad</a>
@@ -264,6 +299,7 @@
       <h1>Promot IA</h1>
       <p class="tagline">Conectamos proyectos con oportunidades.</p>
       <p class="lede">El cliente deja de buscar. La empresa deja de perseguir clientes <strong>a ciegas</strong>. Este documento define el modelo de producto, el flujo central, la arquitectura técnica y los principios de seguridad para construir la plataforma desde el primer commit.</p>
+      <p class="lede" style="margin-top:10px">Mercado inicial a explorar: <strong style="color:var(--blue)">Ingeniería + Construcción</strong>.</p>
     </header>
 
     <section id="problema">
@@ -275,29 +311,28 @@
       <p style="margin-top:18px">Promot IA es una <strong style="color:var(--blue)">plataforma de inteligencia de demanda</strong>: el punto de encuentro donde la demanda se hace visible de forma estructurada, y la oferta responde de manera eficiente — sin publicidad masiva ni prospección a ciegas. Tres capas de valor, no solo una: <strong>matching</strong> (el producto visible), <strong>clasificación</strong> (el motor invisible que ordena necesidades no estructuradas) e <strong>inteligencia de mercado</strong> (el producto adicional que vuelve el histórico de necesidades algo vendible por su cuenta).</p>
     </section>
 
-    <section id="actores">
-      <h2><span class="num">02</span> Actores del sistema</h2>
-      <p class="section-intro">Dos lados que hoy no se encuentran de forma eficiente, más el equipo que cuida la calidad del match.</p>
+    <section id="ecosistemas">
+      <h2><span class="num">02</span> Dos ecosistemas: Demandante y Oferente</h2>
+      <p class="section-intro">No es un marketplace simétrico: el demandante nunca paga por publicar; el oferente paga por acceder.</p>
       <div class="actor-cols">
         <div class="actor-card demand">
-          <h3>Demanda</h3>
-          <p class="sub">Quien tiene una necesidad</p>
+          <h3>Demandante</h3>
+          <p class="sub">Personas, empresas, entidades públicas, constructoras, comercios</p>
           <ul>
-            <li>Personas naturales</li>
-            <li>Empresas</li>
-            <li>Entidades públicas <span class="mono" style="color:var(--muted)">(SECOP, futuro)</span></li>
-            <li>Constructoras</li>
-            <li>Comercios</li>
+            <li>Crea cuenta</li>
+            <li>Publica una Intención de Demanda (ID)</li>
+            <li>Recibe el interés de las empresas que la desbloquean</li>
+            <li>Elige con cuál(es) hablar por el chat interno</li>
           </ul>
         </div>
         <div class="actor-card supply">
-          <h3>Oferta</h3>
-          <p class="sub">Quien resuelve la necesidad</p>
+          <h3>Oferente</h3>
+          <p class="sub">Empresas y profesionales registrados</p>
           <ul>
-            <li>Empresas y profesionales registrados</li>
-            <li>Clasificados por categoría de servicio/producto</li>
-            <li>Con cobertura geográfica definida</li>
-            <li>Con calificación histórica de desempeño</li>
+            <li>Crea cuenta y elige un plan de créditos</li>
+            <li>Explora el feed de IDs de su industria/ciudad</li>
+            <li>Solo ve la versión pública (sin datos de contacto)</li>
+            <li>Paga con créditos para desbloquear la que le interesa</li>
           </ul>
         </div>
       </div>
@@ -305,7 +340,7 @@
 
     <section id="flujo">
       <h2><span class="num">03</span> Flujo central del producto</h2>
-      <p class="section-intro">El motor que convierte una necesidad expresada en un match real — y en inteligencia de mercado reutilizable.</p>
+      <p class="section-intro">De una ID publicada a un negocio cerrado — y a inteligencia de mercado reutilizable. Modelo de marketplace auto-servicio: el oferente decide qué desbloquear, el sistema solo filtra el feed.</p>
       <div class="flow-wrap">
         <svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -321,49 +356,56 @@
 
           <!-- connecting arrows -->
           <g stroke="var(--muted)" stroke-width="1.4" marker-end="url(#arrow)">
-            <line x1="116" y1="66" x2="249" y2="66"/>
-            <line x1="301" y1="66" x2="434" y2="66"/>
-            <line x1="486" y1="66" x2="619" y2="66"/>
-            <line x1="671" y1="66" x2="804" y2="66"/>
+            <line x1="94" y1="66" x2="202" y2="66"/>
+            <line x1="250" y1="66" x2="358" y2="66"/>
+            <line x1="406" y1="66" x2="514" y2="66"/>
+            <line x1="562" y1="66" x2="670" y2="66"/>
+            <line x1="718" y1="66" x2="826" y2="66"/>
           </g>
 
           <!-- feed lines into market intelligence -->
           <g fill="none" stroke="var(--violet)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55">
-            <path d="M275 92 C 275 170, 340 210, 400 228"/>
-            <path d="M830 92 C 830 170, 620 210, 560 228"/>
+            <path d="M226 90 C 226 170, 300 210, 380 228"/>
+            <path d="M850 90 C 850 170, 660 210, 560 228"/>
           </g>
 
           <!-- main nodes -->
           <g font-family="Sora, sans-serif">
             <g>
-              <circle cx="90" cy="66" r="26" fill="url(#nodeGrad)"/>
-              <text x="90" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
-              <text x="90" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Captura</text>
-              <text x="90" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Necesidad expresada</text>
+              <circle cx="70" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="70" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+              <text x="70" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Publicación</text>
+              <text x="70" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Demandante crea ID</text>
             </g>
             <g>
-              <circle cx="275" cy="66" r="26" fill="url(#nodeGrad)"/>
-              <text x="275" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
-              <text x="275" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Clasificación</text>
-              <text x="275" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Categoría, urgencia</text>
+              <circle cx="226" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="226" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+              <text x="226" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Clasificación</text>
+              <text x="226" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Industria, ciudad, presupuesto</text>
             </g>
             <g>
-              <circle cx="460" cy="66" r="26" fill="url(#nodeGrad)"/>
-              <text x="460" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3</text>
-              <text x="460" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Matching</text>
-              <text x="460" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Motor de emparejamiento</text>
+              <circle cx="382" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="382" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>
+              <text x="382" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Feed filtrado</text>
+              <text x="382" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Oferente ve el teaser</text>
             </g>
             <g>
-              <circle cx="645" cy="66" r="26" fill="url(#nodeGrad)"/>
-              <text x="645" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">4</text>
-              <text x="645" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Conexión</text>
-              <text x="645" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Se notifica a la oferta</text>
+              <circle cx="538" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="538" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">4</text>
+              <text x="538" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Desbloqueo</text>
+              <text x="538" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Paga con créditos</text>
             </g>
             <g>
-              <circle cx="830" cy="66" r="26" fill="url(#nodeGrad)"/>
-              <text x="830" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">5</text>
-              <text x="830" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Resultado</text>
-              <text x="830" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Cierre y feedback</text>
+              <circle cx="694" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="694" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">5</text>
+              <text x="694" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Chat interno</text>
+              <text x="694" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Contacto revelado</text>
+            </g>
+            <g>
+              <circle cx="850" cy="66" r="24" fill="url(#nodeGrad)"/>
+              <text x="850" y="71" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">6</text>
+              <text x="850" y="110" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Cierre</text>
+              <text x="850" y="126" text-anchor="middle" font-size="10.5" fill="var(--muted)">Resultado y métricas</text>
             </g>
 
             <!-- intelligence node -->
@@ -373,92 +415,185 @@
           </g>
         </svg>
       </div>
-      <p class="flow-caption">La necesidad se captura, se clasifica contra una taxonomía controlada, se compara contra el catálogo de oferta (matching), se notifica a los candidatos calificados y el resultado real alimenta tanto la calificación del proveedor como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
+      <p class="flow-caption">El oferente solo ve la versión pública del feed (título, industria, ciudad, presupuesto, urgencia y descripción — sin contacto ni adjuntos) hasta que decide pagar por desbloquearla. El resultado real de cada cierre alimenta tanto la calificación del oferente como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
+    </section>
+
+    <section id="id">
+      <h2><span class="num">04</span> Estructura de una Intención de Demanda (ID)</h2>
+      <p class="section-intro">El formulario que llena el demandante al publicar — y qué de eso es público (teaser) frente a lo que solo se revela tras el desbloqueo.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Campo</th><th>Tipo</th><th>Visibilidad</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Título corto</td><td>Texto</td><td class="why">Público</td></tr>
+            <tr><td class="layer">Industria</td><td>Selector (taxonomía)</td><td class="why">Público</td></tr>
+            <tr><td class="layer">País / Ciudad</td><td>Selector</td><td class="why">Público (sin dirección exacta)</td></tr>
+            <tr><td class="layer">Presupuesto estimado</td><td>Rango mín–máx</td><td class="why">Público</td></tr>
+            <tr><td class="layer">Descripción detallada</td><td>Texto largo</td><td class="why">Público</td></tr>
+            <tr><td class="layer">Urgencia</td><td>Baja / Media / Alta</td><td class="why">Público (etiqueta visible)</td></tr>
+            <tr><td class="layer">Adjuntos</td><td>PDF, planos, fotos, video</td><td class="why">Privado — solo tras desbloqueo</td></tr>
+            <tr><td class="layer">Datos de contacto</td><td>Nombre, teléfono, correo</td><td class="why">Privado — solo tras desbloqueo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mockup-wrap">
+        <div>
+          <div class="teaser-card">
+            <p class="eyebrow2">Necesidad detectada</p>
+            <div class="row-top">
+              <h5>Automatización de empaque</h5>
+              <span class="tag">Alta prioridad</span>
+            </div>
+            <div class="meta"><span>📍 Medellín · Manufactura</span><span class="price">$50.000 – $125.000</span></div>
+            <hr>
+            <p class="desc">Empresa del sector alimentario busca automatizar proceso de empaque secundario. Requiere diagnóstico, diseño e implementación.</p>
+            <hr>
+            <div class="foot"><span>Publicado hace 2 horas</span><span class="unlock">Desbloquear contacto →</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="mockup-caption">Así ve el oferente una ID en el feed, antes de pagar — el contacto y los adjuntos aparecen solo después del desbloqueo.</p>
+      <div class="callout"><strong>Punto abierto:</strong> ¿los adjuntos deberían ser 100% privados como se asume aquí, o mostrar una miniatura pública para incentivar más el desbloqueo? Vale la pena confirmarlo antes de construir el formulario.</div>
+    </section>
+
+    <section id="desbloqueo">
+      <h2><span class="num">05</span> Mecanismo de desbloqueo, créditos y planes</h2>
+      <p class="section-intro">El mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude.</p>
+      <div class="sec-list" style="margin-bottom:32px">
+        <div class="sec-item"><span class="chip">01</span><div><h4>Verificación en servidor</h4><p>Se confirma que el oferente tiene ≥1 crédito disponible o plan ilimitado — nunca se confía en el cliente.</p></div></div>
+        <div class="sec-item"><span class="chip">02</span><div><h4>Consumo del crédito</h4><p>Se descuenta 1 crédito (el plan Oro solo registra el desbloqueo, sin descontar).</p></div></div>
+        <div class="sec-item"><span class="chip">03</span><div><h4>Revelación</h4><p>Se muestran datos de contacto y adjuntos, solo a ese oferente.</p></div></div>
+        <div class="sec-item"><span class="chip">04</span><div><h4>Chat habilitado</h4><p>Se abre un hilo de mensajería entre el demandante y ese oferente.</p></div></div>
+        <div class="sec-item"><span class="chip">05</span><div><h4>Registro</h4><p>Queda asociada la ID a esa empresa — una misma ID puede tener varios desbloqueos de empresas distintas.</p></div></div>
+        <div class="sec-item"><span class="chip">06</span><div><h4>Notificación</h4><p>El demandante es avisado del nuevo interés, para elegir con quién hablar.</p></div></div>
+      </div>
+      <div class="callout" style="margin-bottom:28px"><strong>Por qué esto es crítico:</strong> los pasos 2 a 4 deben ser una sola transacción atómica en la base de datos. Un doble clic o un corte de conexión nunca debe poder cobrar el crédito sin revelar el contacto, ni al revés.</div>
+      <div class="biz-grid">
+        <div class="biz-card"><span class="tag">1 crédito</span><h4>Bronce</h4><p style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">USD $19</p><p>Ideal para probar la plataforma con una oportunidad puntual.</p></div>
+        <div class="biz-card"><span class="tag">10 créditos</span><h4>Plata</h4><p style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">USD $99</p><p>Para oferentes con búsqueda activa recurrente.</p></div>
+        <div class="biz-card"><span class="tag">Ilimitado</span><h4>Oro</h4><p style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">USD $299</p><p>Acceso sin límite a todas las IDs de su industria.</p></div>
+      </div>
+      <p class="flow-caption" style="margin-top:16px">Asumido como planes de suscripción mensual (créditos renovados cada ciclo) vía Stripe Billing — a confirmar contigo. Los pagos nunca se procesan a mano: el procesador confirma del lado servidor antes de asignar créditos.</p>
+    </section>
+
+    <section id="chat">
+      <h2><span class="num">06</span> Chat interno</h2>
+      <p class="section-intro">Mensajería propia de la plataforma, no un enlace externo — toda la relación comercial ocurre dentro de Promot IA para poder medirla.</p>
+      <div class="actor-cols">
+        <div class="actor-card neutral">
+          <h3>Funciones</h3>
+          <p class="sub">Lo que puede hacer el usuario</p>
+          <ul>
+            <li>Mensajería con envío de documentos</li>
+            <li>Llamada programada dentro del hilo</li>
+            <li>Historial completo por ID y por oferente</li>
+          </ul>
+        </div>
+        <div class="actor-card neutral">
+          <h3>Métricas que habilita</h3>
+          <p class="sub">El verdadero valor del chat interno</p>
+          <ul>
+            <li>Tiempo de respuesta (ambos sentidos)</li>
+            <li>Tasa de conversión (desbloqueos → cierres)</li>
+            <li>Calidad del oferente (score compuesto)</li>
+            <li>Valor estimado del negocio cerrado</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section id="datos">
-      <h2><span class="num">04</span> Modelo de datos — alto nivel</h2>
+      <h2><span class="num">07</span> Modelo de datos — alto nivel</h2>
       <p class="section-intro">Entidades principales; el detalle de columnas se define al iniciar la fase 1.</p>
       <div class="entity-grid">
-        <div class="entity"><span class="name mono">usuarios</span><span class="desc">Cuentas del lado demanda: rol, contacto.</span></div>
-        <div class="entity"><span class="name mono">proveedores</span><span class="desc">Empresas del lado oferta: categorías, cobertura, verificación.</span></div>
-        <div class="entity"><span class="name mono">necesidades</span><span class="desc">Descripción, categoría, urgencia, presupuesto, ubicación, estado.</span></div>
-        <div class="entity"><span class="name mono">categorías</span><span class="desc">Taxonomía controlada y jerárquica.</span></div>
-        <div class="entity"><span class="name mono">matches</span><span class="desc">Necesidad↔proveedor, con score y estado.</span></div>
-        <div class="entity"><span class="name mono">calificaciones</span><span class="desc">Feedback post-cierre, alimenta el score del proveedor.</span></div>
-        <div class="entity"><span class="name mono">eventos_auditoria</span><span class="desc">Quién hizo qué y cuándo — seguridad e integridad de datos.</span></div>
+        <div class="entity"><span class="name mono">usuarios_demandante</span><span class="desc">Cuenta, rol, contacto.</span></div>
+        <div class="entity"><span class="name mono">usuarios_oferente</span><span class="desc">Cuenta, industrias, cobertura, plan activo.</span></div>
+        <div class="entity"><span class="name mono">necesidades (ID)</span><span class="desc">Título, industria, ciudad, presupuesto, urgencia, estado.</span></div>
+        <div class="entity"><span class="name mono">adjuntos</span><span class="desc">Archivo, tipo — visible solo post-desbloqueo.</span></div>
+        <div class="entity"><span class="name mono">industrias</span><span class="desc">Taxonomía controlada (arranca en Ingeniería + Construcción).</span></div>
+        <div class="entity"><span class="name mono">planes</span><span class="desc">Bronce / Plata / Oro: créditos, precio.</span></div>
+        <div class="entity"><span class="name mono">suscripciones</span><span class="desc">Oferente, plan, créditos disponibles, ciclo.</span></div>
+        <div class="entity"><span class="name mono">desbloqueos</span><span class="desc">ID ↔ oferente, fecha, crédito consumido.</span></div>
+        <div class="entity"><span class="name mono">mensajes</span><span class="desc">Hilo de chat por desbloqueo, adjuntos, fecha.</span></div>
+        <div class="entity"><span class="name mono">llamadas_programadas</span><span class="desc">Desbloqueo asociado, fecha/hora, estado.</span></div>
+        <div class="entity"><span class="name mono">calificaciones</span><span class="desc">Feedback post-cierre, alimenta el score del oferente.</span></div>
+        <div class="entity"><span class="name mono">eventos_auditoria</span><span class="desc">Quién hizo qué y cuándo.</span></div>
       </div>
     </section>
 
     <section id="arquitectura">
-      <h2><span class="num">05</span> Arquitectura técnica recomendada</h2>
+      <h2><span class="num">08</span> Arquitectura técnica recomendada</h2>
       <p class="section-intro">Continuidad con el stack que ya conoces (Tablero Piscinas usa Supabase con roles y RLS) para avanzar rápido con buenas prácticas ya validadas.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Capa</th><th>Recomendación</th><th>Por qué</th></tr></thead>
           <tbody>
-            <tr><td class="layer">Frontend</td><td>Next.js / React + Tailwind</td><td class="why">Empieza como landing simple y crece hacia una app completa sin reescribir.</td></tr>
-            <tr><td class="layer">Backend / API</td><td>Supabase (Postgres)</td><td class="why">Sin servidores propios que mantener; robusto para el modelo relacional.</td></tr>
-            <tr><td class="layer">Autenticación</td><td>Supabase Auth + roles</td><td class="why">Demanda / oferta / admin ven y hacen solo lo que corresponde a su rol.</td></tr>
-            <tr><td class="layer">Clasificación</td><td>API de un modelo de lenguaje + reglas propias</td><td class="why">La IA sugiere, la taxonomía controla — evita categorías inconsistentes.</td></tr>
-            <tr><td class="layer">Hosting</td><td>Vercel + Supabase</td><td class="why">Mismo patrón ya usado en otros proyectos, sin infraestructura nueva.</td></tr>
-            <tr><td class="layer">Notificaciones</td><td>WhatsApp Business API / email</td><td class="why">Reutiliza el patrón ya probado (wa.me / formularios).</td></tr>
+            <tr><td class="layer">Frontend</td><td>Next.js / React + Tailwind, responsive</td><td class="why">Un solo código sirve celular y computador — el oferente explora el feed desde ambos.</td></tr>
+            <tr><td class="layer">Backend / API</td><td>Supabase (Postgres)</td><td class="why">El modelo relacional (IDs, desbloqueos, planes, mensajes) encaja bien en Postgres.</td></tr>
+            <tr><td class="layer">Autenticación</td><td>Supabase Auth + roles</td><td class="why">Demandante / oferente / admin ven y hacen solo lo que corresponde a su rol.</td></tr>
+            <tr><td class="layer">Pagos</td><td>Stripe Billing</td><td class="why">Cobro recurrente + PCI compliance + confirmación server-side antes de asignar créditos.</td></tr>
+            <tr><td class="layer">Clasificación (fase 2)</td><td>API de un modelo de lenguaje + reglas propias</td><td class="why">La IA sugiere industria/urgencia, la taxonomía controla.</td></tr>
+            <tr><td class="layer">Hosting</td><td>Vercel + Supabase</td><td class="why">Mismo patrón ya usado en otros proyectos.</td></tr>
+            <tr><td class="layer">Notificaciones</td><td>Email transaccional + in-app</td><td class="why">Nuevo interés al demandante, nuevos mensajes al oferente.</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <section id="seguridad">
-      <h2><span class="num">06</span> Seguridad e integridad — desde el día 1</h2>
+      <h2><span class="num">09</span> Seguridad e integridad — desde el día 1</h2>
       <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
       <div class="sec-list">
-        <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Cada usuario solo lee/escribe lo suyo, aplicado a nivel de base de datos — no solo ocultando botones en el frontend.</p></div></div>
-        <div class="sec-item"><span class="chip">02</span><div><h4>Autenticación real y roles claros</h4><p>Demanda, oferta y admin son roles distintos, verificados en cada operación sensible.</p></div></div>
-        <div class="sec-item"><span class="chip">03</span><div><h4>Cifrado en tránsito y en reposo</h4><p>HTTPS en todo; datos sensibles cifrados en la base de datos donde aplique.</p></div></div>
-        <div class="sec-item"><span class="chip">04</span><div><h4>Habeas Data (Ley 1581 de 2012)</h4><p>Consentimiento explícito desde el primer formulario; una necesidad de una persona natural se trata como dato personal.</p></div></div>
-        <div class="sec-item"><span class="chip">05</span><div><h4>Nunca credenciales en el código</h4><p>Variables de entorno / secret manager — el <code>.gitignore</code> ya está listo desde el primer commit.</p></div></div>
-        <div class="sec-item"><span class="chip">06</span><div><h4>Validación de entradas en el servidor</h4><p>Todo formulario/API se valida en el backend — previene inyección SQL, XSS y abuso del matching.</p></div></div>
-        <div class="sec-item"><span class="chip">07</span><div><h4>Rate limiting y anti-abuso</h4><p>Límites en formularios públicos para evitar spam de necesidades falsas o scraping del catálogo.</p></div></div>
-        <div class="sec-item"><span class="chip">08</span><div><h4>Auditoría</h4><p>Registro de quién creó/modificó/vio qué — sostiene la integridad de los datos que alimentan la inteligencia de mercado.</p></div></div>
-        <div class="sec-item"><span class="chip">09</span><div><h4>Backups y continuidad</h4><p>Copias de seguridad automáticas desde el primer entorno de producción.</p></div></div>
-        <div class="sec-item"><span class="chip">10</span><div><h4>Revisión de seguridad continua</h4><p>Antes de cada lanzamiento importante, una revisión dedicada sobre los cambios — no solo al final.</p></div></div>
+        <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer contacto/adjuntos de una ID que no ha desbloqueado, aplicado a nivel de base de datos.</p></div></div>
+        <div class="sec-item"><span class="chip">02</span><div><h4>Desbloqueo como transacción atómica</h4><p>Nunca confiar en el cliente para "tengo créditos" o "ya pagué"; un doble clic nunca consume dos créditos por un desbloqueo.</p></div></div>
+        <div class="sec-item"><span class="chip">03</span><div><h4>Autenticación real y roles claros</h4><p>Demandante, oferente y admin son roles distintos, verificados en cada operación sensible.</p></div></div>
+        <div class="sec-item"><span class="chip">04</span><div><h4>Cifrado en tránsito y en reposo</h4><p>HTTPS en todo; adjuntos y contacto cifrados en la base de datos donde aplique.</p></div></div>
+        <div class="sec-item"><span class="chip">05</span><div><h4>Habeas Data (Ley 1581 de 2012)</h4><p>Política de datos propia de Promot IA — la revelación de contacto a cambio de pago queda autorizada explícitamente al publicar la ID.</p></div></div>
+        <div class="sec-item"><span class="chip">06</span><div><h4>Pagos vía procesador certificado</h4><p>Nunca se almacenan datos de tarjetas directamente.</p></div></div>
+        <div class="sec-item"><span class="chip">07</span><div><h4>Nunca credenciales en el código</h4><p>Variables de entorno / secret manager — el <code>.gitignore</code> ya está listo desde el primer commit.</p></div></div>
+        <div class="sec-item"><span class="chip">08</span><div><h4>Validación de entradas en el servidor</h4><p>Formularios y carga de archivos se validan en el backend — previene inyección, XSS y archivos maliciosos.</p></div></div>
+        <div class="sec-item"><span class="chip">09</span><div><h4>Rate limiting y anti-abuso</h4><p>Límites en publicación de IDs y en intentos de desbloqueo.</p></div></div>
+        <div class="sec-item"><span class="chip">10</span><div><h4>Auditoría</h4><p>Registro de quién publicó, desbloqueó o pagó qué y cuándo — sostiene la integridad de las métricas que se venden como valor del plan.</p></div></div>
+        <div class="sec-item"><span class="chip">11</span><div><h4>Backups y continuidad</h4><p>Copias de seguridad automáticas desde el primer entorno de producción.</p></div></div>
+        <div class="sec-item"><span class="chip">12</span><div><h4>Revisión de seguridad continua</h4><p>Especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.</p></div></div>
       </div>
     </section>
 
     <section id="negocio">
-      <h2><span class="num">07</span> Modelo de negocio — hipótesis de partida</h2>
+      <h2><span class="num">10</span> Modelo de negocio</h2>
       <div class="biz-grid">
-        <div class="biz-card"><span class="tag">Oferta</span><h4>Suscripción</h4><p>Membresía para recibir necesidades calificadas de su categoría/zona — reemplaza el gasto en publicidad y fuerza comercial.</p></div>
-        <div class="biz-card"><span class="tag">A validar</span><h4>Comisión por cierre</h4><p>Un porcentaje sobre negocios cerrados a través de la plataforma.</p></div>
-        <div class="biz-card"><span class="tag">Diferenciador</span><h4>Inteligencia de mercado</h4><p>Reportes y dashboards de tendencias de demanda, vendidos a gremios, constructoras grandes o entidades públicas.</p></div>
+        <div class="biz-card"><span class="tag">Motor principal · MVP</span><h4>Venta de créditos por plan</h4><p>El oferente paga por acceder a IDs calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial.</p></div>
+        <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Inteligencia de mercado</h4><p>Reportes de tendencias de demanda agregadas y anonimizadas, vendidos a gremios, constructoras o entidades públicas.</p></div>
+        <div class="biz-card"><span class="tag">A validar</span><h4>Comisión por cierre</h4><p>Un porcentaje adicional sobre negocios cerrados — no se recomienda para el MVP hasta tener datos reales de conversión.</p></div>
       </div>
     </section>
 
     <section id="roadmap">
-      <h2><span class="num">08</span> Roadmap por fases</h2>
+      <h2><span class="num">11</span> Roadmap por fases</h2>
       <div class="roadmap">
-        <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para validar interés real antes de construir el motor completo.</p></div>
-        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP</h4><p>Registro básico, formulario de necesidad, matching manual/asistido por el equipo — sin IA todavía.</p></div>
-        <div class="phase"><span class="phase-name">Fase 2</span><h4>Automatización</h4><p>Clasificación con IA, motor de matching por reglas + score, notificaciones automáticas.</p></div>
-        <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; explorar integración con fuentes públicas (SECOP).</p></div>
+        <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para demandantes y oferentes.</p></div>
+        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed por industria/ciudad (Ingeniería + Construcción), desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
+        <div class="phase"><span class="phase-name">Fase 2</span><h4>Automatización</h4><p>Clasificación con IA, notificaciones proactivas, score de calidad de oferente, llamada programada integrada.</p></div>
+        <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; más verticales y fuentes públicas (SECOP).</p></div>
       </div>
     </section>
 
     <section id="estructura">
-      <h2><span class="num">09</span> Estructura del proyecto</h2>
+      <h2><span class="num">12</span> Estructura del proyecto</h2>
       <pre class="tree"><span class="mono">PromotIA/
-├── docs/              <span style="color:var(--muted)">← este plan y futura documentación</span>
+├── docs/              <span style="color:var(--muted)">← este plan, política de datos y futura documentación</span>
 ├── assets/            <span style="color:var(--muted)">← logo, imágenes de marca</span>
 ├── landing/           <span style="color:var(--muted)">← (fase 0) sitio estático de presentación</span>
-└── app/               <span style="color:var(--muted)">← (fase 1+) aplicación completa</span></span></pre>
+└── app/               <span style="color:var(--muted)">← (fase 1+) marketplace, créditos, chat</span></span></pre>
     </section>
 
     <section id="siguientes">
-      <h2><span class="num">10</span> Próximos pasos inmediatos</h2>
+      <h2><span class="num">13</span> Próximos pasos inmediatos</h2>
       <div class="steps">
-        <div class="step"><span class="box"></span><p><strong>Confirmar y ajustar este plan</strong> — categorías iniciales, proveedores/clientes piloto ya identificados, presupuesto disponible.</p></div>
-        <div class="step"><span class="box"></span><p><strong>Construir la landing de Fase 0</strong> con el logo, la propuesta de valor y un formulario de lista de espera.</p></div>
-        <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de categorías — condiciona todo el modelo de datos.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Confirmar los supuestos marcados en este plan</strong> — visibilidad de los adjuntos y si los planes son mensuales o créditos sin vencimiento.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos</strong> (<code>docs/POLITICA-DATOS.md</code>) — cubre la revelación de contacto a cambio de pago, el punto legal más sensible.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de Ingeniería + Construcción — condiciona el formulario de ID y el feed.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Construir la landing de Fase 0</strong> con el logo, la propuesta de valor y lista de espera para ambos lados.</p></div>
       </div>
     </section>
 
