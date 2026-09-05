@@ -6,7 +6,7 @@
 <title>Promot IA — Publica una necesidad. Encuentra la empresa adecuada.</title>
 <meta name="description" content="Promot IA conecta directamente a quienes tienen una necesidad de ingeniería o construcción con las empresas que pueden resolverla — sin búsquedas a ciegas ni prospección en frío.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root{
@@ -101,6 +101,54 @@
   }
   .tag-pill button{width:18px; height:18px; border-radius:99px; background:rgba(255,255,255,.25); font-size:12px; line-height:1;}
   .step-panel[hidden]{display:none;}
+
+  /* ---- Módulo 3: publicación de necesidad ---- */
+  #publicar{background:var(--paper);}
+  .field textarea{
+    width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-raised); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
+    resize:vertical; min-height:88px;
+  }
+  #publicar .field textarea{background:var(--paper);}
+  .field textarea:focus{outline:none; border-color:var(--blue);}
+  .urgency-group{display:flex; gap:10px;}
+  .urgency-opt{
+    flex:1; padding:12px; border-radius:10px; border:1.5px solid var(--line); background:var(--paper);
+    text-align:center; font-size:13.5px; font-weight:600; cursor:pointer; color:var(--muted);
+  }
+  .urgency-opt .dot{width:8px; height:8px; border-radius:99px; display:inline-block; margin-right:6px;}
+  .urgency-opt[data-level="baja"] .dot{background:#94a3b8;}
+  .urgency-opt[data-level="media"] .dot{background:#f59e0b;}
+  .urgency-opt[data-level="alta"] .dot{background:#22c55e;}
+  .urgency-opt.selected{border-color:var(--blue); color:var(--ink); background:var(--accent-soft);}
+  .file-chip{
+    display:flex; align-items:center; gap:8px; padding:7px 8px 7px 12px; border-radius:99px;
+    border:1.5px solid var(--line); background:var(--paper); font-size:12.5px; color:var(--ink);
+  }
+  .file-chip button{width:18px; height:18px; border-radius:99px; background:var(--line); font-size:11px;}
+  .file-drop{
+    border:1.5px dashed var(--line); border-radius:12px; padding:22px; text-align:center; cursor:pointer;
+    color:var(--muted); font-size:13.5px; background:var(--paper);
+  }
+  .file-drop:hover{border-color:var(--blue);}
+
+  .preview-card{
+    max-width:380px; margin:0 auto; background:#15181d; border-radius:20px; padding:24px;
+    color:#f4f5f7; font-family:'Sora',sans-serif; box-shadow:0 20px 50px -20px rgba(0,0,0,.45);
+  }
+  .preview-card .p-eyebrow{font-size:11.5px; color:#9aa1ad; font-weight:500; margin:0 0 6px;}
+  .preview-card h5{font-size:19px; margin:0; font-weight:700; line-height:1.25;}
+  .preview-card .p-row-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .preview-card .p-tag{
+    border:1px solid #2fae66; color:#3ecf7a; font-size:11px; font-weight:600; padding:4px 11px;
+    border-radius:999px; white-space:nowrap;
+  }
+  .preview-card .p-meta{display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:13px; color:#c7cbd3;}
+  .preview-card .p-price{color:#3ecf7a; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:13px;}
+  .preview-card hr{border:none; border-top:1px solid #2a2e35; margin:14px 0;}
+  .preview-card .p-desc{font-size:13px; color:#b6bac2; line-height:1.6; font-family:'Source Sans 3',sans-serif;}
+  .preview-card .p-desc b{color:#dfe1e6; font-family:'Sora',sans-serif; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:3px;}
+  .preview-card .p-files{font-size:12px; color:#8a909c; margin-top:14px;}
 </style>
 </head>
 <body class="antialiased">
@@ -359,6 +407,125 @@
         <div class="text-4xl mb-3">✓</div>
         <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Listo, recibimos tu registro!</h3>
         <p class="mt-2 text-[14.5px] max-w-[42ch] mx-auto" style="color:var(--muted)">Promot IA todavía está en construcción — te escribiremos a tu correo apenas abramos el acceso anticipado.</p>
+        <button type="button" id="btnIrPublicar" class="btn-primary mt-6 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl" hidden>Publicar mi primera necesidad →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="publicar" class="py-16 lg:py-20">
+    <div class="max-w-2xl mx-auto px-6 sm:px-8">
+
+      <div class="text-center mb-8">
+        <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Publica tu necesidad</p>
+        <h2 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Danos contexto, no solo una tarea</h2>
+        <p class="mt-3 text-[15px] max-w-[46ch] mx-auto" style="color:var(--muted)">Mientras más contexto compartas, mejor podrá una empresa entender tu situación real y proponer la solución adecuada — no solo cotizar una tarea suelta.</p>
+      </div>
+
+      <div class="mb-8">
+        <div class="progress-track"><div id="pProgressFill" class="progress-fill" style="width:20%"></div></div>
+        <p id="pStepLabel" class="mt-2 text-[12.5px] font-medium" style="color:var(--muted)">Paso 1 de 5</p>
+      </div>
+
+      <form id="publicarForm" novalidate>
+
+        <div data-pstep="1" class="step-panel space-y-5">
+          <div class="field">
+            <label for="p_titulo">Título corto</label>
+            <input type="text" id="p_titulo" name="p_titulo" placeholder="Ej. Automatización de línea de empaque" required>
+          </div>
+          <div class="field">
+            <label for="p_industria">Industria</label>
+            <select id="p_industria" name="p_industria" required></select>
+          </div>
+          <div class="field">
+            <label for="p_pais">País</label>
+            <input type="text" id="p_pais" name="p_pais" value="Colombia" required>
+          </div>
+          <div class="field">
+            <label for="p_ciudad">Ciudad</label>
+            <input type="text" id="p_ciudad" name="p_ciudad" placeholder="Ej. Medellín" required>
+          </div>
+        </div>
+
+        <div data-pstep="2" class="step-panel space-y-5" hidden>
+          <div class="field">
+            <label for="p_necesita">¿Qué necesitas específicamente?</label>
+            <textarea id="p_necesita" name="p_necesita" placeholder="Ej. Automatizar el proceso de empaque secundario de nuestra línea de producción" required></textarea>
+          </div>
+          <div class="field">
+            <label for="p_problema">¿Qué problema quieres resolver?</label>
+            <textarea id="p_problema" name="p_problema" placeholder="Ej. El empaque manual nos genera cuellos de botella y errores de calidad en temporada alta" required></textarea>
+            <p class="hint">El porqué detrás de la tarea — ayuda a la empresa a diagnosticar mejor, no solo a cotizar.</p>
+          </div>
+          <div class="field">
+            <label for="p_resultado">¿Qué resultado esperas obtener?</label>
+            <textarea id="p_resultado" name="p_resultado" placeholder="Ej. Reducir el tiempo de empaque en un 40% y eliminar errores manuales" required></textarea>
+            <p class="hint">Cómo sabrás que el proyecto fue un éxito.</p>
+          </div>
+        </div>
+
+        <div data-pstep="3" class="step-panel space-y-5" hidden>
+          <div class="field">
+            <label>Presupuesto estimado (COP)</label>
+            <div class="flex gap-3">
+              <input type="number" id="p_presupuesto_min" min="0" step="100000" placeholder="Desde" required>
+              <input type="number" id="p_presupuesto_max" min="0" step="100000" placeholder="Hasta" required>
+            </div>
+          </div>
+          <div class="field">
+            <label>Urgencia</label>
+            <div class="urgency-group" id="p_urgencia_group">
+              <div class="urgency-opt" data-level="baja"><span class="dot"></span>Baja</div>
+              <div class="urgency-opt" data-level="media"><span class="dot"></span>Media</div>
+              <div class="urgency-opt" data-level="alta"><span class="dot"></span>Alta</div>
+            </div>
+            <input type="hidden" id="p_urgencia_valor" required>
+          </div>
+        </div>
+
+        <div data-pstep="4" class="step-panel space-y-5" hidden>
+          <div class="field">
+            <label>Adjuntos <span class="font-normal" style="color:var(--muted)">(opcional — PDF, planos, fotos, video)</span></label>
+            <label for="p_adjuntos" class="file-drop block">
+              📎 Haz clic para adjuntar archivos
+              <input type="file" id="p_adjuntos" multiple accept=".pdf,.jpg,.jpeg,.png,.mp4,.mov,.dwg" class="hidden">
+            </label>
+            <div id="p_adjuntos_list" class="flex flex-wrap gap-2 mt-3"></div>
+            <p class="hint">Al oferente le mostramos solo una miniatura como adelanto — el archivo completo se revela cuando desbloquea tu necesidad.</p>
+          </div>
+        </div>
+
+        <div data-pstep="5" class="step-panel space-y-5" hidden>
+          <p class="text-center text-[13.5px] mb-2" style="color:var(--muted)">Así la verá una empresa antes de decidir si la desbloquea:</p>
+          <div class="preview-card">
+            <p class="p-eyebrow">Necesidad detectada</p>
+            <div class="p-row-top">
+              <h5 id="pv_titulo">—</h5>
+              <span class="p-tag" id="pv_urgencia">—</span>
+            </div>
+            <div class="p-meta"><span id="pv_ubicacion">—</span><span class="p-price" id="pv_presupuesto">—</span></div>
+            <hr>
+            <div class="p-desc space-y-3">
+              <div><b>Necesita</b><span id="pv_necesita">—</span></div>
+              <div><b>Problema a resolver</b><span id="pv_problema">—</span></div>
+              <div><b>Resultado esperado</b><span id="pv_resultado">—</span></div>
+            </div>
+            <p class="p-files" id="pv_archivos"></p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-9">
+          <button type="button" id="pBtnBack" class="btn-secondary font-semibold text-[14.5px] px-6 py-3 rounded-xl" style="background:var(--paper-raised)" hidden>Atrás</button>
+          <button type="button" id="pBtnNext" class="btn-primary flex-1 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl">Siguiente</button>
+          <button type="submit" id="pBtnSubmit" class="btn-primary flex-1 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl" hidden>Publicar necesidad</button>
+        </div>
+      </form>
+
+      <div id="publicarSuccess" class="text-center py-10" hidden>
+        <div class="text-4xl mb-3">🚀</div>
+        <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Tu necesidad fue publicada!</h3>
+        <p class="mt-2 text-[14.5px] max-w-[46ch] mx-auto" style="color:var(--muted)">En la plataforma real, las empresas de tu industria ya empezarían a verla en su feed. Promot IA todavía está en construcción — esta es una vista previa de cómo se sentirá.</p>
       </div>
 
     </div>
@@ -369,7 +536,7 @@
   </footer>
 
 <script>
-(function(){
+  // Compartida entre Módulo 2 (registro) y Módulo 3 (publicar necesidad) — mantener en sync con docs/TAXONOMIA-INGENIERIA-CONSTRUCCION.md
   var TAXONOMIA = [
     'Construcción y obra civil','Ingeniería civil y estructural','Arquitectura y diseño',
     'Ingeniería eléctrica','Ingeniería mecánica e industrial','Ingeniería hidráulica y sanitaria',
@@ -377,7 +544,10 @@
     'Sostenibilidad y certificaciones','Equipos, maquinaria y logística','Seguridad industrial y SST',
     'Servicios especializados de cierre de obra','Otro'
   ];
+</script>
 
+<script>
+(function(){
   var selectProyecto = document.getElementById('d_proyecto');
   TAXONOMIA.forEach(function(cat){
     var opt = document.createElement('option');
@@ -496,11 +666,16 @@
   });
   btnBack.addEventListener('click', function(){ step--; render(); });
 
+  var btnIrPublicar = document.getElementById('btnIrPublicar');
   form.addEventListener('submit', function(e){
     e.preventDefault();
     if(!validateStep()) return;
     form.hidden = true;
     successState.hidden = false;
+    btnIrPublicar.hidden = role !== 'demandante';
+  });
+  btnIrPublicar.addEventListener('click', function(){
+    document.getElementById('publicar').scrollIntoView({behavior:'smooth'});
   });
 
   document.getElementById('ctaDemandante').addEventListener('click', function(){
@@ -510,6 +685,117 @@
   document.getElementById('ctaOferente').addEventListener('click', function(){
     selectRole('oferente');
     document.getElementById('registro').scrollIntoView({behavior:'smooth'});
+  });
+
+  render();
+})();
+</script>
+
+<script>
+(function(){
+  var selectIndustria = document.getElementById('p_industria');
+  TAXONOMIA.forEach(function(cat){
+    var opt = document.createElement('option');
+    opt.textContent = cat;
+    selectIndustria.appendChild(opt);
+  });
+
+  // urgencia: single-select entre 3 opciones
+  var urgenciaGroup = document.getElementById('p_urgencia_group');
+  var urgenciaValor = document.getElementById('p_urgencia_valor');
+  urgenciaGroup.querySelectorAll('.urgency-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      urgenciaGroup.querySelectorAll('.urgency-opt').forEach(function(o){ o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      urgenciaValor.value = opt.getAttribute('data-level');
+    });
+  });
+
+  // adjuntos: solo lista los nombres (sin backend para subirlos todavía)
+  var adjuntosInput = document.getElementById('p_adjuntos');
+  var adjuntosList = document.getElementById('p_adjuntos_list');
+  var archivos = [];
+  adjuntosInput.addEventListener('change', function(){
+    Array.prototype.forEach.call(adjuntosInput.files, function(f){ archivos.push(f.name); });
+    adjuntosInput.value = '';
+    renderArchivos();
+  });
+  function renderArchivos(){
+    adjuntosList.innerHTML = '';
+    archivos.forEach(function(name, i){
+      var chip = document.createElement('span');
+      chip.className = 'file-chip';
+      var label = document.createElement('span');
+      label.textContent = name;
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.textContent = '×';
+      rm.addEventListener('click', function(){ archivos.splice(i,1); renderArchivos(); });
+      chip.appendChild(label); chip.appendChild(rm);
+      adjuntosList.appendChild(chip);
+    });
+  }
+
+  var TOTAL = 5;
+  var pstep = 1;
+  var progressFill = document.getElementById('pProgressFill');
+  var stepLabel = document.getElementById('pStepLabel');
+  var btnBack = document.getElementById('pBtnBack');
+  var btnNext = document.getElementById('pBtnNext');
+  var btnSubmit = document.getElementById('pBtnSubmit');
+  var form = document.getElementById('publicarForm');
+  var successState = document.getElementById('publicarSuccess');
+  var panels = document.querySelectorAll('#publicarForm [data-pstep]');
+
+  function fmtMoney(v){
+    if(!v) return '$0';
+    return '$' + Number(v).toLocaleString('es-CO');
+  }
+
+  function renderPreview(){
+    document.getElementById('pv_titulo').textContent = document.getElementById('p_titulo').value || '—';
+    document.getElementById('pv_ubicacion').textContent =
+      (document.getElementById('p_ciudad').value || '—') + ' · ' + (document.getElementById('p_industria').value || '—');
+    document.getElementById('pv_presupuesto').textContent =
+      fmtMoney(document.getElementById('p_presupuesto_min').value) + ' – ' + fmtMoney(document.getElementById('p_presupuesto_max').value);
+    var nivel = urgenciaValor.value;
+    document.getElementById('pv_urgencia').textContent = nivel ? nivel.charAt(0).toUpperCase()+nivel.slice(1)+' prioridad' : '—';
+    document.getElementById('pv_necesita').textContent = document.getElementById('p_necesita').value || '—';
+    document.getElementById('pv_problema').textContent = document.getElementById('p_problema').value || '—';
+    document.getElementById('pv_resultado').textContent = document.getElementById('p_resultado').value || '—';
+    document.getElementById('pv_archivos').textContent = archivos.length ? ('📎 ' + archivos.length + ' archivo(s) adjunto(s)') : '';
+  }
+
+  function render(){
+    panels.forEach(function(p){ p.hidden = Number(p.getAttribute('data-pstep')) !== pstep; });
+    progressFill.style.width = Math.round((pstep/TOTAL)*100) + '%';
+    stepLabel.textContent = 'Paso ' + pstep + ' de ' + TOTAL;
+    btnBack.hidden = pstep === 1;
+    btnNext.hidden = pstep === TOTAL;
+    btnSubmit.hidden = pstep !== TOTAL;
+    if(pstep === TOTAL) renderPreview();
+  }
+
+  function validateStep(){
+    var panel = document.querySelector('#publicarForm [data-pstep="'+pstep+'"]');
+    var fields = panel.querySelectorAll('input[required], select[required], textarea[required]');
+    for(var i=0; i<fields.length; i++){
+      if(!fields[i].checkValidity()){ fields[i].reportValidity(); return false; }
+    }
+    if(pstep === 3 && !urgenciaValor.value){ alert('Selecciona un nivel de urgencia.'); return false; }
+    return true;
+  }
+
+  btnNext.addEventListener('click', function(){
+    if(!validateStep()) return;
+    pstep++; render();
+  });
+  btnBack.addEventListener('click', function(){ pstep--; render(); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!validateStep()) return;
+    form.hidden = true;
+    successState.hidden = false;
   });
 
   render();
