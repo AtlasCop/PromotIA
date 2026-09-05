@@ -291,6 +291,7 @@
     <a href="#id">La Intención de Demanda</a>
     <a href="#iac">Índice de Afinidad (IAC)</a>
     <a href="#io">Índice de Oportunidad (IO)</a>
+    <a href="#observatorio">Observatorio de la Demanda</a>
     <a href="#desbloqueo">Créditos y desbloqueo</a>
     <a href="#chat">Chat interno</a>
     <a href="#datos">Modelo de datos</a>
@@ -321,7 +322,7 @@
     </section>
 
     <section id="ecosistemas">
-      <h2><span class="num">02</span> Dos ecosistemas: Demandante y Oferente</h2>
+      <h2><span class="num">02</span> Dos ecosistemas — y un tercer actor</h2>
       <p class="section-intro">No es un marketplace simétrico: el demandante nunca paga por publicar; el oferente paga por acceder.</p>
       <div class="actor-cols">
         <div class="actor-card demand">
@@ -345,6 +346,7 @@
           </ul>
         </div>
       </div>
+      <div class="callout" style="margin-top:20px"><strong>Un tercer actor no participa en el marketplace:</strong> quien solo quiere entender el mercado, sin publicar ni desbloquear nada, consume <strong>inteligencia de mercado</strong> a través del Observatorio de la Demanda (sección 7).</div>
     </section>
 
     <section id="flujo">
@@ -517,8 +519,29 @@
       <p class="flow-caption" style="margin-top:16px">"Probabilidad de contratación" arranca como heurística (calidad de información + presupuesto disponible + cuenta verificada) y se vuelve un modelo predictivo real una vez el MID (Capa 4) tenga suficientes casos de "cerrado" vs. "perdido". Un nivel de competencia alto no debe ocultar una necesidad — puede significar que el mercado ya la validó.</p>
     </section>
 
+    <section id="observatorio">
+      <h2><span class="num">07</span> El Observatorio de la Demanda</h2>
+      <p class="section-intro">El producto concreto del tercer actor: un panel ejecutivo con indicadores en tiempo real sobre cómo se mueve el mercado — para quien quiere entender el mercado sin publicar ni desbloquear nada.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Indicador</th><th>Qué muestra</th><th>Fuente (MID)</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Oportunidades hoy</td><td>Necesidades creadas en el día</td><td class="why">Conteo directo</td></tr>
+            <tr><td class="layer">Sectores en crecimiento</td><td>Industrias con mayor variación positiva</td><td class="why">Capa 4 — tendencias_mercado</td></tr>
+            <tr><td class="layer">Regiones con más actividad</td><td>Ciudades con más necesidades</td><td class="why">Capa 3 — vista por ciudad</td></tr>
+            <tr><td class="layer">Tiempo al primer contacto</td><td>Publicación → primer desbloqueo/mensaje</td><td class="why">vista_tiempo_primer_contacto</td></tr>
+            <tr><td class="layer">% de necesidades atendidas</td><td>Con al menos un desbloqueo, sobre el total</td><td class="why">vista_tasa_atencion</td></tr>
+            <tr><td class="layer">Servicios más solicitados</td><td>Industrias con más necesidades</td><td class="why">Capa 3 — vista por industria</td></tr>
+            <tr><td class="layer">Valor de mercado generado</td><td>Suma del presupuesto estimado del periodo</td><td class="why">vista_valor_mercado_generado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout" style="margin-top:24px"><strong>Privacidad:</strong> todo agregado, nunca una necesidad o empresa individual — un cruce con pocas muestras (ej. ciudad + industria muy específica) simplemente no se muestra.</div>
+      <p class="flow-caption" style="margin-top:16px">Es la forma concreta del motor secundario de negocio (sección 13): versión gratuita limitada como vitrina de marca, acceso completo — histórico, filtros, exportación — vendido a gremios, constructoras grandes o entidades públicas. <strong>A confirmar:</strong> ¿gratuito desde el día 1, o de pago desde el principio?</p>
+    </section>
+
     <section id="desbloqueo">
-      <h2><span class="num">07</span> Mecanismo de desbloqueo, créditos y planes</h2>
+      <h2><span class="num">08</span> Mecanismo de desbloqueo, créditos y planes</h2>
       <p class="section-intro">El mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude.</p>
       <div class="sec-list" style="margin-bottom:32px">
         <div class="sec-item"><span class="chip">01</span><div><h4>Verificación en servidor</h4><p>Se confirma que el oferente tiene ≥1 crédito disponible o plan ilimitado — nunca se confía en el cliente.</p></div></div>
@@ -538,7 +561,7 @@
     </section>
 
     <section id="chat">
-      <h2><span class="num">08</span> Chat interno</h2>
+      <h2><span class="num">09</span> Chat interno</h2>
       <p class="section-intro">Mensajería propia de la plataforma, no un enlace externo — toda la relación comercial ocurre dentro de Promot IA para poder medirla.</p>
       <div class="actor-cols">
         <div class="actor-card neutral">
@@ -564,7 +587,7 @@
     </section>
 
     <section id="datos">
-      <h2><span class="num">09</span> Modelo de datos — alto nivel</h2>
+      <h2><span class="num">10</span> Modelo de datos — alto nivel</h2>
       <p class="section-intro">Entidades principales; el detalle de columnas se define al iniciar la fase 1.</p>
       <div class="entity-grid">
         <div class="entity"><span class="name mono">usuarios_demandante</span><span class="desc">Cuenta, rol, contacto.</span></div>
@@ -585,7 +608,7 @@
     </section>
 
     <section id="arquitectura">
-      <h2><span class="num">10</span> Arquitectura técnica recomendada</h2>
+      <h2><span class="num">11</span> Arquitectura técnica recomendada</h2>
       <p class="section-intro">Continuidad con el stack que ya conoces (Tablero Piscinas usa Supabase con roles y RLS) para avanzar rápido con buenas prácticas ya validadas.</p>
       <div class="table-wrap">
         <table>
@@ -605,7 +628,7 @@
     </section>
 
     <section id="seguridad">
-      <h2><span class="num">11</span> Seguridad e integridad — desde el día 1</h2>
+      <h2><span class="num">12</span> Seguridad e integridad — desde el día 1</h2>
       <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
       <div class="sec-list">
         <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer el contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado.</p></div></div>
@@ -626,26 +649,26 @@
     </section>
 
     <section id="negocio">
-      <h2><span class="num">12</span> Modelo de negocio</h2>
+      <h2><span class="num">13</span> Modelo de negocio</h2>
       <div class="biz-grid">
         <div class="biz-card"><span class="tag">Motor principal · MVP</span><h4>Venta de créditos por plan</h4><p>El oferente paga por acceder a IDs calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial.</p></div>
-        <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Inteligencia de mercado</h4><p>Reportes de tendencias de demanda agregadas y anonimizadas, vendidos a gremios, constructoras o entidades públicas.</p></div>
+        <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Observatorio de la Demanda</h4><p>Panel de inteligencia de mercado agregada y anonimizada — gratuito limitado como vitrina, completo vendido a gremios, constructoras o entidades públicas.</p></div>
         <div class="biz-card"><span class="tag">A validar</span><h4>Comisión por cierre</h4><p>Un porcentaje adicional sobre negocios cerrados — no se recomienda para el MVP hasta tener datos reales de conversión.</p></div>
       </div>
     </section>
 
     <section id="roadmap">
-      <h2><span class="num">13</span> Roadmap por fases</h2>
+      <h2><span class="num">14</span> Roadmap por fases</h2>
       <div class="roadmap">
         <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para demandantes y oferentes.</p></div>
         <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed con IAC e IO simples, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
         <div class="phase"><span class="phase-name">Fase 2</span><h4>IAC + IO completos</h4><p>Los 8 factores del IAC, alertas prioritarias, IO con "probabilidad de contratación" modelada con datos reales, clasificación con IA.</p></div>
-        <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; más verticales y fuentes públicas (SECOP).</p></div>
+        <div class="phase"><span class="phase-name">Fase 3</span><h4>Observatorio de la Demanda</h4><p>Panel de indicadores en tiempo real; más verticales y fuentes públicas (SECOP).</p></div>
       </div>
     </section>
 
     <section id="estructura">
-      <h2><span class="num">14</span> Estructura del proyecto</h2>
+      <h2><span class="num">15</span> Estructura del proyecto</h2>
       <pre class="tree"><span class="mono">PromotIA/
 ├── docs/              <span style="color:var(--muted)">← este plan, política de datos y futura documentación</span>
 ├── assets/            <span style="color:var(--muted)">← logo, imágenes de marca</span>
@@ -654,7 +677,7 @@
     </section>
 
     <section id="siguientes">
-      <h2><span class="num">15</span> Próximos pasos inmediatos</h2>
+      <h2><span class="num">16</span> Próximos pasos inmediatos</h2>
       <div class="steps">
         <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos actualizado</strong> (<code>docs/POLITICA-DATOS.md</code>) — ya refleja a Atlas Corporation S.A.S. como responsable; pendiente de revisión legal antes de publicarse.</p></div>
         <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de Ingeniería + Construcción — condiciona el formulario de ID y el feed.</p></div>

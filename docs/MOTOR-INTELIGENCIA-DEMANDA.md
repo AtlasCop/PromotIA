@@ -1,6 +1,6 @@
 # Motor de Inteligencia de Demanda (MID) — Estructura de Base de Datos
 
-> El MID no es solo el almacenamiento de la plataforma: es el sistema que aprende continuamente del comportamiento del mercado a partir de lo que ya se captura en cada publicación, cada perfil y cada interacción. Este documento define su estructura de datos en 4 capas, y complementa el modelo de datos de alto nivel de `docs/ARQUITECTURA.md` (sección 9) con el detalle completo de columnas.
+> El MID no es solo el almacenamiento de la plataforma: es el sistema que aprende continuamente del comportamiento del mercado a partir de lo que ya se captura en cada publicación, cada perfil y cada interacción. Este documento define su estructura de datos en 4 capas, y complementa el modelo de datos de alto nivel de `docs/ARQUITECTURA.md` (sección 11) con el detalle completo de columnas.
 
 ## Las 4 capas, de un vistazo
 
@@ -97,8 +97,11 @@ Se implementa como **vistas** (consultas que resumen datos en tiempo real o casi
 | `vista_presupuestos_predominantes` | ¿Qué presupuestos predominan? | Distribución de rangos de presupuesto por industria/ciudad |
 | `vista_cobertura_oferta` | ¿En qué ciudades hacen falta más proveedores? | Necesidades publicadas vs. oferentes activos, por ciudad + industria |
 | `vista_necesidades_sin_respuesta` | ¿Qué necesidades permanecen sin respuesta? | Necesidades publicadas hace más de X días sin ningún desbloqueo |
+| `vista_tiempo_primer_contacto` | ¿Cuánto tarda una necesidad en recibir su primer desbloqueo/mensaje? | Promedio de (fecha del primer desbloqueo − `creado_en`) por industria/ciudad/periodo |
+| `vista_tasa_atencion` | ¿Qué porcentaje de necesidades reciben al menos un desbloqueo? | Necesidades con ≥1 desbloqueo ÷ total publicado, por periodo |
+| `vista_valor_mercado_generado` | ¿Cuál es el valor estimado del mercado que pasa por la plataforma? | Suma del punto medio de presupuesto de las necesidades del periodo |
 
-Cada vista aplica el umbral mínimo de agregación **antes** de devolver el dato — si un cruce tiene menos muestras que el umbral, la vista no lo muestra (en vez de mostrar un número que podría identificar a alguien).
+Cada vista aplica el umbral mínimo de agregación **antes** de devolver el dato — si un cruce tiene menos muestras que el umbral, la vista no lo muestra (en vez de mostrar un número que podría identificar a alguien). Las últimas tres vistas son el insumo directo del **Observatorio de la Demanda** (`docs/ARQUITECTURA.md`, sección 8).
 
 ---
 
@@ -124,7 +127,7 @@ Con suficiente historial acumulado en la Capa 3, el sistema puede comparar un pe
 
 Se calcula con un **job periódico** (ej. mensual) que compara las vistas de la Capa 3 entre periodos consecutivos y genera un registro cuando la variación supera un umbral configurable — no se genera un insight por cada variación mínima, solo cuando es lo suficientemente significativa para ser útil.
 
-Con historial suficiente, esta tabla es el producto directo del "motor secundario de negocio: inteligencia de mercado" ya descrito en `docs/ARQUITECTURA.md` (sección 13) — vendible como reportes a gremios, constructoras grandes o entidades públicas.
+Con historial suficiente, esta tabla es el producto directo del "motor secundario de negocio: inteligencia de mercado" ya descrito en `docs/ARQUITECTURA.md` (sección 14) — vendible como reportes a gremios, constructoras grandes o entidades públicas, a través del Observatorio de la Demanda (sección 8).
 
 **Conexión con el Índice de Oportunidad (IO):** el factor más difícil del IO (`docs/ARQUITECTURA.md`, sección 7) es "probabilidad de contratación" — arranca como heurística, pero es exactamente el tipo de predicción que esta capa habilita una vez haya suficientes casos históricos de necesidades "cerradas" vs. "perdidas" para comparar. El mismo dato que alimenta `tendencias_mercado` (agregado) también puede entrenar ese factor (a nivel de ID individual) — son dos consumos distintos del mismo historial.
 
@@ -134,9 +137,9 @@ Con historial suficiente, esta tabla es el producto directo del "motor secundari
 
 - **Capa 1** alimenta el feed/matching (sección 4 de ARQUITECTURA.md) y es la fuente cruda de la que parten las capas 3 y 4.
 - **Capa 2** es el insumo directo del IAC (sección 6).
-- **Capas 3 y 4** son la base técnica del motor de negocio de inteligencia de mercado (sección 12) y del roadmap de Fase 3 (sección 13).
+- **Capas 3 y 4** son la base técnica del Observatorio de la Demanda (sección 8), del motor de negocio de inteligencia de mercado (sección 14) y del roadmap de Fase 3 (sección 15).
 
-## Seguridad y privacidad de esta capa (además de lo ya definido en ARQUITECTURA.md §11)
+## Seguridad y privacidad de esta capa (además de lo ya definido en ARQUITECTURA.md §13)
 
 1. **Las capas 3 y 4 solo trabajan con agregados** — ninguna vista ni tabla de esta capa incluye un identificador de demandante u oferente individual.
 2. **Umbral mínimo de agregación** (una forma simple de k-anonimato): un cruce con menos muestras que el umbral no se muestra, se oculta o se agrupa con una categoría más amplia.

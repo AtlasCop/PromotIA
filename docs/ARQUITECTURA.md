@@ -24,9 +24,9 @@ Tres capas de valor:
 
 1. **Marketplace de intenciones de demanda** (el producto del MVP): el demandante publica lo que necesita; el oferente paga por acceder a esa oportunidad.
 2. **Clasificación** (el motor invisible): estructurar necesidades no estructuradas en industria, ubicación, presupuesto y urgencia.
-3. **Inteligencia de mercado** (producto de fase posterior): reportes agregados y anonimizados de tendencias de demanda — el segundo motor de ingresos, independiente del cobro por desbloqueo.
+3. **Inteligencia de mercado** (producto de fase posterior): reportes agregados y anonimizados de tendencias de demanda — el segundo motor de ingresos, independiente del cobro por desbloqueo. Su producto concreto es el **Observatorio de la Demanda** (sección 8).
 
-## 3. Dos ecosistemas: Demandante y Oferente
+## 3. Dos ecosistemas — y un tercer actor
 
 La plataforma tiene dos lados con flujos y economía completamente distintos. No es un marketplace simétrico — el demandante nunca paga por publicar; el oferente paga por acceder.
 
@@ -43,6 +43,10 @@ El demandante **no paga** por publicar ni por recibir interés — el ingreso vi
 Empresas/profesionales registrados que pagan por acceder a intenciones de demanda de su industria.
 
 **Flujo:** crear cuenta → suscribirse a un plan de créditos → explorar el feed de IDs disponibles en su industria/ciudad (solo ve la versión pública, sin datos de contacto) → decide desbloquear una ID específica (consume 1 crédito) → obtiene datos de contacto + adjuntos + chat interno habilitado con ese demandante → gestiona la relación comercial dentro de la plataforma.
+
+### El tercer actor: el conocimiento del mercado
+
+Demandante y oferente no son los únicos que le sacan valor a la plataforma. Cada necesidad publicada y cada interacción dejan un rastro agregado que, por sí solo, es valioso para quien quiera entender cómo se mueve el mercado — sin necesidad de publicar una necesidad ni de pagar por desbloquear ninguna. Ese tercer actor no participa en el marketplace; consume **inteligencia de mercado**. Su producto concreto es el **Observatorio de la Demanda** (sección 8).
 
 ## 4. Flujo central del producto
 
@@ -61,8 +65,8 @@ flowchart LR
 1. **Publicación**: el demandante llena el formulario de Intención de Demanda (ID) — ver estructura completa en la sección 5.
 2. **Clasificación**: la ID queda etiquetada por industria/subcategoría (taxonomía controlada, no texto libre), ciudad, país, rango de presupuesto y nivel de urgencia.
 3. **Feed filtrado**: cada oferente ve, según su industria y cobertura, un feed de IDs en su versión **pública** (teaser) — título, industria, ciudad, rango de presupuesto, urgencia, descripción y una miniatura de cada adjunto como gancho, pero **sin** datos de contacto ni los archivos originales. El orden del feed y las alertas prioritarias los define el **Índice de Afinidad Comercial (IAC)** — ver sección 6.
-4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan y es el paso crítico de todo el negocio — el detalle técnico está en la sección 8.
-5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 9).
+4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan y es el paso crítico de todo el negocio — el detalle técnico está en la sección 9.
+5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 10).
 6. **Cierre y feedback**: se registra si hubo negocio cerrado, con qué oferente y por qué valor estimado — esto alimenta tanto la calificación del oferente como la inteligencia de mercado agregada.
 
 **Nota importante:** a diferencia de un modelo de "matching algorítmico" que empuja la necesidad a proveedores elegidos por el sistema, el MVP es un modelo de **marketplace auto-servicio**: el sistema filtra el feed por industria/ciudad, pero es el oferente quien decide qué oportunidades desbloquear. El matching automático/con IA (sugerir a qué oferentes notificar proactivamente) queda para una fase posterior (ver roadmap).
@@ -104,7 +108,7 @@ Una función **exclusiva** de Promot IA: un puntaje calculado automáticamente q
 | Capacidad operativa | Tamaño de la empresa frente a la escala de la ID | `usuarios_oferente.empleados` vs `necesidades.presupuesto` |
 | Historial en la plataforma | Antigüedad y actividad reciente | fecha de registro, frecuencia de uso |
 | Valor de proyectos realizados | Valor acumulado de negocios cerrados vía la plataforma | `desbloqueos` cerrados × presupuesto real |
-| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 9) |
+| Tiempo de respuesta | Qué tan rápido responde en el chat interno | `mensajes` (sección 10) |
 | Evaluaciones | Calificación de clientes anteriores | `calificaciones` |
 
 Ningún factor requiere capturar información nueva — el IAC combina datos que el resto de este documento ya define que se recolectan.
@@ -147,7 +151,37 @@ Otra función exclusiva, complementaria al IAC pero midiendo algo distinto: **el
 
 **Integridad:** un nivel de competencia alto no debe usarse para ocultar una necesidad legítima — puede significar que el mercado ya validó que vale la pena. El IO es un apoyo para priorizar, no un filtro: el oferente sigue viendo todo su feed; el IO solo ayuda a decidir por dónde empezar.
 
-## 8. Mecanismo de desbloqueo, créditos y planes
+## 8. El Observatorio de la Demanda
+
+El producto concreto del tercer actor (sección 3): un panel ejecutivo con indicadores en tiempo real sobre cómo se mueve el mercado — pensado para quien quiere entender el mercado, no necesariamente participar en él como demandante u oferente. Así, la plataforma no se limita a conectar dos lados: también genera y vende **conocimiento del mercado** como producto propio.
+
+### Indicadores del panel
+
+| Indicador | Qué muestra | De dónde sale (MID, `docs/MOTOR-INTELIGENCIA-DEMANDA.md`) |
+|---|---|---|
+| Oportunidades publicadas hoy | Conteo de necesidades creadas en el día | Conteo directo sobre `necesidades` |
+| Sectores con mayor crecimiento | Industrias con mayor variación positiva vs. el periodo anterior | `tendencias_mercado` (Capa 4) |
+| Regiones con mayor actividad | Ciudades con más necesidades publicadas | `vista_demanda_industria_ciudad` (Capa 3) |
+| Tiempo promedio hasta el primer contacto | Promedio entre publicación y el primer desbloqueo/mensaje | Nueva vista `vista_tiempo_primer_contacto` |
+| % de necesidades atendidas | Necesidades con al menos un desbloqueo, sobre el total publicado en el periodo | Nueva vista `vista_tasa_atencion` |
+| Servicios más solicitados | Industrias/subindustrias con más necesidades publicadas | `vista_demanda_industria_ciudad` |
+| Valor estimado del mercado generado | Suma del punto medio de presupuesto de las necesidades del periodo | Nueva vista `vista_valor_mercado_generado` |
+
+> **Definición a confirmar:** "valor del mercado generado" puede leerse como el valor de *todas* las oportunidades publicadas (tamaño de la demanda visible) o solo el de los negocios efectivamente *cerrados* (valor realmente capturado). Este documento asume la primera lectura (más amplia, mejor indicador de tamaño de mercado) — vale la pena confirmar cuál quieres destacar como titular del panel; ambas pueden convivir como dos indicadores distintos.
+
+### Privacidad (hereda las reglas de la Capa 3 del MID)
+
+Todos estos indicadores son agregados — ninguno expone una necesidad ni una empresa individual. Si un filtro del panel (ej. "ver por ciudad X + industria Y") produce un cruce con menos muestras que el umbral mínimo de agregación (Capa 3 de `docs/MOTOR-INTELIGENCIA-DEMANDA.md`), ese dato específico no se muestra en vez de mostrarse con poca gente detrás.
+
+### "Tiempo real", en la práctica
+
+No todos los indicadores tienen la misma cadencia: los conteos simples (oportunidades publicadas hoy) se calculan al vuelo; las comparaciones de tendencia (crecimiento por sector, valor de mercado por periodo) dependen del job periódico de la Capa 4 (propuesto mensual en el MID) — con suficiente tráfico real, vale la pena revisar si alguno necesita una cadencia más corta (diaria).
+
+### Modelo de acceso
+
+Es la forma concreta del "motor secundario de negocio" ya descrito (sección 14): una versión gratuita limitada (algunos indicadores, alto nivel) funciona como vitrina de marca; el acceso completo — histórico, filtros por ciudad/industria, exportación — se vende a gremios, constructoras grandes o entidades públicas. A confirmar contigo antes de construirlo: ¿el Observatorio nace gratuito para todos desde el día 1 (juega a favor de la marca y de atraer más demandantes/oferentes) o de pago desde el principio?
+
+## 9. Mecanismo de desbloqueo, créditos y planes
 
 Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude/errores.
 
@@ -174,7 +208,7 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 
 Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
 
-## 9. Chat interno
+## 10. Chat interno
 
 Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — el objetivo explícito es que **toda la relación comercial ocurra dentro de Promot IA** para poder medirla:
 
@@ -189,7 +223,7 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **Calidad del oferente**: score compuesto de tiempo de respuesta + tasa de conversión + calificación post-cierre — esto es lo que a futuro puede usarse para dar visibilidad preferente a los mejores oferentes en el feed.
 - **Valor estimado del negocio**: cruce entre el presupuesto de la ID y si hubo cierre — esta es una de las métricas que alimenta directamente el producto de inteligencia de mercado.
 
-## 10. Modelo de datos (alto nivel)
+## 11. Modelo de datos (alto nivel)
 
 - **usuarios_demandante** — cuenta, rol, datos de contacto
 - **usuarios_oferente** — cuenta, industria(s) que atiende, cobertura geográfica, plan activo
@@ -208,7 +242,7 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **iac_scores** — necesidad ↔ oferente, puntaje calculado, desglose por factor, fecha de cálculo, si se envió alerta prioritaria (sección 6)
 - **io_scores** — necesidad, puntaje, desglose por factor, fecha de cálculo — un puntaje por ID (no por par, a diferencia del IAC), recalculado cuando cambian sus insumos (sección 7)
 
-## 11. Arquitectura técnica recomendada
+## 12. Arquitectura técnica recomendada
 
 Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa Supabase con roles y RLS):
 
@@ -223,10 +257,10 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 | Hosting | Vercel (frontend) + Supabase (datos) | Mismo patrón ya usado en otros proyectos |
 | Notificaciones | Email transaccional + notificaciones in-app | Avisar al demandante de nuevo interés, al oferente de nuevos mensajes y alertas prioritarias del IAC |
 
-## 12. Seguridad e integridad — principios desde el día 1
+## 13. Seguridad e integridad — principios desde el día 1
 
 1. **Row Level Security (RLS)**: un oferente no puede leer los datos de contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado, aplicado a nivel de base de datos — no solo ocultando el botón en el frontend.
-2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 8): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
+2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 9): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
 3. **Autenticación real y roles claros**: demandante, oferente y admin son roles distintos con permisos distintos, verificados en cada operación sensible.
 4. **Cifrado en tránsito y en reposo**: HTTPS en todo; adjuntos y datos de contacto cifrados en la base de datos donde aplique.
 5. **Protección de datos personales (Habeas Data, Ley 1581 de 2012)**: se necesita una política de tratamiento de datos propia de Promot IA (no reutilizar la de Atlas Corporation) — el mecanismo central del producto (revelar datos de contacto de un tercero a cambio de un pago que hace otra empresa) debe quedar explícitamente autorizado por el demandante desde el momento de publicar su ID. Ver borrador en `docs/POLITICA-DATOS.md`.
@@ -240,7 +274,7 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 13. **Integridad del IAC**: los factores que el propio oferente declara (experiencia, empleados, certificaciones) no deben pesar en el cálculo hasta cruzarse con el estado de verificación — evita que una empresa infle su puntaje con datos no verificados.
 14. **Integridad del IO**: el "nivel de competencia" no debe usarse para ocultar necesidades legítimas del feed — el IO prioriza, no filtra; y "probabilidad de contratación" no debe presentarse como una predicción fuerte mientras siga siendo una heurística sin historial real que la respalde.
 
-## 13. Modelo de negocio
+## 14. Modelo de negocio
 
 **Motor principal (MVP): venta de créditos por plan.** El oferente paga por acceder a intenciones de demanda calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial. Bronce (1 crédito / $19), Plata (10 créditos / $99), Oro (ilimitado / $299).
 
@@ -248,14 +282,14 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 
 **A validar más adelante:** comisión adicional sobre negocios cerrados (encima del cobro por desbloqueo) — no es necesaria para el MVP y puede introducir fricción si se combina mal con el modelo de créditos; se recomienda no mezclarla hasta tener datos reales de conversión.
 
-## 14. Roadmap por fases
+## 15. Roadmap por fases
 
 - **Fase 0 — Validación (ahora)**: landing page de presentación + captura de lista de espera (demandantes y oferentes interesados) para validar interés real.
 - **Fase 1 — MVP marketplace completo**: registro demandante/oferente, formulario de ID con adjuntos, feed filtrado por industria/ciudad (arrancando en Ingeniería + Construcción, con versiones simples del IAC y del IO), mecanismo de desbloqueo con créditos, planes Bronce/Plata/Oro vía Stripe, chat interno básico (mensajería + adjuntos + historial). Esto ya es un producto vendible, no un prototipo — el modelo de créditos no requiere intervención manual del equipo para funcionar.
 - **Fase 2 — Automatización e inteligencia**: **IAC completo** (los 8 factores, sección 6) con alertas prioritarias automáticas, **IO completo** (sección 7) con "probabilidad de contratación" ya modelada con datos reales de cierre, clasificación automática de industria/urgencia con IA, llamada programada integrada.
-- **Fase 3 — Inteligencia de mercado**: panel de reportes agregados como producto adicional; explorar más verticales y fuentes públicas (ej. procesos SECOP) para entidades públicas/constructoras.
+- **Fase 3 — Observatorio de la Demanda**: el panel de indicadores en tiempo real (sección 8) como producto adicional; explorar más verticales y fuentes públicas (ej. procesos SECOP) para entidades públicas/constructoras.
 
-## 15. Estructura del proyecto sugerida
+## 16. Estructura del proyecto sugerida
 
 ```
 PromotIA/
@@ -265,7 +299,7 @@ PromotIA/
 └── (fase 1+) app/             ← aplicación completa (marketplace, créditos, chat)
 ```
 
-## 16. Próximos pasos inmediatos
+## 17. Próximos pasos inmediatos
 
 1. **Revisar el borrador de política de datos actualizado** (`docs/POLITICA-DATOS.md`) — ya refleja a Atlas Corporation S.A.S. como responsable y el mecanismo de miniaturas públicas; sigue pendiente de revisión legal antes de publicarse.
 2. **Definir la taxonomía inicial de Ingeniería + Construcción** (subcategorías concretas) — condiciona el formulario de ID y el filtro del feed.
