@@ -153,6 +153,13 @@
   .teaser-card .meta .price{color:#3ecf7a; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:13.5px;}
   .teaser-card hr{border:none; border-top:1px solid #2a2e35; margin:16px 0;}
   .teaser-card .desc{font-size:13.5px; color:#b6bac2; line-height:1.6; font-family:'Source Sans 3',sans-serif;}
+  .teaser-card .thumbs{display:flex; align-items:center; gap:8px; margin-top:14px;}
+  .teaser-card .thumb{
+    width:40px; height:40px; border-radius:8px; flex:none;
+    background:linear-gradient(135deg,#2a3550,#1c2436); filter:blur(1.5px); opacity:.85;
+    border:1px solid #333a46;
+  }
+  .teaser-card .thumbs-label{font-size:11.5px; color:#8a909c; font-family:'Source Sans 3',sans-serif; margin-left:2px;}
   .teaser-card .foot{display:flex; justify-content:space-between; align-items:center; margin-top:18px; font-size:12px; color:#8a909c;}
   .teaser-card .unlock{
     background:#f4f5f7; color:#15181d; font-size:13px; font-weight:600; padding:10px 18px;
@@ -299,7 +306,7 @@
       <h1>Promot IA</h1>
       <p class="tagline">Conectamos proyectos con oportunidades.</p>
       <p class="lede">El cliente deja de buscar. La empresa deja de perseguir clientes <strong>a ciegas</strong>. Este documento define el modelo de producto, el flujo central, la arquitectura técnica y los principios de seguridad para construir la plataforma desde el primer commit.</p>
-      <p class="lede" style="margin-top:10px">Mercado inicial a explorar: <strong style="color:var(--blue)">Ingeniería + Construcción</strong>.</p>
+      <p class="lede" style="margin-top:10px">Mercado inicial a explorar: <strong style="color:var(--blue)">Ingeniería + Construcción</strong>. Marca de <strong style="color:var(--violet)">Atlas Corporation S.A.S.</strong>, empresa dueña de la idea.</p>
     </header>
 
     <section id="problema">
@@ -431,7 +438,7 @@
             <tr><td class="layer">Presupuesto estimado</td><td>Rango mín–máx</td><td class="why">Público</td></tr>
             <tr><td class="layer">Descripción detallada</td><td>Texto largo</td><td class="why">Público</td></tr>
             <tr><td class="layer">Urgencia</td><td>Baja / Media / Alta</td><td class="why">Público (etiqueta visible)</td></tr>
-            <tr><td class="layer">Adjuntos</td><td>PDF, planos, fotos, video</td><td class="why">Privado — solo tras desbloqueo</td></tr>
+            <tr><td class="layer">Adjuntos</td><td>PDF, planos, fotos, video</td><td class="why">Miniatura pública (gancho) · archivo completo tras desbloqueo</td></tr>
             <tr><td class="layer">Datos de contacto</td><td>Nombre, teléfono, correo</td><td class="why">Privado — solo tras desbloqueo</td></tr>
           </tbody>
         </table>
@@ -447,13 +454,17 @@
             <div class="meta"><span>📍 Medellín · Manufactura</span><span class="price">$50.000 – $125.000</span></div>
             <hr>
             <p class="desc">Empresa del sector alimentario busca automatizar proceso de empaque secundario. Requiere diagnóstico, diseño e implementación.</p>
+            <div class="thumbs">
+              <div class="thumb"></div><div class="thumb"></div><div class="thumb"></div>
+              <span class="thumbs-label">3 archivos adjuntos</span>
+            </div>
             <hr>
             <div class="foot"><span>Publicado hace 2 horas</span><span class="unlock">Desbloquear contacto →</span></div>
           </div>
         </div>
       </div>
-      <p class="mockup-caption">Así ve el oferente una ID en el feed, antes de pagar — el contacto y los adjuntos aparecen solo después del desbloqueo.</p>
-      <div class="callout"><strong>Punto abierto:</strong> ¿los adjuntos deberían ser 100% privados como se asume aquí, o mostrar una miniatura pública para incentivar más el desbloqueo? Vale la pena confirmarlo antes de construir el formulario.</div>
+      <p class="mockup-caption">Así ve el oferente una ID en el feed, antes de pagar — miniaturas borrosas de los adjuntos como gancho; el contacto y los archivos completos aparecen solo después del desbloqueo.</p>
+      <div class="callout"><strong>Confirmado:</strong> los adjuntos se muestran como miniatura/vista previa pública (gancho para el desbloqueo); el archivo completo queda protegido hasta el pago.</div>
     </section>
 
     <section id="desbloqueo">
@@ -473,7 +484,7 @@
         <div class="biz-card"><span class="tag">10 créditos</span><h4>Plata</h4><p style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">USD $99</p><p>Para oferentes con búsqueda activa recurrente.</p></div>
         <div class="biz-card"><span class="tag">Ilimitado</span><h4>Oro</h4><p style="font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px">USD $299</p><p>Acceso sin límite a todas las IDs de su industria.</p></div>
       </div>
-      <p class="flow-caption" style="margin-top:16px">Asumido como planes de suscripción mensual (créditos renovados cada ciclo) vía Stripe Billing — a confirmar contigo. Los pagos nunca se procesan a mano: el procesador confirma del lado servidor antes de asignar créditos.</p>
+      <p class="flow-caption" style="margin-top:16px"><strong style="color:var(--ink)">Confirmado:</strong> son suscripciones mensuales — los créditos se renuevan cada ciclo, vía Stripe Billing. Los pagos nunca se procesan a mano: el procesador confirma del lado servidor antes de asignar créditos.</p>
     </section>
 
     <section id="chat">
@@ -509,7 +520,7 @@
         <div class="entity"><span class="name mono">usuarios_demandante</span><span class="desc">Cuenta, rol, contacto.</span></div>
         <div class="entity"><span class="name mono">usuarios_oferente</span><span class="desc">Cuenta, industrias, cobertura, plan activo.</span></div>
         <div class="entity"><span class="name mono">necesidades (ID)</span><span class="desc">Título, industria, ciudad, presupuesto, urgencia, estado.</span></div>
-        <div class="entity"><span class="name mono">adjuntos</span><span class="desc">Archivo, tipo — visible solo post-desbloqueo.</span></div>
+        <div class="entity"><span class="name mono">adjuntos</span><span class="desc">Archivo original (privado) + miniatura pública.</span></div>
         <div class="entity"><span class="name mono">industrias</span><span class="desc">Taxonomía controlada (arranca en Ingeniería + Construcción).</span></div>
         <div class="entity"><span class="name mono">planes</span><span class="desc">Bronce / Plata / Oro: créditos, precio.</span></div>
         <div class="entity"><span class="name mono">suscripciones</span><span class="desc">Oferente, plan, créditos disponibles, ciclo.</span></div>
@@ -544,7 +555,7 @@
       <h2><span class="num">09</span> Seguridad e integridad — desde el día 1</h2>
       <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
       <div class="sec-list">
-        <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer contacto/adjuntos de una ID que no ha desbloqueado, aplicado a nivel de base de datos.</p></div></div>
+        <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer el contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado.</p></div></div>
         <div class="sec-item"><span class="chip">02</span><div><h4>Desbloqueo como transacción atómica</h4><p>Nunca confiar en el cliente para "tengo créditos" o "ya pagué"; un doble clic nunca consume dos créditos por un desbloqueo.</p></div></div>
         <div class="sec-item"><span class="chip">03</span><div><h4>Autenticación real y roles claros</h4><p>Demandante, oferente y admin son roles distintos, verificados en cada operación sensible.</p></div></div>
         <div class="sec-item"><span class="chip">04</span><div><h4>Cifrado en tránsito y en reposo</h4><p>HTTPS en todo; adjuntos y contacto cifrados en la base de datos donde aplique.</p></div></div>
@@ -590,14 +601,13 @@
     <section id="siguientes">
       <h2><span class="num">13</span> Próximos pasos inmediatos</h2>
       <div class="steps">
-        <div class="step"><span class="box"></span><p><strong>Confirmar los supuestos marcados en este plan</strong> — visibilidad de los adjuntos y si los planes son mensuales o créditos sin vencimiento.</p></div>
-        <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos</strong> (<code>docs/POLITICA-DATOS.md</code>) — cubre la revelación de contacto a cambio de pago, el punto legal más sensible.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos actualizado</strong> (<code>docs/POLITICA-DATOS.md</code>) — ya refleja a Atlas Corporation S.A.S. como responsable; pendiente de revisión legal antes de publicarse.</p></div>
         <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de Ingeniería + Construcción — condiciona el formulario de ID y el feed.</p></div>
         <div class="step"><span class="box"></span><p><strong>Construir la landing de Fase 0</strong> con el logo, la propuesta de valor y lista de espera para ambos lados.</p></div>
       </div>
     </section>
 
-    <footer>Documento vivo — se actualiza junto con el proyecto. Repositorio independiente del sitio de Atlas Corporation.</footer>
+    <footer>Documento vivo — se actualiza junto con el proyecto. Marca de Atlas Corporation S.A.S.; repositorio independiente del sitio web de Atlas Corporation.</footer>
   </main>
 </div>
 

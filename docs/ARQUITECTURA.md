@@ -6,6 +6,8 @@ Este documento define el modelo de producto, los actores, el flujo central y la 
 
 **Mercado inicial a explorar:** Ingeniería + Construcción (define la primera taxonomía de industrias/categorías a lanzar).
 
+**Estructura corporativa (confirmado):** Promot IA es una marca de **Atlas Corporation S.A.S.**, empresa dueña de la idea — no es una sociedad separada. Esto se refleja en la política de tratamiento de datos (`docs/POLITICA-DATOS.md`) y deberá reflejarse también en los términos y condiciones y el pie legal de la futura landing/app.
+
 ## 1. El problema
 
 Hoy, quien tiene una necesidad (una persona, una empresa, una entidad pública, una constructora, un comercio) no tiene un lugar único donde expresarla y ser encontrado por quien puede resolverla. El resultado:
@@ -58,9 +60,9 @@ flowchart LR
 
 1. **Publicación**: el demandante llena el formulario de Intención de Demanda (ID) — ver estructura completa en la sección 5.
 2. **Clasificación**: la ID queda etiquetada por industria/subcategoría (taxonomía controlada, no texto libre), ciudad, país, rango de presupuesto y nivel de urgencia.
-3. **Feed filtrado**: cada oferente ve, según su industria y cobertura, un feed de IDs en su versión **pública** (teaser) — título, industria, ciudad, rango de presupuesto, urgencia y descripción, pero **sin** datos de contacto ni adjuntos.
+3. **Feed filtrado**: cada oferente ve, según su industria y cobertura, un feed de IDs en su versión **pública** (teaser) — título, industria, ciudad, rango de presupuesto, urgencia, descripción y una miniatura de cada adjunto como gancho, pero **sin** datos de contacto ni los archivos originales.
 4. **Desbloqueo**: el oferente hace clic en "Desbloquear contacto" en la ID que le interesa. Esto consume 1 crédito de su plan (ver sección 6) y es el paso crítico de todo el negocio — el detalle técnico está en la sección 6.
-5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos, y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 7).
+5. **Chat interno**: al desbloquear, se revelan los datos de contacto y los adjuntos completos (más allá de la miniatura ya visible en el teaser), y se habilita un hilo de mensajería entre esa ID y ese oferente. Toda la negociación ocurre dentro de la plataforma (ver sección 7).
 6. **Cierre y feedback**: se registra si hubo negocio cerrado, con qué oferente y por qué valor estimado — esto alimenta tanto la calificación del oferente como la inteligencia de mercado agregada.
 
 **Nota importante:** a diferencia de un modelo de "matching algorítmico" que empuja la necesidad a proveedores elegidos por el sistema, el MVP es un modelo de **marketplace auto-servicio**: el sistema filtra el feed por industria/ciudad, pero es el oferente quien decide qué oportunidades desbloquear. El matching automático/con IA (sugerir a qué oferentes notificar proactivamente) queda para una fase posterior (ver roadmap).
@@ -78,13 +80,13 @@ Formulario que llena el demandante al publicar:
 | Presupuesto estimado | Rango (mín–máx) | Visible en el teaser — ayuda al oferente a decidir si vale la pena desbloquear |
 | Descripción detallada | Texto largo | Visible en el teaser |
 | Urgencia | Baja / Media / Alta | Se muestra como etiqueta ("Alta prioridad") en el teaser |
-| Adjuntos | Archivos (PDF, planos, fotos, video) | **Solo visibles después del desbloqueo** |
+| Adjuntos | Archivos (PDF, planos, fotos, video) | **Miniatura pública como gancho; archivo completo solo tras desbloqueo** |
 
-**Contenido público (teaser, antes de pagar)** — lo que ve el oferente en el feed y en la tarjeta de la ID: título, industria, ciudad, rango de presupuesto, urgencia y descripción. Es información suficiente para decidir si vale la pena desbloquear, pero **no incluye** datos de contacto ni adjuntos.
+**Contenido público (teaser, antes de pagar)** — lo que ve el oferente en el feed y en la tarjeta de la ID: título, industria, ciudad, rango de presupuesto, urgencia, descripción, **y una miniatura/preview de cada adjunto** (pensada como gancho para incentivar el desbloqueo — ej. una foto borrosa o recortada, o la primera página de un PDF/plano en baja resolución). No incluye datos de contacto ni el archivo original en resolución completa.
 
-**Contenido desbloqueado (después de pagar):** nombre/razón social y datos de contacto del demandante, todos los adjuntos, y acceso al chat interno.
+**Contenido desbloqueado (después de pagar):** nombre/razón social y datos de contacto del demandante, los archivos adjuntos completos (resolución/calidad original), y acceso al chat interno.
 
-> Esta división pública/privada es una decisión de producto, no solo técnica — vale la pena confirmarla contigo antes de construirla: ¿los adjuntos (planos, fotos) deberían ser 100% privados como se asume aquí, o mostrar una miniatura/adelanto público para incentivar más el desbloqueo?
+> **Nota técnica:** generar la miniatura (thumbnail) de forma automática al subir el adjunto — para PDFs/planos, renderizar la primera página como imagen; para fotos, una versión reducida/recortada; para video, un frame o miniatura estática. La miniatura se sirve públicamente, el archivo original queda protegido por RLS igual que el resto del contenido post-desbloqueo.
 
 **Estados de una ID:** Publicada → Desbloqueada (por 1 o más oferentes) → En conversación → Cerrada / Perdida / Cancelada.
 
@@ -111,7 +113,7 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 | Plata | 10 créditos | USD $99 |
 | Oro | Ilimitado | USD $299 |
 
-> Asumido como planes de **suscripción mensual** (los créditos se renuevan cada ciclo) dado que hablas de "modelo de suscripción" — vale la pena confirmar: ¿mensual, o se pueden comprar como paquetes de créditos que no vencen?
+**Confirmado:** son planes de **suscripción mensual** — los créditos se renuevan cada ciclo de facturación (un oferente Plata vuelve a tener sus 10 créditos disponibles al iniciar el nuevo mes). Recomendación por defecto: los créditos no usados no se acumulan al mes siguiente (patrón estándar de planes SaaS) — a confirmar si prefieres permitir acumulación.
 
 Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
 
@@ -135,7 +137,7 @@ Mensajería propia de la plataforma, no un enlace a WhatsApp/email externo — e
 - **usuarios_demandante** — cuenta, rol, datos de contacto
 - **usuarios_oferente** — cuenta, industria(s) que atiende, cobertura geográfica, plan activo
 - **necesidades (ID)** — título, industria, país, ciudad, presupuesto_min/max, descripción, urgencia, estado
-- **adjuntos** — archivo, tipo, necesidad asociada (visibilidad: solo post-desbloqueo)
+- **adjuntos** — archivo original (privado, post-desbloqueo), miniatura/preview (pública), tipo, necesidad asociada
 - **industrias** — taxonomía controlada y jerárquica (arranca con Ingeniería + Construcción)
 - **planes** — Bronce/Plata/Oro: nombre, créditos, precio
 - **suscripciones** — oferente, plan, estado, créditos disponibles, ciclo de facturación
@@ -161,7 +163,7 @@ Continuidad de stack con lo ya validado en otros proyectos (Tablero Piscinas usa
 
 ## 10. Seguridad e integridad — principios desde el día 1
 
-1. **Row Level Security (RLS)**: un oferente no puede leer los datos de contacto ni los adjuntos de una ID que no ha desbloqueado, aplicado a nivel de base de datos — no solo ocultando el botón en el frontend.
+1. **Row Level Security (RLS)**: un oferente no puede leer los datos de contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado, aplicado a nivel de base de datos — no solo ocultando el botón en el frontend.
 2. **El desbloqueo es una transacción atómica y validada en servidor** (ver sección 6): nunca confiar en el cliente para decir "tengo créditos" o "ya pagué"; nunca permitir que un doble clic consuma dos créditos por un solo desbloqueo.
 3. **Autenticación real y roles claros**: demandante, oferente y admin son roles distintos con permisos distintos, verificados en cada operación sensible.
 4. **Cifrado en tránsito y en reposo**: HTTPS en todo; adjuntos y datos de contacto cifrados en la base de datos donde aplique.
@@ -201,7 +203,6 @@ PromotIA/
 
 ## 14. Próximos pasos inmediatos
 
-1. **Confirmar los supuestos marcados arriba**: ¿los adjuntos son 100% privados hasta el desbloqueo? ¿los planes son suscripción mensual o créditos que no vencen?
-2. **Revisar el borrador de política de datos** (`docs/POLITICA-DATOS.md`) — cubre específicamente la revelación de datos de contacto a cambio de pago, que es el punto legal más sensible del producto.
-3. **Definir la taxonomía inicial de Ingeniería + Construcción** (subcategorías concretas) — condiciona el formulario de ID y el filtro del feed.
-4. **Construir la landing de Fase 0** con el logo, la propuesta de valor y un formulario de lista de espera para ambos lados (demandante/oferente).
+1. **Revisar el borrador de política de datos actualizado** (`docs/POLITICA-DATOS.md`) — ya refleja a Atlas Corporation S.A.S. como responsable y el mecanismo de miniaturas públicas; sigue pendiente de revisión legal antes de publicarse.
+2. **Definir la taxonomía inicial de Ingeniería + Construcción** (subcategorías concretas) — condiciona el formulario de ID y el filtro del feed.
+3. **Construir la landing de Fase 0** con el logo, la propuesta de valor y un formulario de lista de espera para ambos lados (demandante/oferente).

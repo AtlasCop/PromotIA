@@ -1,10 +1,10 @@
 # Política de Tratamiento de Datos Personales — Promot IA
 
-> **BORRADOR — pendiente de revisión por un abogado antes de publicarse.** Este documento es un punto de partida técnico/funcional basado en la Ley 1581 de 2012 y el Decreto 1377 de 2013 (Colombia), redactado para reflejar el mecanismo real de Promot IA — en particular, que los datos de contacto de un demandante se revelan a un tercero (el oferente) a cambio de un pago que este último realiza. Antes de publicarlo en producción, debe ser revisado por un abogado y ajustado a la estructura corporativa final de la empresa.
+> **BORRADOR — pendiente de revisión por un abogado antes de publicarse.** Este documento es un punto de partida técnico/funcional basado en la Ley 1581 de 2012 y el Decreto 1377 de 2013 (Colombia), redactado para reflejar el mecanismo real de Promot IA — en particular, que los datos de contacto de un demandante se revelan a un tercero (el oferente) a cambio de un pago que este último realiza, y que se genera una miniatura pública de cada adjunto. Antes de publicarlo en producción, debe ser revisado por un abogado y completado con el NIT y el correo de contacto definitivos de Atlas Corporation S.A.S.
 
 ## 1. Responsable del tratamiento
 
-Promot IA [— razón social y NIT por confirmar, ver nota sobre la posible relación con Atlas Corporation S.A.S. y las marcas Keepcy/Promotia], con domicilio en Medellín, Colombia. Correo de contacto para temas de datos personales: [pendiente — definir un correo dedicado, ej. `datos@promotia.co`].
+**Promot IA es una marca de Atlas Corporation S.A.S.** (confirmado — Atlas Corporation S.A.S. es la empresa dueña de la idea y opera la plataforma bajo esta marca), con domicilio en Medellín, Colombia. NIT: [pendiente]. Correo de contacto para temas de datos personales: [pendiente — definir un correo dedicado, ej. `datos@promotia.co`].
 
 ## 2. Definiciones clave
 
@@ -18,7 +18,7 @@ Promot IA [— razón social y NIT por confirmar, ver nota sobre la posible rela
 
 - **Datos de cuenta**: nombre, correo, teléfono, empresa (si aplica), tipo y número de documento.
 - **Datos de la Intención de Demanda**: título, industria, país, ciudad, presupuesto estimado, descripción, urgencia.
-- **Adjuntos**: archivos que el demandante decida subir (PDF, planos, fotos, videos) — pueden contener datos personales o de terceros; el demandante es responsable de contar con autorización para compartirlos si incluyen datos de personas distintas a él.
+- **Adjuntos**: archivos que el demandante decida subir (PDF, planos, fotos, videos) — pueden contener datos personales o de terceros; el demandante es responsable de contar con autorización para compartirlos si incluyen datos de personas distintas a él. **De cada adjunto se genera además una miniatura/vista previa que se muestra públicamente** (a cualquier oferente, sin necesidad de pagar) como incentivo para el desbloqueo — el demandante debe ser informado de esto explícitamente al subir el archivo, ya que implica un nivel de exposición pública distinto al del archivo completo.
 - **Datos de uso**: mensajes del chat interno, historial de desbloqueos, tiempos de respuesta, metadatos de navegación.
 - **Datos de pago**: Promot IA **no almacena datos de tarjetas** — el procesamiento de pagos lo realiza un tercero certificado (ej. Stripe), que entrega a Promot IA solo la confirmación del pago, nunca el número de tarjeta completo.
 
@@ -40,8 +40,8 @@ Al crear una cuenta y publicar una Intención de Demanda, el demandante acepta e
 
 Esta sección existe porque el mecanismo central de Promot IA es, en esencia, un tratamiento de datos personales condicionado a un pago hecho por un tercero — algo que debe quedar descrito sin ambigüedad:
 
-- Antes de que cualquier oferente pague, solo se muestra la información **no identificable** de la ID: título, industria, ciudad, rango de presupuesto, urgencia y descripción. **No se muestran datos de contacto ni adjuntos.**
-- Cuando un oferente paga (consume un crédito) para desbloquear una ID específica, se revelan a **ese oferente en particular** los datos de contacto del demandante y los adjuntos de esa ID.
+- Antes de que cualquier oferente pague, solo se muestra la información **no identificable** de la ID: título, industria, ciudad, rango de presupuesto, urgencia, descripción y una **miniatura/vista previa reducida** de cada adjunto. **No se muestran datos de contacto ni el archivo original de los adjuntos.**
+- Cuando un oferente paga (consume un crédito) para desbloquear una ID específica, se revelan a **ese oferente en particular** los datos de contacto del demandante y los archivos adjuntos completos (en su resolución/calidad original).
 - Una misma ID puede ser desbloqueada por varias empresas distintas; cada una paga su propio desbloqueo y accede a los mismos datos de contacto.
 - El demandante puede ver qué empresas han desbloqueado su ID.
 - El dinero del desbloqueo lo paga el oferente a Promot IA — el demandante nunca paga por publicar ni por recibir interés.
