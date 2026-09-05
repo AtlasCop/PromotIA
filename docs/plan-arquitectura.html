@@ -1,0 +1,484 @@
+<title>Plan Promot IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+  :root{
+    --paper:#f6f8fc;
+    --paper-raised:#ffffff;
+    --ink:#101729;
+    --muted:#5b6478;
+    --line:#dde3f0;
+    --cyan:#18b8dd;
+    --blue:#3b6cf4;
+    --violet:#7c3aed;
+    --accent-soft:#eaf0ff;
+    --shadow: 0 1px 2px rgba(16,23,41,.04), 0 8px 24px -12px rgba(16,23,41,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0b1220;
+      --paper-raised:#111a2e;
+      --ink:#e9edf7;
+      --muted:#93a1c2;
+      --line:#243050;
+      --cyan:#3fd2f2;
+      --blue:#6f92ff;
+      --violet:#a685f7;
+      --accent-soft:#182238;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0b1220;
+    --paper-raised:#111a2e;
+    --ink:#e9edf7;
+    --muted:#93a1c2;
+    --line:#243050;
+    --cyan:#3fd2f2;
+    --blue:#6f92ff;
+    --violet:#a685f7;
+    --accent-soft:#182238;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.55);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.65;
+  }
+  h1,h2,h3,.eyebrow,.node-label,.phase-name{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  code, .mono{font-family:'IBM Plex Mono', ui-monospace, monospace;}
+
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:56px 24px 120px;
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    gap:56px;
+  }
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr; padding:32px 18px 80px;}
+  }
+
+  /* ---- side nav ---- */
+  .toc{position:sticky; top:32px; align-self:start; display:flex; flex-direction:column; gap:2px;}
+  @media (max-width:920px){
+    .toc{
+      position:static; flex-direction:row; overflow-x:auto; gap:18px;
+      padding-bottom:14px; margin-bottom:8px; border-bottom:1px solid var(--line);
+      -webkit-overflow-scrolling:touch;
+    }
+    .toc a{white-space:nowrap;}
+  }
+  .toc-brand{display:flex; align-items:center; gap:8px; margin-bottom:22px;}
+  @media (max-width:920px){ .toc-brand{display:none;} }
+  .toc-brand svg{width:22px; height:22px; flex:none;}
+  .toc-brand span{font-weight:700; font-size:15px; letter-spacing:.01em;}
+  .toc a{
+    color:var(--muted); text-decoration:none; font-size:13.5px; font-weight:500;
+    padding:7px 10px; border-radius:7px; border-left:2px solid transparent;
+  }
+  @media (max-width:920px){ .toc a{border-left:none; padding:4px 0; border-bottom:2px solid transparent;} }
+  .toc a:hover{color:var(--ink); background:var(--accent-soft);}
+  @media (max-width:920px){ .toc a:hover{background:none;} }
+  .toc a.active{color:var(--blue); border-left-color:var(--blue); background:var(--accent-soft);}
+  @media (max-width:920px){ .toc a.active{border-bottom-color:var(--blue); background:none;} }
+
+  main{min-width:0;}
+
+  header.hero{margin-bottom:52px;}
+  .eyebrow{
+    font-size:12.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--blue); margin:0 0 14px;
+  }
+  h1{font-size:clamp(30px,4vw,40px); font-weight:700; margin:0 0 12px; text-wrap:balance; letter-spacing:-.01em;}
+  .tagline{font-size:18px; color:var(--muted); margin:0 0 22px; max-width:60ch;}
+  .lede{font-size:16.5px; max-width:66ch; color:var(--ink);}
+  .lede strong{color:var(--blue);}
+
+  section{margin-top:64px; scroll-margin-top:28px;}
+  section > h2{
+    font-size:22px; font-weight:700; margin:0 0 6px; display:flex; align-items:baseline; gap:10px;
+  }
+  section > h2 .num{color:var(--muted); font-weight:600; font-size:15px;}
+  section > .section-intro{color:var(--muted); max-width:66ch; margin:0 0 26px;}
+  p{max-width:68ch;}
+  p.tight{margin:10px 0 0;}
+
+  /* ---- actors ---- */
+  .actor-cols{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:600px){.actor-cols{grid-template-columns:1fr;}}
+  .actor-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:14px;
+    padding:22px 22px 20px; box-shadow:var(--shadow);
+  }
+  .actor-card h3{font-size:14px; margin:0 0 4px;}
+  .actor-card .sub{font-size:12.5px; color:var(--muted); margin:0 0 14px;}
+  .actor-card ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .actor-card li{
+    font-size:14.5px; padding-left:16px; position:relative;
+  }
+  .actor-card li::before{
+    content:''; position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%;
+  }
+  .actor-card.demand li::before{background:var(--blue);}
+  .actor-card.supply li::before{background:var(--violet);}
+
+  /* ---- flow diagram ---- */
+  .flow-wrap{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:16px;
+    padding:8px 4px 4px; box-shadow:var(--shadow); overflow-x:auto;
+  }
+  .flow-wrap svg{display:block; width:100%; min-width:640px; height:auto;}
+  .flow-caption{font-size:13px; color:var(--muted); margin:14px 2px 0; max-width:70ch;}
+
+  /* ---- data model ---- */
+  .entity-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (max-width:760px){.entity-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:460px){.entity-grid{grid-template-columns:1fr;}}
+  .entity{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .entity .name{font-size:13.5px; font-weight:500; color:var(--blue); display:block; margin-bottom:5px;}
+  .entity .desc{font-size:13px; color:var(--muted); line-height:1.5;}
+
+  /* ---- architecture table ---- */
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);}
+  table{width:100%; border-collapse:collapse; background:var(--paper-raised); min-width:640px;}
+  th,td{text-align:left; padding:13px 16px; font-size:14px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{
+    font-family:'Sora',sans-serif; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); font-weight:600; background:var(--accent-soft);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  td.layer{font-weight:600; white-space:nowrap;}
+  td .why{color:var(--muted); font-size:13px;}
+
+  /* ---- security list ---- */
+  .sec-list{display:flex; flex-direction:column; gap:0;}
+  .sec-item{
+    display:grid; grid-template-columns:34px 1fr; gap:14px; padding:16px 0;
+    border-top:1px solid var(--line);
+  }
+  .sec-item:first-child{border-top:none;}
+  .sec-item .chip{
+    width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    background:var(--accent-soft); color:var(--blue); font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:500;
+  }
+  .sec-item h4{margin:0 0 4px; font-size:14.5px; font-weight:600;}
+  .sec-item p{margin:0; font-size:13.5px; color:var(--muted);}
+
+  /* ---- business model ---- */
+  .biz-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:760px){.biz-grid{grid-template-columns:1fr;}}
+  .biz-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:14px;
+    padding:20px; box-shadow:var(--shadow);
+  }
+  .biz-card .tag{
+    font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--violet);
+    display:block; margin-bottom:8px;
+  }
+  .biz-card h4{margin:0 0 6px; font-size:15px;}
+  .biz-card p{margin:0; font-size:13.5px; color:var(--muted);}
+
+  /* ---- roadmap ---- */
+  .roadmap{display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow);}
+  @media (max-width:760px){.roadmap{grid-template-columns:1fr;}}
+  .phase{
+    padding:20px 18px; background:var(--paper-raised); border-right:1px solid var(--line);
+  }
+  .phase:last-child{border-right:none;}
+  @media (max-width:760px){.phase{border-right:none; border-bottom:1px solid var(--line);} .phase:last-child{border-bottom:none;}}
+  .phase .phase-name{font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
+  .phase h4{margin:0 0 8px; font-size:15px;}
+  .phase p{margin:0; font-size:13px; color:var(--muted);}
+  .phase.now{background:var(--accent-soft);}
+  .phase.now .phase-name{color:var(--blue);}
+
+  /* ---- tree ---- */
+  pre.tree{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; font-size:13px; overflow-x:auto; box-shadow:var(--shadow); line-height:1.7;
+  }
+
+  /* ---- next steps ---- */
+  .steps{display:flex; flex-direction:column; gap:12px;}
+  .step{display:flex; gap:14px; align-items:flex-start;}
+  .step .box{
+    width:20px; height:20px; border:2px solid var(--line); border-radius:5px; flex:none; margin-top:2px;
+  }
+  .step p{margin:0; font-size:14.5px;}
+  .step strong{color:var(--ink);}
+
+  footer{margin-top:72px; padding-top:22px; border-top:1px solid var(--line); font-size:12.5px; color:var(--muted);}
+</style>
+
+<div class="shell">
+  <nav class="toc" id="toc">
+    <div class="toc-brand">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/>
+        <circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+        <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/>
+        <circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+        <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/>
+        <circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+        <g stroke="url(#brandline)" stroke-width="1.4">
+          <line x1="14" y1="9" x2="5" y2="17"/>
+          <line x1="14" y1="9" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="12" y2="26"/>
+          <line x1="23" y1="20" x2="23" y2="30"/>
+          <line x1="23" y1="20" x2="12" y2="26"/>
+          <line x1="12" y1="26" x2="23" y2="30"/>
+          <line x1="12" y1="26" x2="14" y2="35"/>
+          <line x1="23" y1="30" x2="14" y2="35"/>
+        </g>
+        <defs><linearGradient id="brandline" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient></defs>
+      </svg>
+      <span>Promot IA</span>
+    </div>
+    <a href="#problema">El problema</a>
+    <a href="#actores">Actores</a>
+    <a href="#flujo">Flujo central</a>
+    <a href="#datos">Modelo de datos</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#seguridad">Seguridad</a>
+    <a href="#negocio">Modelo de negocio</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#estructura">Estructura del repo</a>
+    <a href="#siguientes">Próximos pasos</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Plan de arquitectura · v1 · 2026-09-05</p>
+      <h1>Promot IA</h1>
+      <p class="tagline">Conectamos proyectos con oportunidades.</p>
+      <p class="lede">El cliente deja de buscar. La empresa deja de perseguir clientes <strong>a ciegas</strong>. Este documento define el modelo de producto, el flujo central, la arquitectura técnica y los principios de seguridad para construir la plataforma desde el primer commit.</p>
+    </header>
+
+    <section id="problema">
+      <h2><span class="num">01</span> El problema y la propuesta de valor</h2>
+      <p>Hoy, quien tiene una necesidad —una persona, una empresa, una entidad pública, una constructora, un comercio— no tiene un lugar único donde expresarla y ser encontrado por quien puede resolverla.</p>
+      <p class="tight"><strong>La demanda busca a ciegas:</strong> googlea, pide referencias, compara cotizaciones manualmente, sin saber si hay una mejor opción.</p>
+      <p class="tight"><strong>La oferta persigue a ciegas:</strong> invierte en publicidad, fuerza comercial y prospección fría sin saber si esos contactos tienen una necesidad real.</p>
+      <p class="tight"><strong>Nadie tiene visibilidad del mercado:</strong> no existe una fuente que diga qué se está necesitando ahora, en qué categoría, en qué zona, con qué frecuencia.</p>
+      <p style="margin-top:18px">Promot IA es una <strong style="color:var(--blue)">plataforma de inteligencia de demanda</strong>: el punto de encuentro donde la demanda se hace visible de forma estructurada, y la oferta responde de manera eficiente — sin publicidad masiva ni prospección a ciegas. Tres capas de valor, no solo una: <strong>matching</strong> (el producto visible), <strong>clasificación</strong> (el motor invisible que ordena necesidades no estructuradas) e <strong>inteligencia de mercado</strong> (el producto adicional que vuelve el histórico de necesidades algo vendible por su cuenta).</p>
+    </section>
+
+    <section id="actores">
+      <h2><span class="num">02</span> Actores del sistema</h2>
+      <p class="section-intro">Dos lados que hoy no se encuentran de forma eficiente, más el equipo que cuida la calidad del match.</p>
+      <div class="actor-cols">
+        <div class="actor-card demand">
+          <h3>Demanda</h3>
+          <p class="sub">Quien tiene una necesidad</p>
+          <ul>
+            <li>Personas naturales</li>
+            <li>Empresas</li>
+            <li>Entidades públicas <span class="mono" style="color:var(--muted)">(SECOP, futuro)</span></li>
+            <li>Constructoras</li>
+            <li>Comercios</li>
+          </ul>
+        </div>
+        <div class="actor-card supply">
+          <h3>Oferta</h3>
+          <p class="sub">Quien resuelve la necesidad</p>
+          <ul>
+            <li>Empresas y profesionales registrados</li>
+            <li>Clasificados por categoría de servicio/producto</li>
+            <li>Con cobertura geográfica definida</li>
+            <li>Con calificación histórica de desempeño</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="flujo">
+      <h2><span class="num">03</span> Flujo central del producto</h2>
+      <p class="section-intro">El motor que convierte una necesidad expresada en un match real — y en inteligencia de mercado reutilizable.</p>
+      <div class="flow-wrap">
+        <svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="nodeGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="var(--cyan)"/>
+              <stop offset="55%" stop-color="var(--blue)"/>
+              <stop offset="100%" stop-color="var(--violet)"/>
+            </linearGradient>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+
+          <!-- connecting arrows -->
+          <g stroke="var(--muted)" stroke-width="1.4" marker-end="url(#arrow)">
+            <line x1="116" y1="66" x2="249" y2="66"/>
+            <line x1="301" y1="66" x2="434" y2="66"/>
+            <line x1="486" y1="66" x2="619" y2="66"/>
+            <line x1="671" y1="66" x2="804" y2="66"/>
+          </g>
+
+          <!-- feed lines into market intelligence -->
+          <g fill="none" stroke="var(--violet)" stroke-width="1.4" stroke-dasharray="4 4" opacity="0.55">
+            <path d="M275 92 C 275 170, 340 210, 400 228"/>
+            <path d="M830 92 C 830 170, 620 210, 560 228"/>
+          </g>
+
+          <!-- main nodes -->
+          <g font-family="Sora, sans-serif">
+            <g>
+              <circle cx="90" cy="66" r="26" fill="url(#nodeGrad)"/>
+              <text x="90" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
+              <text x="90" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Captura</text>
+              <text x="90" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Necesidad expresada</text>
+            </g>
+            <g>
+              <circle cx="275" cy="66" r="26" fill="url(#nodeGrad)"/>
+              <text x="275" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
+              <text x="275" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Clasificación</text>
+              <text x="275" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Categoría, urgencia</text>
+            </g>
+            <g>
+              <circle cx="460" cy="66" r="26" fill="url(#nodeGrad)"/>
+              <text x="460" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3</text>
+              <text x="460" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Matching</text>
+              <text x="460" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Motor de emparejamiento</text>
+            </g>
+            <g>
+              <circle cx="645" cy="66" r="26" fill="url(#nodeGrad)"/>
+              <text x="645" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">4</text>
+              <text x="645" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Conexión</text>
+              <text x="645" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Se notifica a la oferta</text>
+            </g>
+            <g>
+              <circle cx="830" cy="66" r="26" fill="url(#nodeGrad)"/>
+              <text x="830" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">5</text>
+              <text x="830" y="112" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--ink)">Resultado</text>
+              <text x="830" y="129" text-anchor="middle" font-size="11" fill="var(--muted)">Cierre y feedback</text>
+            </g>
+
+            <!-- intelligence node -->
+            <rect x="360" y="228" width="200" height="56" rx="14" fill="var(--paper)" stroke="var(--violet)" stroke-width="1.4"/>
+            <text x="460" y="252" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--violet)">Inteligencia de Mercado</text>
+            <text x="460" y="270" text-anchor="middle" font-size="10.5" fill="var(--muted)">Datos agregados y anonimizados</text>
+          </g>
+        </svg>
+      </div>
+      <p class="flow-caption">La necesidad se captura, se clasifica contra una taxonomía controlada, se compara contra el catálogo de oferta (matching), se notifica a los candidatos calificados y el resultado real alimenta tanto la calificación del proveedor como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
+    </section>
+
+    <section id="datos">
+      <h2><span class="num">04</span> Modelo de datos — alto nivel</h2>
+      <p class="section-intro">Entidades principales; el detalle de columnas se define al iniciar la fase 1.</p>
+      <div class="entity-grid">
+        <div class="entity"><span class="name mono">usuarios</span><span class="desc">Cuentas del lado demanda: rol, contacto.</span></div>
+        <div class="entity"><span class="name mono">proveedores</span><span class="desc">Empresas del lado oferta: categorías, cobertura, verificación.</span></div>
+        <div class="entity"><span class="name mono">necesidades</span><span class="desc">Descripción, categoría, urgencia, presupuesto, ubicación, estado.</span></div>
+        <div class="entity"><span class="name mono">categorías</span><span class="desc">Taxonomía controlada y jerárquica.</span></div>
+        <div class="entity"><span class="name mono">matches</span><span class="desc">Necesidad↔proveedor, con score y estado.</span></div>
+        <div class="entity"><span class="name mono">calificaciones</span><span class="desc">Feedback post-cierre, alimenta el score del proveedor.</span></div>
+        <div class="entity"><span class="name mono">eventos_auditoria</span><span class="desc">Quién hizo qué y cuándo — seguridad e integridad de datos.</span></div>
+      </div>
+    </section>
+
+    <section id="arquitectura">
+      <h2><span class="num">05</span> Arquitectura técnica recomendada</h2>
+      <p class="section-intro">Continuidad con el stack que ya conoces (Tablero Piscinas usa Supabase con roles y RLS) para avanzar rápido con buenas prácticas ya validadas.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Capa</th><th>Recomendación</th><th>Por qué</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Frontend</td><td>Next.js / React + Tailwind</td><td class="why">Empieza como landing simple y crece hacia una app completa sin reescribir.</td></tr>
+            <tr><td class="layer">Backend / API</td><td>Supabase (Postgres)</td><td class="why">Sin servidores propios que mantener; robusto para el modelo relacional.</td></tr>
+            <tr><td class="layer">Autenticación</td><td>Supabase Auth + roles</td><td class="why">Demanda / oferta / admin ven y hacen solo lo que corresponde a su rol.</td></tr>
+            <tr><td class="layer">Clasificación</td><td>API de un modelo de lenguaje + reglas propias</td><td class="why">La IA sugiere, la taxonomía controla — evita categorías inconsistentes.</td></tr>
+            <tr><td class="layer">Hosting</td><td>Vercel + Supabase</td><td class="why">Mismo patrón ya usado en otros proyectos, sin infraestructura nueva.</td></tr>
+            <tr><td class="layer">Notificaciones</td><td>WhatsApp Business API / email</td><td class="why">Reutiliza el patrón ya probado (wa.me / formularios).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="seguridad">
+      <h2><span class="num">06</span> Seguridad e integridad — desde el día 1</h2>
+      <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
+      <div class="sec-list">
+        <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Cada usuario solo lee/escribe lo suyo, aplicado a nivel de base de datos — no solo ocultando botones en el frontend.</p></div></div>
+        <div class="sec-item"><span class="chip">02</span><div><h4>Autenticación real y roles claros</h4><p>Demanda, oferta y admin son roles distintos, verificados en cada operación sensible.</p></div></div>
+        <div class="sec-item"><span class="chip">03</span><div><h4>Cifrado en tránsito y en reposo</h4><p>HTTPS en todo; datos sensibles cifrados en la base de datos donde aplique.</p></div></div>
+        <div class="sec-item"><span class="chip">04</span><div><h4>Habeas Data (Ley 1581 de 2012)</h4><p>Consentimiento explícito desde el primer formulario; una necesidad de una persona natural se trata como dato personal.</p></div></div>
+        <div class="sec-item"><span class="chip">05</span><div><h4>Nunca credenciales en el código</h4><p>Variables de entorno / secret manager — el <code>.gitignore</code> ya está listo desde el primer commit.</p></div></div>
+        <div class="sec-item"><span class="chip">06</span><div><h4>Validación de entradas en el servidor</h4><p>Todo formulario/API se valida en el backend — previene inyección SQL, XSS y abuso del matching.</p></div></div>
+        <div class="sec-item"><span class="chip">07</span><div><h4>Rate limiting y anti-abuso</h4><p>Límites en formularios públicos para evitar spam de necesidades falsas o scraping del catálogo.</p></div></div>
+        <div class="sec-item"><span class="chip">08</span><div><h4>Auditoría</h4><p>Registro de quién creó/modificó/vio qué — sostiene la integridad de los datos que alimentan la inteligencia de mercado.</p></div></div>
+        <div class="sec-item"><span class="chip">09</span><div><h4>Backups y continuidad</h4><p>Copias de seguridad automáticas desde el primer entorno de producción.</p></div></div>
+        <div class="sec-item"><span class="chip">10</span><div><h4>Revisión de seguridad continua</h4><p>Antes de cada lanzamiento importante, una revisión dedicada sobre los cambios — no solo al final.</p></div></div>
+      </div>
+    </section>
+
+    <section id="negocio">
+      <h2><span class="num">07</span> Modelo de negocio — hipótesis de partida</h2>
+      <div class="biz-grid">
+        <div class="biz-card"><span class="tag">Oferta</span><h4>Suscripción</h4><p>Membresía para recibir necesidades calificadas de su categoría/zona — reemplaza el gasto en publicidad y fuerza comercial.</p></div>
+        <div class="biz-card"><span class="tag">A validar</span><h4>Comisión por cierre</h4><p>Un porcentaje sobre negocios cerrados a través de la plataforma.</p></div>
+        <div class="biz-card"><span class="tag">Diferenciador</span><h4>Inteligencia de mercado</h4><p>Reportes y dashboards de tendencias de demanda, vendidos a gremios, constructoras grandes o entidades públicas.</p></div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <h2><span class="num">08</span> Roadmap por fases</h2>
+      <div class="roadmap">
+        <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para validar interés real antes de construir el motor completo.</p></div>
+        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP</h4><p>Registro básico, formulario de necesidad, matching manual/asistido por el equipo — sin IA todavía.</p></div>
+        <div class="phase"><span class="phase-name">Fase 2</span><h4>Automatización</h4><p>Clasificación con IA, motor de matching por reglas + score, notificaciones automáticas.</p></div>
+        <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; explorar integración con fuentes públicas (SECOP).</p></div>
+      </div>
+    </section>
+
+    <section id="estructura">
+      <h2><span class="num">09</span> Estructura del proyecto</h2>
+      <pre class="tree"><span class="mono">PromotIA/
+├── docs/              <span style="color:var(--muted)">← este plan y futura documentación</span>
+├── assets/            <span style="color:var(--muted)">← logo, imágenes de marca</span>
+├── landing/           <span style="color:var(--muted)">← (fase 0) sitio estático de presentación</span>
+└── app/               <span style="color:var(--muted)">← (fase 1+) aplicación completa</span></span></pre>
+    </section>
+
+    <section id="siguientes">
+      <h2><span class="num">10</span> Próximos pasos inmediatos</h2>
+      <div class="steps">
+        <div class="step"><span class="box"></span><p><strong>Confirmar y ajustar este plan</strong> — categorías iniciales, proveedores/clientes piloto ya identificados, presupuesto disponible.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Construir la landing de Fase 0</strong> con el logo, la propuesta de valor y un formulario de lista de espera.</p></div>
+        <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de categorías — condiciona todo el modelo de datos.</p></div>
+      </div>
+    </section>
+
+    <footer>Documento vivo — se actualiza junto con el proyecto. Repositorio independiente del sitio de Atlas Corporation.</footer>
+  </main>
+</div>
+
+<script>
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+    var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    function onScroll(){
+      var pos = window.scrollY + 120;
+      var activeIdx = 0;
+      sections.forEach(function(sec, i){
+        if(sec && sec.offsetTop <= pos) activeIdx = i;
+      });
+      links.forEach(function(a,i){ a.classList.toggle('active', i===activeIdx); });
+    }
+    document.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
