@@ -289,6 +289,7 @@
     <a href="#ecosistemas">Ecosistemas</a>
     <a href="#flujo">Flujo central</a>
     <a href="#id">La Intención de Demanda</a>
+    <a href="#iac">Índice de Afinidad (IAC)</a>
     <a href="#desbloqueo">Créditos y desbloqueo</a>
     <a href="#chat">Chat interno</a>
     <a href="#datos">Modelo de datos</a>
@@ -422,7 +423,7 @@
           </g>
         </svg>
       </div>
-      <p class="flow-caption">El oferente solo ve la versión pública del feed (título, industria, ciudad, presupuesto, urgencia y descripción — sin contacto ni adjuntos) hasta que decide pagar por desbloquearla. El resultado real de cada cierre alimenta tanto la calificación del oferente como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
+      <p class="flow-caption">El oferente solo ve la versión pública del feed (título, industria, ciudad, presupuesto, urgencia y descripción — sin contacto ni adjuntos) hasta que decide pagar por desbloquearla, ordenada por el Índice de Afinidad Comercial (sección 5). El resultado real de cada cierre alimenta tanto la calificación del oferente como los reportes agregados de inteligencia de mercado — nunca con datos identificables de una persona o empresa puntual.</p>
     </section>
 
     <section id="id">
@@ -467,8 +468,36 @@
       <div class="callout"><strong>Confirmado:</strong> los adjuntos se muestran como miniatura/vista previa pública (gancho para el desbloqueo); el archivo completo queda protegido hasta el pago.</div>
     </section>
 
+    <section id="iac">
+      <h2><span class="num">05</span> Índice de Afinidad Comercial (IAC)</h2>
+      <p class="section-intro">Función exclusiva de Promot IA: un puntaje calculado por cada par (necesidad, oferente) — no un score general y estático de la empresa. Es lo que ordena el feed y dispara las alertas prioritarias.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Factor</th><th>Qué mide</th><th>De dónde sale</th></tr></thead>
+          <tbody>
+            <tr><td class="layer">Especialidades</td><td>Coincidencia con la industria de la ID</td><td class="why">Perfil del oferente</td></tr>
+            <tr><td class="layer">Experiencia</td><td>Años de experiencia y proyectos atendidos</td><td class="why">Perfil + historial</td></tr>
+            <tr><td class="layer">Ubicación</td><td>Cercanía con la ciudad de la ID</td><td class="why">Ciudades donde opera</td></tr>
+            <tr><td class="layer">Capacidad operativa</td><td>Tamaño de la empresa vs. escala de la ID</td><td class="why">Empleados vs. presupuesto</td></tr>
+            <tr><td class="layer">Historial en la plataforma</td><td>Antigüedad y actividad reciente</td><td class="why">Fecha de registro, uso</td></tr>
+            <tr><td class="layer">Valor de proyectos realizados</td><td>Valor acumulado de negocios cerrados</td><td class="why">Desbloqueos cerrados</td></tr>
+            <tr><td class="layer">Tiempo de respuesta</td><td>Rapidez en el chat interno</td><td class="why">Mensajes</td></tr>
+            <tr><td class="layer">Evaluaciones</td><td>Calificación de clientes anteriores</td><td class="why">Calificaciones</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sec-list" style="margin-top:24px">
+        <div class="sec-item"><span class="chip">01</span><div><h4>Se publica una ID</h4><p>El demandante crea una nueva Intención de Demanda.</p></div></div>
+        <div class="sec-item"><span class="chip">02</span><div><h4>Cálculo automático</h4><p>El sistema calcula el IAC de cada oferente elegible frente a esa ID específica.</p></div></div>
+        <div class="sec-item"><span class="chip">03</span><div><h4>Alerta prioritaria</h4><p>Los oferentes con IAC más alto reciben un aviso — no dependen de encontrarla navegando el feed.</p></div></div>
+        <div class="sec-item"><span class="chip">04</span><div><h4>Resto del feed</h4><p>Los demás oferentes compatibles la ven igual, ordenada por IAC descendente.</p></div></div>
+      </div>
+      <div class="callout" style="margin-top:24px"><strong>Beneficio de dos vías:</strong> el demandante recibe interés de empresas más adecuadas; el oferente se entera primero de lo que mejor encaja con su perfil, sin revisar todo el feed manualmente.</div>
+      <p class="flow-caption" style="margin-top:16px">Los factores autodeclarados (experiencia, empleados, certificaciones) no deben pesar hasta cruzarse con el estado de verificación del perfil de reputación. Los pesos exactos y el umbral de alerta se calibran en la Fase 2 con datos reales — un MVP puede lanzar con una versión simple (solo especialidad + ciudad).</p>
+    </section>
+
     <section id="desbloqueo">
-      <h2><span class="num">05</span> Mecanismo de desbloqueo, créditos y planes</h2>
+      <h2><span class="num">06</span> Mecanismo de desbloqueo, créditos y planes</h2>
       <p class="section-intro">El mecanismo crítico del negocio — todo el modelo de ingresos del MVP depende de que esto sea correcto y a prueba de fraude.</p>
       <div class="sec-list" style="margin-bottom:32px">
         <div class="sec-item"><span class="chip">01</span><div><h4>Verificación en servidor</h4><p>Se confirma que el oferente tiene ≥1 crédito disponible o plan ilimitado — nunca se confía en el cliente.</p></div></div>
@@ -488,7 +517,7 @@
     </section>
 
     <section id="chat">
-      <h2><span class="num">06</span> Chat interno</h2>
+      <h2><span class="num">07</span> Chat interno</h2>
       <p class="section-intro">Mensajería propia de la plataforma, no un enlace externo — toda la relación comercial ocurre dentro de Promot IA para poder medirla.</p>
       <div class="actor-cols">
         <div class="actor-card neutral">
@@ -514,7 +543,7 @@
     </section>
 
     <section id="datos">
-      <h2><span class="num">07</span> Modelo de datos — alto nivel</h2>
+      <h2><span class="num">09</span> Modelo de datos — alto nivel</h2>
       <p class="section-intro">Entidades principales; el detalle de columnas se define al iniciar la fase 1.</p>
       <div class="entity-grid">
         <div class="entity"><span class="name mono">usuarios_demandante</span><span class="desc">Cuenta, rol, contacto.</span></div>
@@ -529,11 +558,12 @@
         <div class="entity"><span class="name mono">llamadas_programadas</span><span class="desc">Desbloqueo asociado, fecha/hora, estado.</span></div>
         <div class="entity"><span class="name mono">calificaciones</span><span class="desc">Feedback post-cierre, alimenta el score del oferente.</span></div>
         <div class="entity"><span class="name mono">eventos_auditoria</span><span class="desc">Quién hizo qué y cuándo.</span></div>
+        <div class="entity"><span class="name mono">iac_scores</span><span class="desc">ID ↔ oferente, puntaje, desglose, alerta enviada.</span></div>
       </div>
     </section>
 
     <section id="arquitectura">
-      <h2><span class="num">08</span> Arquitectura técnica recomendada</h2>
+      <h2><span class="num">10</span> Arquitectura técnica recomendada</h2>
       <p class="section-intro">Continuidad con el stack que ya conoces (Tablero Piscinas usa Supabase con roles y RLS) para avanzar rápido con buenas prácticas ya validadas.</p>
       <div class="table-wrap">
         <table>
@@ -544,6 +574,7 @@
             <tr><td class="layer">Autenticación</td><td>Supabase Auth + roles</td><td class="why">Demandante / oferente / admin ven y hacen solo lo que corresponde a su rol.</td></tr>
             <tr><td class="layer">Pagos</td><td>Stripe Billing</td><td class="why">Cobro recurrente + PCI compliance + confirmación server-side antes de asignar créditos.</td></tr>
             <tr><td class="layer">Clasificación (fase 2)</td><td>API de un modelo de lenguaje + reglas propias</td><td class="why">La IA sugiere industria/urgencia, la taxonomía controla.</td></tr>
+            <tr><td class="layer">Cálculo del IAC</td><td>Función serverless (Edge Function / trigger de Postgres)</td><td class="why">Se recalcula automáticamente al publicar una ID, sin intervención manual.</td></tr>
             <tr><td class="layer">Hosting</td><td>Vercel + Supabase</td><td class="why">Mismo patrón ya usado en otros proyectos.</td></tr>
             <tr><td class="layer">Notificaciones</td><td>Email transaccional + in-app</td><td class="why">Nuevo interés al demandante, nuevos mensajes al oferente.</td></tr>
           </tbody>
@@ -552,7 +583,7 @@
     </section>
 
     <section id="seguridad">
-      <h2><span class="num">09</span> Seguridad e integridad — desde el día 1</h2>
+      <h2><span class="num">11</span> Seguridad e integridad — desde el día 1</h2>
       <p class="section-intro">No es una fase final: se aplica a todo lo que construyamos desde el primer commit.</p>
       <div class="sec-list">
         <div class="sec-item"><span class="chip">01</span><div><h4>Row Level Security en la base de datos</h4><p>Un oferente no puede leer el contacto ni el archivo original de un adjunto (solo la miniatura pública) de una ID que no ha desbloqueado.</p></div></div>
@@ -567,11 +598,12 @@
         <div class="sec-item"><span class="chip">10</span><div><h4>Auditoría</h4><p>Registro de quién publicó, desbloqueó o pagó qué y cuándo — sostiene la integridad de las métricas que se venden como valor del plan.</p></div></div>
         <div class="sec-item"><span class="chip">11</span><div><h4>Backups y continuidad</h4><p>Copias de seguridad automáticas desde el primer entorno de producción.</p></div></div>
         <div class="sec-item"><span class="chip">12</span><div><h4>Revisión de seguridad continua</h4><p>Especialmente sobre el flujo de pagos/créditos y el control de acceso a adjuntos.</p></div></div>
+        <div class="sec-item"><span class="chip">13</span><div><h4>Integridad del IAC</h4><p>Los factores autodeclarados (experiencia, empleados, certificaciones) no pesan hasta cruzarse con el estado de verificación.</p></div></div>
       </div>
     </section>
 
     <section id="negocio">
-      <h2><span class="num">10</span> Modelo de negocio</h2>
+      <h2><span class="num">12</span> Modelo de negocio</h2>
       <div class="biz-grid">
         <div class="biz-card"><span class="tag">Motor principal · MVP</span><h4>Venta de créditos por plan</h4><p>El oferente paga por acceder a IDs calificadas de su industria — reemplaza su gasto en publicidad y fuerza comercial.</p></div>
         <div class="biz-card"><span class="tag">Motor secundario · Fase 3</span><h4>Inteligencia de mercado</h4><p>Reportes de tendencias de demanda agregadas y anonimizadas, vendidos a gremios, constructoras o entidades públicas.</p></div>
@@ -580,17 +612,17 @@
     </section>
 
     <section id="roadmap">
-      <h2><span class="num">11</span> Roadmap por fases</h2>
+      <h2><span class="num">13</span> Roadmap por fases</h2>
       <div class="roadmap">
         <div class="phase now"><span class="phase-name">Fase 0 · Ahora</span><h4>Validación</h4><p>Landing de presentación + lista de espera para demandantes y oferentes.</p></div>
-        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed por industria/ciudad (Ingeniería + Construcción), desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
-        <div class="phase"><span class="phase-name">Fase 2</span><h4>Automatización</h4><p>Clasificación con IA, notificaciones proactivas, score de calidad de oferente, llamada programada integrada.</p></div>
+        <div class="phase"><span class="phase-name">Fase 1</span><h4>MVP marketplace completo</h4><p>Registro, formulario de ID, feed por industria/ciudad con IAC simple, desbloqueo con créditos, planes vía Stripe, chat interno.</p></div>
+        <div class="phase"><span class="phase-name">Fase 2</span><h4>IAC completo + IA</h4><p>Los 8 factores del IAC, alertas prioritarias automáticas, clasificación con IA, llamada programada integrada.</p></div>
         <div class="phase"><span class="phase-name">Fase 3</span><h4>Inteligencia de mercado</h4><p>Panel de reportes agregados; más verticales y fuentes públicas (SECOP).</p></div>
       </div>
     </section>
 
     <section id="estructura">
-      <h2><span class="num">12</span> Estructura del proyecto</h2>
+      <h2><span class="num">14</span> Estructura del proyecto</h2>
       <pre class="tree"><span class="mono">PromotIA/
 ├── docs/              <span style="color:var(--muted)">← este plan, política de datos y futura documentación</span>
 ├── assets/            <span style="color:var(--muted)">← logo, imágenes de marca</span>
@@ -599,7 +631,7 @@
     </section>
 
     <section id="siguientes">
-      <h2><span class="num">13</span> Próximos pasos inmediatos</h2>
+      <h2><span class="num">15</span> Próximos pasos inmediatos</h2>
       <div class="steps">
         <div class="step"><span class="box"></span><p><strong>Revisar el borrador de política de datos actualizado</strong> (<code>docs/POLITICA-DATOS.md</code>) — ya refleja a Atlas Corporation S.A.S. como responsable; pendiente de revisión legal antes de publicarse.</p></div>
         <div class="step"><span class="box"></span><p><strong>Definir la taxonomía inicial</strong> de Ingeniería + Construcción — condiciona el formulario de ID y el feed.</p></div>
