@@ -177,6 +177,19 @@
   .stars .fill{position:absolute; top:0; left:0; overflow:hidden; white-space:nowrap; color:#f5a524;}
   .mockup-caption{text-align:center; font-size:12.5px; color:var(--muted);}
 
+  /* ---- Pantalla 1: hero band (siempre oscuro, deliberado) ---- */
+  .hero-band{
+    --ink:#f4f7fc; --muted:#98a3bd; --line:#1f2b48; --paper-raised:#101a30; --accent-soft:#141f3a;
+    background:linear-gradient(180deg,#060a16,#0c1226 55%,#0e1530);
+    color:var(--ink);
+  }
+  .hero-nav a{color:var(--muted); transition:color .15s;}
+  .hero-nav a:hover{color:var(--ink);}
+  .como-funciona-icon{
+    width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--blue),var(--violet)); color:#fff; flex:none;
+  }
+
   /* ---- Módulo 5: recomendación con IA ---- */
   .notif-banner{
     display:flex; align-items:center; gap:12px; background:var(--accent-soft); border:1px solid var(--line);
@@ -201,7 +214,8 @@
 </head>
 <body class="antialiased">
 
-  <header class="max-w-6xl mx-auto px-6 sm:px-8 py-6 flex items-center justify-between">
+  <header class="hero-band">
+  <div class="max-w-6xl mx-auto px-6 sm:px-8 py-6 flex items-center justify-between">
     <div class="flex items-center gap-2.5">
       <svg viewBox="0 0 40 40" fill="none" class="w-8 h-8">
         <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/>
@@ -223,11 +237,16 @@
       </svg>
       <span class="brand-word font-bold text-[17px]" style="color:var(--ink)">Promot<span class="grad-text">IA</span></span>
     </div>
-    <span class="text-[11px] font-medium tracking-wide uppercase px-3 py-1.5 rounded-full" style="background:var(--accent-soft); color:var(--blue)">Muy pronto</span>
+    <nav class="hero-nav hidden sm:flex items-center gap-8 text-[14px] font-medium">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#registro" class="js-cta btn-primary text-white font-semibold text-[13.5px] px-5 py-2.5 rounded-lg transition" id="ctaNavComenzar">Comenzar ahora</a>
+    </nav>
+  </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-6 sm:px-8">
-    <section class="grid lg:grid-cols-2 gap-14 items-center pt-6 pb-20 lg:pt-10 lg:pb-28">
+  <main>
+    <section class="hero-band">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 grid lg:grid-cols-2 gap-14 items-center pt-6 pb-20 lg:pt-10 lg:pb-28">
 
       <div>
         <h1 class="text-[34px] sm:text-[42px] lg:text-[46px] font-extrabold leading-[1.14] tracking-tight">
@@ -304,8 +323,49 @@
         </svg>
       </div>
 
+    </div>
     </section>
 
+  <section id="como-funciona" class="py-20">
+    <div class="max-w-5xl mx-auto px-6 sm:px-8">
+      <div class="text-center mb-14">
+        <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Cómo funciona</p>
+        <h2 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">De la necesidad a la solución, en tres pasos</h2>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-10">
+        <div class="text-center sm:text-left">
+          <div class="como-funciona-icon mx-auto sm:mx-0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M9 13h6M9 17h4"/>
+            </svg>
+          </div>
+          <h3 class="mt-5 font-bold text-[17px]" style="color:var(--ink)">Publica</h3>
+          <p class="mt-2 text-[14.5px] leading-relaxed" style="color:var(--muted)">Describe tu necesidad en pocos minutos, con el contexto que las empresas necesitan para responder bien — no solo una tarea suelta.</p>
+        </div>
+        <div class="text-center sm:text-left">
+          <div class="como-funciona-icon mx-auto sm:mx-0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/>
+              <path d="M8.6 10.6 15.4 7.4M8.6 13.4 15.4 16.6"/>
+            </svg>
+          </div>
+          <h3 class="mt-5 font-bold text-[17px]" style="color:var(--ink)">Conecta</h3>
+          <p class="mt-2 text-[14.5px] leading-relaxed" style="color:var(--muted)">El sistema la compara con empresas realmente compatibles con tu industria y ciudad — sin publicidad ni prospección en frío.</p>
+        </div>
+        <div class="text-center sm:text-left">
+          <div class="como-funciona-icon mx-auto sm:mx-0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+          </div>
+          <h3 class="mt-5 font-bold text-[17px]" style="color:var(--ink)">Resuelve</h3>
+          <p class="mt-2 text-[14.5px] leading-relaxed" style="color:var(--muted)">Recibe propuestas de quienes de verdad encajan y elige con quién avanzar, todo dentro de la plataforma.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-6 sm:px-8">
   <section id="registro" class="py-16 lg:py-20">
     <div class="max-w-2xl mx-auto px-6 sm:px-8">
 
@@ -705,6 +765,7 @@
       <p class="mockup-caption" style="margin-top:20px">Ejemplo de feed — mientras más completo esté tu perfil de empresa, más precisa será la afinidad calculada.</p>
     </div>
   </section>
+  </div>
   </main>
 
   <footer class="max-w-6xl mx-auto px-6 sm:px-8 py-8 text-[12.5px] text-center sm:text-left" style="color:var(--muted); border-top:1px solid var(--line)">
