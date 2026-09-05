@@ -60,6 +60,47 @@
     0%,100%{transform:translateY(0);}
     50%{transform:translateY(-6px);}
   }
+
+  /* ---- Módulo 2: registro ---- */
+  #registro{background:var(--paper-raised); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .role-btn{
+    flex:1; padding:14px 18px; border-radius:12px; font-weight:600; font-size:14.5px;
+    border:1.5px solid var(--line); color:var(--muted); background:var(--paper); transition:all .15s;
+  }
+  .role-btn.active{border-color:transparent; color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet));}
+  .progress-track{height:6px; border-radius:99px; background:var(--line); overflow:hidden;}
+  .progress-fill{height:100%; border-radius:99px; background:linear-gradient(90deg,var(--cyan),var(--blue)); transition:width .25s ease;}
+  .field label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
+  .field .hint{font-size:12px; color:var(--muted); margin-top:4px;}
+  .field input[type=text], .field input[type=email], .field input[type=tel],
+  .field input[type=number], .field input[type=url], .field select{
+    width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--blue);}
+  .radio-pair{display:flex; gap:10px;}
+  .radio-pair label{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:11px;
+    border:1.5px solid var(--line); border-radius:10px; font-size:14px; font-weight:500; cursor:pointer; color:var(--ink);
+  }
+  .radio-pair input{accent-color:var(--blue);}
+  .radio-pair input:checked + span{color:var(--blue); font-weight:600;}
+  .chip{
+    padding:8px 14px; border-radius:99px; border:1.5px solid var(--line); background:var(--paper);
+    font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; transition:all .15s;
+  }
+  .chip.selected{border-color:transparent; color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet));}
+  .tag-input-box{
+    display:flex; flex-wrap:wrap; gap:8px; padding:9px; border:1.5px solid var(--line); border-radius:10px; background:var(--paper);
+  }
+  .tag-input-box input{border:none; background:transparent; flex:1; min-width:120px; font-size:14.5px; color:var(--ink);}
+  .tag-input-box input:focus{outline:none;}
+  .tag-pill{
+    display:flex; align-items:center; gap:6px; padding:5px 6px 5px 12px; border-radius:99px; font-size:13px; font-weight:500;
+    color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet)); white-space:nowrap;
+  }
+  .tag-pill button{width:18px; height:18px; border-radius:99px; background:rgba(255,255,255,.25); font-size:12px; line-height:1;}
+  .step-panel[hidden]{display:none;}
 </style>
 </head>
 <body class="antialiased">
@@ -105,13 +146,13 @@
 
         <div class="mt-9 flex flex-col sm:flex-row gap-4">
           <div class="flex-1">
-            <button type="button" class="btn-primary w-full text-white font-semibold text-[15px] px-7 py-4 rounded-xl transition">
+            <button type="button" id="ctaDemandante" class="js-cta btn-primary w-full text-white font-semibold text-[15px] px-7 py-4 rounded-xl transition">
               Tengo una necesidad
             </button>
             <p class="mt-2 text-[13px]" style="color:var(--muted)">Personas, empresas, constructoras y entidades públicas</p>
           </div>
           <div class="flex-1">
-            <button type="button" class="btn-secondary w-full font-semibold text-[15px] px-7 py-4 rounded-xl transition" style="background:var(--paper-raised)">
+            <button type="button" id="ctaOferente" class="js-cta btn-secondary w-full font-semibold text-[15px] px-7 py-4 rounded-xl transition" style="background:var(--paper-raised)">
               Busco oportunidades
             </button>
             <p class="mt-2 text-[13px]" style="color:var(--muted)">Empresas de ingeniería y construcción</p>
@@ -170,9 +211,309 @@
     </section>
   </main>
 
+  <section id="registro" class="py-16 lg:py-20">
+    <div class="max-w-2xl mx-auto px-6 sm:px-8">
+
+      <div class="text-center mb-8">
+        <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Regístrate</p>
+        <h2 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Cuéntanos qué necesitas</h2>
+        <p class="mt-3 text-[15px]" style="color:var(--muted)">Dos minutos — estos datos nos ayudan a construir un perfil útil desde el primer día.</p>
+      </div>
+
+      <div class="flex gap-3 mb-8">
+        <button type="button" id="roleBtnDemandante" class="role-btn active">Tengo una necesidad</button>
+        <button type="button" id="roleBtnOferente" class="role-btn">Busco oportunidades</button>
+      </div>
+
+      <div class="mb-8">
+        <div class="progress-track"><div id="progressFill" class="progress-fill" style="width:50%"></div></div>
+        <p id="stepLabel" class="mt-2 text-[12.5px] font-medium" style="color:var(--muted)">Paso 1 de 2</p>
+      </div>
+
+      <form id="registroForm" novalidate>
+
+        <!-- ===== DEMANDANTE ===== -->
+        <div data-panel="demandante">
+          <div data-step="1" class="step-panel space-y-5">
+            <div class="field">
+              <label>¿Publicas como persona o como empresa?</label>
+              <div class="radio-pair">
+                <label><input type="radio" name="d_tipo" value="persona" checked><span>Persona natural</span></label>
+                <label><input type="radio" name="d_tipo" value="empresa"><span>Empresa</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="d_ciudad">Ciudad</label>
+              <input type="text" id="d_ciudad" name="d_ciudad" placeholder="Ej. Medellín" required>
+            </div>
+            <div class="field">
+              <label for="d_sector">Sector económico</label>
+              <select id="d_sector" name="d_sector" required>
+                <option value="">Selecciona un sector</option>
+                <option>Persona natural / Vivienda</option>
+                <option>Construcción / Inmobiliario</option>
+                <option>Manufactura / Industria</option>
+                <option>Comercio / Retail</option>
+                <option>Salud</option>
+                <option>Educación</option>
+                <option>Tecnología</option>
+                <option>Alimentos</option>
+                <option>Sector público</option>
+                <option>Agroindustria</option>
+                <option>Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <div data-step="2" class="step-panel space-y-5" hidden>
+            <div class="field">
+              <label for="d_proyecto">Tipo de proyecto</label>
+              <select id="d_proyecto" name="d_proyecto" required></select>
+            </div>
+            <div class="field">
+              <label for="d_correo">Correo</label>
+              <input type="email" id="d_correo" name="d_correo" placeholder="tucorreo@ejemplo.com" required>
+            </div>
+            <div class="field">
+              <label for="d_telefono">Teléfono</label>
+              <input type="tel" id="d_telefono" name="d_telefono" placeholder="+57 300 000 0000" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== OFERENTE ===== -->
+        <div data-panel="oferente" hidden>
+          <div data-step="1" class="step-panel space-y-5">
+            <div class="field">
+              <label for="o_empresa">Nombre de la empresa</label>
+              <input type="text" id="o_empresa" name="o_empresa" placeholder="Ej. Constructora ABC S.A.S." required>
+            </div>
+            <div class="field">
+              <label for="o_nit">NIT o documento de identidad</label>
+              <input type="text" id="o_nit" name="o_nit" placeholder="Ej. 900.123.456-7" required>
+            </div>
+            <div class="field">
+              <label for="o_experiencia">Años de experiencia</label>
+              <input type="number" id="o_experiencia" name="o_experiencia" min="0" max="80" placeholder="Ej. 8" required>
+            </div>
+            <div class="field">
+              <label for="o_correo">Correo de contacto</label>
+              <input type="email" id="o_correo" name="o_correo" placeholder="contacto@empresa.com" required>
+              <p class="hint">Se agregó este campo porque necesitamos un canal para avisarte de nuevas oportunidades.</p>
+            </div>
+          </div>
+
+          <div data-step="2" class="step-panel space-y-5" hidden>
+            <div class="field">
+              <label>Especialidades</label>
+              <div id="o_especialidades" class="flex flex-wrap gap-2"></div>
+              <input type="hidden" name="o_especialidades_valor" id="o_especialidades_valor">
+            </div>
+            <div class="field">
+              <label for="o_ciudades_input">Ciudades donde opera</label>
+              <div class="tag-input-box" id="o_ciudades_box">
+                <input type="text" id="o_ciudades_input" placeholder="Escribe una ciudad y presiona Enter">
+              </div>
+              <input type="hidden" name="o_ciudades_valor" id="o_ciudades_valor">
+              <p class="hint">Puedes agregar varias.</p>
+            </div>
+          </div>
+
+          <div data-step="3" class="step-panel space-y-5" hidden>
+            <div class="field">
+              <label for="o_empleados">Número de empleados <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
+              <select id="o_empleados" name="o_empleados">
+                <option value="">Prefiero no decirlo</option>
+                <option>1–10</option>
+                <option>11–50</option>
+                <option>51–200</option>
+                <option>Más de 200</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="o_certificaciones_input">Certificaciones <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
+              <div class="tag-input-box" id="o_certificaciones_box">
+                <input type="text" id="o_certificaciones_input" placeholder="Ej. ISO 9001, RETIE — Enter para agregar">
+              </div>
+              <input type="hidden" name="o_certificaciones_valor" id="o_certificaciones_valor">
+            </div>
+            <div class="field">
+              <label for="o_web">Sitio web <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
+              <input type="url" id="o_web" name="o_web" placeholder="https://tuempresa.com">
+            </div>
+            <div class="field">
+              <label for="o_portafolio">Portafolio <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
+              <input type="url" id="o_portafolio" name="o_portafolio" placeholder="Enlace a portafolio, Drive o PDF">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-9">
+          <button type="button" id="btnBack" class="btn-secondary font-semibold text-[14.5px] px-6 py-3 rounded-xl" style="background:var(--paper-raised)" hidden>Atrás</button>
+          <button type="button" id="btnNext" class="btn-primary flex-1 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl">Siguiente</button>
+          <button type="submit" id="btnSubmit" class="btn-primary flex-1 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl" hidden>Enviar registro</button>
+        </div>
+      </form>
+
+      <div id="successState" class="text-center py-10" hidden>
+        <div class="text-4xl mb-3">✓</div>
+        <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Listo, recibimos tu registro!</h3>
+        <p class="mt-2 text-[14.5px] max-w-[42ch] mx-auto" style="color:var(--muted)">Promot IA todavía está en construcción — te escribiremos a tu correo apenas abramos el acceso anticipado.</p>
+      </div>
+
+    </div>
+  </section>
+
   <footer class="max-w-6xl mx-auto px-6 sm:px-8 py-8 text-[12.5px] text-center sm:text-left" style="color:var(--muted); border-top:1px solid var(--line)">
     Promot IA es una marca de Atlas Corporation S.A.S.
   </footer>
 
+<script>
+(function(){
+  var TAXONOMIA = [
+    'Construcción y obra civil','Ingeniería civil y estructural','Arquitectura y diseño',
+    'Ingeniería eléctrica','Ingeniería mecánica e industrial','Ingeniería hidráulica y sanitaria',
+    'Telecomunicaciones y edificios inteligentes','Gerencia y consultoría de proyectos',
+    'Sostenibilidad y certificaciones','Equipos, maquinaria y logística','Seguridad industrial y SST',
+    'Servicios especializados de cierre de obra','Otro'
+  ];
+
+  var selectProyecto = document.getElementById('d_proyecto');
+  TAXONOMIA.forEach(function(cat){
+    var opt = document.createElement('option');
+    opt.textContent = cat;
+    selectProyecto.appendChild(opt);
+  });
+
+  var especialidadesWrap = document.getElementById('o_especialidades');
+  var especialidadesSeleccionadas = [];
+  TAXONOMIA.filter(function(c){ return c !== 'Otro'; }).forEach(function(cat){
+    var chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip';
+    chip.textContent = cat;
+    chip.addEventListener('click', function(){
+      chip.classList.toggle('selected');
+      var idx = especialidadesSeleccionadas.indexOf(cat);
+      if(chip.classList.contains('selected') && idx === -1) especialidadesSeleccionadas.push(cat);
+      if(!chip.classList.contains('selected') && idx !== -1) especialidadesSeleccionadas.splice(idx,1);
+      document.getElementById('o_especialidades_valor').value = especialidadesSeleccionadas.join(', ');
+    });
+    especialidadesWrap.appendChild(chip);
+  });
+
+  function setupTagInput(inputId, boxId, hiddenId){
+    var input = document.getElementById(inputId);
+    var box = document.getElementById(boxId);
+    var hidden = document.getElementById(hiddenId);
+    var tags = [];
+    function render(){
+      box.querySelectorAll('.tag-pill').forEach(function(p){ p.remove(); });
+      tags.forEach(function(t, i){
+        var pill = document.createElement('span');
+        pill.className = 'tag-pill';
+        var label = document.createElement('span');
+        label.textContent = t;
+        var rm = document.createElement('button');
+        rm.type = 'button'; rm.textContent = '×';
+        rm.addEventListener('click', function(){ tags.splice(i,1); render(); });
+        pill.appendChild(label); pill.appendChild(rm);
+        box.insertBefore(pill, input);
+      });
+      hidden.value = tags.join(', ');
+    }
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ','){
+        e.preventDefault();
+        var val = input.value.trim();
+        if(val && tags.indexOf(val) === -1){ tags.push(val); input.value=''; render(); }
+      }
+    });
+    input.addEventListener('blur', function(){
+      var val = input.value.trim();
+      if(val && tags.indexOf(val) === -1){ tags.push(val); input.value=''; render(); }
+    });
+  }
+  setupTagInput('o_ciudades_input','o_ciudades_box','o_ciudades_valor');
+  setupTagInput('o_certificaciones_input','o_certificaciones_box','o_certificaciones_valor');
+
+  var STEPS = { demandante: 2, oferente: 3 };
+  var role = 'demandante';
+  var step = 1;
+
+  var roleBtnDemandante = document.getElementById('roleBtnDemandante');
+  var roleBtnOferente = document.getElementById('roleBtnOferente');
+  var panelDemandante = document.querySelector('[data-panel="demandante"]');
+  var panelOferente = document.querySelector('[data-panel="oferente"]');
+  var progressFill = document.getElementById('progressFill');
+  var stepLabel = document.getElementById('stepLabel');
+  var btnBack = document.getElementById('btnBack');
+  var btnNext = document.getElementById('btnNext');
+  var btnSubmit = document.getElementById('btnSubmit');
+  var form = document.getElementById('registroForm');
+  var successState = document.getElementById('successState');
+
+  function currentPanel(){ return role === 'demandante' ? panelDemandante : panelOferente; }
+
+  function render(){
+    panelDemandante.hidden = role !== 'demandante';
+    panelOferente.hidden = role !== 'oferente';
+    roleBtnDemandante.classList.toggle('active', role === 'demandante');
+    roleBtnOferente.classList.toggle('active', role === 'oferente');
+
+    currentPanel().querySelectorAll('.step-panel').forEach(function(p){
+      p.hidden = Number(p.getAttribute('data-step')) !== step;
+    });
+
+    var total = STEPS[role];
+    progressFill.style.width = Math.round((step/total)*100) + '%';
+    stepLabel.textContent = 'Paso ' + step + ' de ' + total;
+    btnBack.hidden = step === 1;
+    btnNext.hidden = step === total;
+    btnSubmit.hidden = step !== total;
+  }
+
+  function selectRole(newRole){
+    role = newRole; step = 1;
+    form.hidden = false; successState.hidden = true;
+    render();
+  }
+  roleBtnDemandante.addEventListener('click', function(){ selectRole('demandante'); });
+  roleBtnOferente.addEventListener('click', function(){ selectRole('oferente'); });
+
+  function validateStep(){
+    var panel = currentPanel().querySelector('.step-panel[data-step="'+step+'"]');
+    var fields = panel.querySelectorAll('input[required], select[required]');
+    for(var i=0; i<fields.length; i++){
+      if(!fields[i].checkValidity()){ fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+
+  btnNext.addEventListener('click', function(){
+    if(!validateStep()) return;
+    step++; render();
+  });
+  btnBack.addEventListener('click', function(){ step--; render(); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!validateStep()) return;
+    form.hidden = true;
+    successState.hidden = false;
+  });
+
+  document.getElementById('ctaDemandante').addEventListener('click', function(){
+    selectRole('demandante');
+    document.getElementById('registro').scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('ctaOferente').addEventListener('click', function(){
+    selectRole('oferente');
+    document.getElementById('registro').scrollIntoView({behavior:'smooth'});
+  });
+
+  render();
+})();
+</script>
 </body>
 </html>
