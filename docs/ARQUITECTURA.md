@@ -154,7 +154,7 @@ Otra función exclusiva, complementaria al IAC pero midiendo algo distinto: **el
 
 ## 8. El Observatorio de la Demanda
 
-El producto concreto del tercer actor (sección 3): un panel ejecutivo con indicadores en tiempo real sobre cómo se mueve el mercado — pensado para quien quiere entender el mercado, no necesariamente participar en él como demandante u oferente. Así, la plataforma no se limita a conectar dos lados: también genera y vende **conocimiento del mercado** como producto propio.
+El producto concreto del tercer actor (sección 3): un panel ejecutivo con indicadores en tiempo real sobre cómo se mueve el mercado — pensado para quien quiere entender el mercado, no necesariamente participar en él como demandante u oferente. Así, la plataforma no se limita a conectar dos lados: también genera y vende **conocimiento del mercado** como producto propio. Prototipo visual: `app/panel-inteligencia.html` (Pantalla 15).
 
 ### Indicadores del panel
 

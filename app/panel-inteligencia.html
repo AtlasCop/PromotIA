@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Inteligencia — Promot IA</title>
+<meta name="description" content="El Observatorio de la Demanda: indicadores agregados de cómo se mueve el mercado en Promot IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e; --muted:#93a1c2; --line:#243050;
+    --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7; --accent-soft:#182238;
+  }
+  *{box-sizing:border-box;}
+  html,body{background:var(--paper); color:var(--ink); min-height:100%;}
+  body{font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif; font-size:15px;}
+  h1,h2,h3,.brand-word{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  .mono{font-family:'IBM Plex Mono', ui-monospace, monospace;}
+  .grad-text{
+    background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  .app-shell{display:flex; min-height:100vh;}
+  .sidebar{width:250px; flex:none; background:var(--paper-raised); border-right:1px solid var(--line); display:flex; flex-direction:column; padding:20px 14px;}
+  .sidebar-brand{display:flex; align-items:center; gap:9px; padding:6px 8px 22px;}
+  .nav-item{display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:10px; color:var(--muted); font-size:14px; font-weight:500; transition:all .15s;}
+  .nav-item svg{flex:none; opacity:.85;}
+  .nav-item:hover{background:var(--accent-soft); color:var(--ink);}
+  .nav-item.active{background:var(--accent-soft); color:var(--ink);}
+  .nav-item.active svg{opacity:1; color:var(--blue);}
+  .nav-divider{height:1px; background:var(--line); margin:14px 8px;}
+
+  .kpi-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:18px 20px;}
+  .kpi-value{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:24px; font-variant-numeric:tabular-nums;}
+  .kpi-label{font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.35;}
+
+  .chart-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:20px;}
+  .chart-eyebrow{font-size:10.5px; font-weight:600; color:var(--blue); text-transform:uppercase; letter-spacing:.05em;}
+  .chart-title{font-size:14.5px; font-weight:700; margin-top:2px;}
+  .legend-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; font-size:12px; color:var(--muted);}
+  .legend-row .dot{width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:5px;}
+</style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <svg viewBox="0 0 40 40" fill="none" class="w-7 h-7">
+          <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/><circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+          <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/><circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+          <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/><circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+          <g stroke="url(#navgrad)" stroke-width="1.4">
+            <line x1="14" y1="9" x2="5" y2="17"/><line x1="14" y1="9" x2="23" y2="20"/>
+            <line x1="5" y1="17" x2="23" y2="20"/><line x1="5" y1="17" x2="12" y2="26"/>
+            <line x1="23" y1="20" x2="23" y2="30"/><line x1="23" y1="20" x2="12" y2="26"/>
+            <line x1="12" y1="26" x2="23" y2="30"/><line x1="12" y1="26" x2="14" y2="35"/>
+            <line x1="23" y1="30" x2="14" y2="35"/>
+          </g>
+          <defs><linearGradient id="navgrad" x1="0" y1="0" x2="40" y2="40">
+            <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+          </linearGradient></defs>
+        </svg>
+        <span class="brand-word font-bold text-[15.5px]">Promot<span class="grad-text">IA</span></span>
+      </div>
+
+      <nav class="flex flex-col gap-1">
+        <a class="nav-item" href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9"/></svg>Inicio</a>
+        <a class="nav-item" href="oportunidades.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Oportunidades</a>
+        <a class="nav-item" href="chat.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Mensajes</a>
+        <a class="nav-item active" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>Panel de Inteligencia</a>
+        <a class="nav-item" href="planes.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 12.6 12 21.2a2 2 0 0 1-2.8 0l-7.4-7.4a2 2 0 0 1 0-2.8L10.4 2.4a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v7.4a2 2 0 0 1-.6 1.4Z"/><circle cx="14.5" cy="7.5" r="1.5"/></svg>Planes</a>
+        <div class="nav-divider"></div>
+        <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>Ayuda</a>
+        <div class="nav-divider"></div>
+        <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Cerrar sesión</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-8 max-w-5xl">
+      <h1 class="text-[21px] font-bold">Panel de Inteligencia</h1>
+      <p class="text-[13.5px] mt-1 max-w-[62ch]" style="color:var(--muted)">El Observatorio de la Demanda — indicadores agregados de cómo se mueve el mercado. Todos los datos aquí son de ejemplo, ilustran cómo se verá una vez la plataforma tenga tráfico real.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-6">
+        <div class="kpi-card"><span class="kpi-value">127</span><span class="kpi-label block">Oportunidades publicadas</span></div>
+        <div class="kpi-card"><span class="kpi-value">$4.850M</span><span class="kpi-label block">Valor de mercado generado (COP)</span></div>
+        <div class="kpi-card"><span class="kpi-value" style="color:#3ecf7a">+18%</span><span class="kpi-label block">Crecimiento mensual</span></div>
+        <div class="kpi-card"><span class="kpi-value">2,6h</span><span class="kpi-label block">Tiempo prom. al primer contacto</span></div>
+        <div class="kpi-card"><span class="kpi-value">71%</span><span class="kpi-label block">Necesidades atendidas</span></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5 mt-6">
+        <div class="chart-card">
+          <p class="chart-eyebrow">Servicios más solicitados</p>
+          <h2 class="chart-title">Oportunidades por industria</h2>
+          <div style="position:relative; height:220px; margin-top:14px;">
+            <canvas id="chartIndustria" role="img" aria-label="Gráfico de dona: distribución de oportunidades por industria. Construcción y obra civil 38%, Ingeniería civil y estructural 22%, Ingeniería eléctrica 15%, Ingeniería mecánica e industrial 13%, Otros 12%.">Construcción y obra civil 38%, Ingeniería civil y estructural 22%, Ingeniería eléctrica 15%, Ingeniería mecánica e industrial 13%, Otros 12%.</canvas>
+          </div>
+          <div class="legend-row" id="legendIndustria"></div>
+        </div>
+
+        <div class="chart-card">
+          <p class="chart-eyebrow">Regiones con mayor actividad</p>
+          <h2 class="chart-title">Oportunidades por ciudad</h2>
+          <div style="position:relative; height:220px; margin-top:14px;">
+            <canvas id="chartCiudad" role="img" aria-label="Gráfico de barras: oportunidades por ciudad. Medellín 34, Bogotá 27, Cali 19, Barranquilla 12, Bucaramanga 8.">Medellín 34, Bogotá 27, Cali 19, Barranquilla 12, Bucaramanga 8.</canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card mt-5">
+        <p class="chart-eyebrow">Tendencia (Capa 4 del Motor de Inteligencia de Demanda)</p>
+        <h2 class="chart-title">Oportunidades publicadas por mes</h2>
+        <div style="position:relative; height:240px; margin-top:14px;">
+          <canvas id="chartTendencia" role="img" aria-label="Gráfico de línea: oportunidades publicadas por mes, de enero a junio. Enero 14, Febrero 18, Marzo 21, Abril 19, Mayo 26, Junio 29 — tendencia creciente.">Enero 14, Febrero 18, Marzo 21, Abril 19, Mayo 26, Junio 29.</canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  var INDUSTRIA_LABELS = ['Construcción y obra civil','Ingeniería civil y estructural','Ingeniería eléctrica','Ingeniería mecánica e industrial','Otros'];
+  var INDUSTRIA_DATA = [38,22,15,13,12];
+  var INDUSTRIA_COLORS = ['#6f92ff','#3fd2f2','#a685f7','#3ecf7a','#374766'];
+
+  new Chart(document.getElementById('chartIndustria'), {
+    type: 'doughnut',
+    data: { labels: INDUSTRIA_LABELS, datasets: [{ data: INDUSTRIA_DATA, backgroundColor: INDUSTRIA_COLORS, borderColor: '#111a2e', borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '62%' }
+  });
+
+  var legendEl = document.getElementById('legendIndustria');
+  INDUSTRIA_LABELS.forEach(function(label, i){
+    var span = document.createElement('span');
+    span.innerHTML = '<span class="dot" style="background:' + INDUSTRIA_COLORS[i] + '"></span>' + label + ' ' + INDUSTRIA_DATA[i] + '%';
+    legendEl.appendChild(span);
+  });
+
+  new Chart(document.getElementById('chartCiudad'), {
+    type: 'bar',
+    data: {
+      labels: ['Medellín','Bogotá','Cali','Barranquilla','Bucaramanga'],
+      datasets: [{ data: [34,27,19,12,8], backgroundColor: '#6f92ff', borderRadius: 4, maxBarThickness: 32 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#243050' }, ticks: { color: '#93a1c2' } },
+        x: { grid: { display: false }, ticks: { color: '#93a1c2' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartTendencia'), {
+    type: 'line',
+    data: {
+      labels: ['Ene','Feb','Mar','Abr','May','Jun'],
+      datasets: [{
+        data: [14,18,21,19,26,29], borderColor: '#3fd2f2', backgroundColor: 'rgba(63,210,242,0.1)',
+        borderWidth: 2, fill: true, tension: 0.35, pointBackgroundColor: '#3fd2f2', pointBorderColor: '#111a2e', pointBorderWidth: 2, pointRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#243050' }, ticks: { color: '#93a1c2' } },
+        x: { grid: { display: false }, ticks: { color: '#93a1c2' } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
