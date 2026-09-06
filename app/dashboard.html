@@ -10,6 +10,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-client.js"></script>
+<script src="../session-timeout.js"></script>
 <style>
   :root{
     --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e; --muted:#93a1c2; --line:#243050;
@@ -296,6 +297,7 @@
     var nombre = (perfil.data && perfil.data.nombre) || sesion.data.session.user.email;
     document.getElementById('saludoNombreDemandante').textContent = nombre;
     document.getElementById('saludoNombreEmpresa').textContent = nombre;
+    initSessionTimeout('../login.html');
   })();
 </script>
 </body>
