@@ -123,6 +123,33 @@
   .stepper-circle.done{border-color:transparent; background:linear-gradient(135deg,var(--cyan),var(--blue)); color:#fff;}
   .stepper-label{margin-top:9px; font-size:11px; font-weight:500; color:var(--muted); text-align:center; padding:0 4px;}
   .stepper-label.active{color:var(--ink); font-weight:600;}
+
+  /* ---- Paso "Elige tu plan" (solo empresas/oferentes) ---- */
+  .plan-card{
+    background:var(--paper-raised); border:1.5px solid var(--line); border-radius:16px; padding:20px 16px;
+    display:flex; flex-direction:column; position:relative; text-align:left;
+  }
+  .plan-card.featured{border-color:var(--blue);}
+  .plan-card.selected{border-color:var(--blue); box-shadow:0 0 0 2px var(--blue);}
+  .plan-ribbon{
+    position:absolute; top:-11px; left:50%; transform:translateX(-50%); white-space:nowrap;
+    background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff; font-size:10px; font-weight:700;
+    padding:3px 12px; border-radius:999px;
+  }
+  .plan-name{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
+  .plan-price{font-size:24px; font-weight:800; margin-top:8px; font-family:'IBM Plex Mono',monospace; color:var(--ink);}
+  .plan-price .period{font-size:12px; font-weight:500; color:var(--muted); font-family:'Source Sans 3',sans-serif;}
+  .plan-credits{font-size:12.5px; color:var(--blue); font-weight:600; margin-top:4px;}
+  .plan-sub{font-size:11px; color:var(--muted); margin-top:2px;}
+  .plan-btn{
+    margin-top:16px; width:100%; padding:9px; border-radius:10px; font-weight:600; font-size:13px; text-align:center;
+    border:1.5px solid var(--line); color:var(--ink); background:transparent; cursor:pointer;
+  }
+  .plan-btn.featured{border:none; background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff;}
+  .billing-toggle{display:inline-flex; background:var(--accent-soft); border:1px solid var(--line); border-radius:999px; padding:4px;}
+  .billing-toggle button{font-size:13px; font-weight:600; padding:7px 16px; border-radius:999px; color:var(--muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:6px;}
+  .billing-toggle button.active{background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff;}
+  .save-tag{font-size:10px; font-weight:700; background:rgba(62,207,122,.18); color:#3ecf7a; padding:1px 7px; border-radius:99px;}
 </style>
 </head>
 <body class="antialiased">
@@ -269,7 +296,8 @@
           <div class="stepper">
             <div class="stepper-item"><span class="stepper-line" id="soLine1"></span><span class="stepper-circle active" id="soCircle1">1</span><span class="stepper-label active" id="soLabel1">Tu empresa</span></div>
             <div class="stepper-item"><span class="stepper-line" id="soLine2"></span><span class="stepper-circle" id="soCircle2">2</span><span class="stepper-label" id="soLabel2">Especialidades</span></div>
-            <div class="stepper-item"><span class="stepper-circle" id="soCircle3">3</span><span class="stepper-label" id="soLabel3">Perfil adicional</span></div>
+            <div class="stepper-item"><span class="stepper-line" id="soLine3"></span><span class="stepper-circle" id="soCircle3">3</span><span class="stepper-label" id="soLabel3">Perfil adicional</span></div>
+            <div class="stepper-item"><span class="stepper-circle" id="soCircle4">4</span><span class="stepper-label" id="soLabel4">Elige tu plan</span></div>
           </div>
           <div data-step="1" class="step-panel space-y-5">
             <div class="field">
@@ -356,6 +384,46 @@
               <label for="o_portafolio">Portafolio <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
               <input type="url" id="o_portafolio" name="o_portafolio" placeholder="Enlace a portafolio, Drive o PDF">
             </div>
+          </div>
+
+          <div data-step="4" class="step-panel space-y-5" hidden>
+            <div class="text-center">
+              <h3 class="font-bold text-[16px]" style="color:var(--ink)">Elige el plan de tu empresa</h3>
+              <p class="mt-1.5 text-[13px]" style="color:var(--muted)">Solo las empresas pagan un plan — publicar una necesidad como demandante siempre es gratis. Tu cuenta nueva recibe 1 crédito de bienvenida para desbloquear tu primera oportunidad sin costo.</p>
+            </div>
+            <div class="text-center">
+              <div class="billing-toggle" id="wizBillingToggle">
+                <button type="button" id="wizBtnMensual" class="active">Mensual</button>
+                <button type="button" id="wizBtnAnual">Anual <span class="save-tag">Ahorra 10%</span></button>
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-4" id="wizPlanesGrid">
+              <div class="plan-card" data-plan="bronce">
+                <span class="plan-name">Bronce</span>
+                <div class="plan-price"><span id="wizPriceBronce">$19</span><span class="period">/mes</span></div>
+                <p class="plan-sub" id="wizSubBronce">Facturado mensualmente</p>
+                <p class="plan-credits">1 crédito mensual</p>
+                <button type="button" class="plan-btn" data-plan-btn="bronce">Seleccionar</button>
+              </div>
+              <div class="plan-card featured" data-plan="plata">
+                <span class="plan-ribbon">Más popular</span>
+                <span class="plan-name">Plata</span>
+                <div class="plan-price"><span id="wizPricePlata">$99</span><span class="period">/mes</span></div>
+                <p class="plan-sub" id="wizSubPlata">Facturado mensualmente</p>
+                <p class="plan-credits">10 créditos mensuales</p>
+                <button type="button" class="plan-btn featured" data-plan-btn="plata">Seleccionar</button>
+              </div>
+              <div class="plan-card" data-plan="oro">
+                <span class="plan-name">Oro</span>
+                <div class="plan-price"><span id="wizPriceOro">$299</span><span class="period">/mes</span></div>
+                <p class="plan-sub" id="wizSubOro">Facturado mensualmente</p>
+                <p class="plan-credits">Créditos ilimitados</p>
+                <button type="button" class="plan-btn" data-plan-btn="oro">Seleccionar</button>
+              </div>
+            </div>
+            <input type="hidden" id="o_plan_valor" name="o_plan_valor" value="plata">
+            <input type="hidden" id="o_facturacion_valor" name="o_facturacion_valor" value="mensual">
+            <p class="text-center text-[12px]" style="color:var(--muted)">Podrás cambiar de plan cuando quieras desde tu cuenta.</p>
           </div>
         </div>
 
@@ -571,7 +639,65 @@
 
   attachAutocomplete(document.getElementById('d_ciudad'), document.getElementById('d_ciudad_lista'), CIUDADES_COLOMBIA);
 
-  var STEPS = { demandante: 2, oferente: 3 };
+  // ---- Paso "Elige tu plan" (solo empresas/oferentes) ----
+  var PLANES_WIZARD = { bronce: 19, plata: 99, oro: 299 };
+  var DESCUENTO_ANUAL_WIZARD = 0.10;
+  var planSeleccionado = 'plata';
+  var facturacionSeleccionada = 'mensual';
+
+  function fmtWizard(n){ return '$' + n.toLocaleString('en-US', {maximumFractionDigits:2, minimumFractionDigits:(n % 1 !== 0) ? 2 : 0}); }
+
+  function renderPreciosWizard(anual){
+    Object.keys(PLANES_WIZARD).forEach(function(id){
+      var mensual = PLANES_WIZARD[id];
+      var nombreCap = id.charAt(0).toUpperCase() + id.slice(1);
+      var priceEl = document.getElementById('wizPrice' + nombreCap);
+      var subEl = document.getElementById('wizSub' + nombreCap);
+      if(anual){
+        var totalAnual = mensual * 12 * (1 - DESCUENTO_ANUAL_WIZARD);
+        priceEl.textContent = fmtWizard(totalAnual / 12);
+        subEl.textContent = fmtWizard(totalAnual) + ' facturados una vez al año';
+      } else {
+        priceEl.textContent = fmtWizard(mensual);
+        subEl.textContent = 'Facturado mensualmente';
+      }
+    });
+  }
+
+  function actualizarSeleccionPlan(){
+    document.querySelectorAll('#wizPlanesGrid [data-plan]').forEach(function(card){
+      var seleccionada = card.getAttribute('data-plan') === planSeleccionado;
+      card.classList.toggle('selected', seleccionada);
+      card.querySelector('[data-plan-btn]').textContent = seleccionada ? 'Plan seleccionado ✓' : 'Seleccionar';
+    });
+    document.getElementById('o_plan_valor').value = planSeleccionado;
+  }
+
+  document.querySelectorAll('#wizPlanesGrid [data-plan-btn]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      planSeleccionado = btn.closest('[data-plan]').getAttribute('data-plan');
+      actualizarSeleccionPlan();
+    });
+  });
+
+  var wizBtnMensual = document.getElementById('wizBtnMensual');
+  var wizBtnAnual = document.getElementById('wizBtnAnual');
+  wizBtnMensual.addEventListener('click', function(){
+    wizBtnMensual.classList.add('active'); wizBtnAnual.classList.remove('active');
+    facturacionSeleccionada = 'mensual';
+    document.getElementById('o_facturacion_valor').value = facturacionSeleccionada;
+    renderPreciosWizard(false);
+  });
+  wizBtnAnual.addEventListener('click', function(){
+    wizBtnAnual.classList.add('active'); wizBtnMensual.classList.remove('active');
+    facturacionSeleccionada = 'anual';
+    document.getElementById('o_facturacion_valor').value = facturacionSeleccionada;
+    renderPreciosWizard(true);
+  });
+
+  actualizarSeleccionPlan();
+
+  var STEPS = { demandante: 2, oferente: 4 };
   var role = 'demandante';
   var step = 1;
 
@@ -753,7 +879,12 @@
         o_certificaciones: certificacionesTexto ? certificacionesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [],
         o_empleados: document.getElementById('o_empleados').value,
         o_web: document.getElementById('o_web').value,
-        o_portafolio: document.getElementById('o_portafolio').value
+        o_portafolio: document.getElementById('o_portafolio').value,
+        // Preferencia de plan elegida en el wizard — todavía no hay cobro real
+        // (falta integrar Stripe), así que por ahora solo queda registrada aquí
+        // para activarla cuando exista el flujo de pago.
+        o_plan: document.getElementById('o_plan_valor').value,
+        o_facturacion: document.getElementById('o_facturacion_valor').value
       };
     }
     // Solo las cuentas "empresa" pueden ser demandante; el wizard de oferente
