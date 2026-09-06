@@ -335,10 +335,10 @@
               <label for="o_empleados">Número de empleados <span class="font-normal" style="color:var(--muted)">(opcional)</span></label>
               <select id="o_empleados" name="o_empleados">
                 <option value="">Prefiero no decirlo</option>
-                <option>1–10</option>
-                <option>11–50</option>
-                <option>51–200</option>
-                <option>Más de 200</option>
+                <option value="1-10">1–10</option>
+                <option value="11-50">11–50</option>
+                <option value="51-200">51–200</option>
+                <option value="200+">Más de 200</option>
               </select>
             </div>
             <div class="field">
@@ -723,17 +723,38 @@
     var errorEl = document.getElementById('registroError');
     errorEl.hidden = true;
 
-    var email, password, nombre, telefono;
+    var email, password, nombre, telefono, metadataExtra;
     if(role === 'demandante'){
       email = document.getElementById('d_correo').value;
       password = document.getElementById('d_password').value;
       telefono = document.getElementById('d_telefono').value;
       nombre = email.split('@')[0];
+      metadataExtra = {
+        registro_rol: 'demandante',
+        d_tipo_cliente: document.querySelector('input[name="d_tipo"]:checked').value,
+        d_ciudad: document.getElementById('d_ciudad').value,
+        d_sector: document.getElementById('d_sector').value
+      };
     } else {
       email = document.getElementById('o_correo').value;
       password = document.getElementById('o_password').value;
       telefono = '';
       nombre = document.getElementById('o_empresa').value;
+      var ciudadesTexto = document.getElementById('o_ciudades_valor').value;
+      var certificacionesTexto = document.getElementById('o_certificaciones_valor').value;
+      metadataExtra = {
+        registro_rol: 'oferente',
+        o_nombre_empresa: document.getElementById('o_empresa').value,
+        o_nit: document.getElementById('o_nit').value,
+        o_experiencia: document.getElementById('o_experiencia').value,
+        o_correo_contacto: document.getElementById('o_correo').value,
+        o_especialidades: especialidadesSeleccionadas,
+        o_ciudades: ciudadesTexto ? ciudadesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [],
+        o_certificaciones: certificacionesTexto ? certificacionesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [],
+        o_empleados: document.getElementById('o_empleados').value,
+        o_web: document.getElementById('o_web').value,
+        o_portafolio: document.getElementById('o_portafolio').value
+      };
     }
     // Solo las cuentas "empresa" pueden ser demandante; el wizard de oferente
     // no pregunta hoy si es "empresa" (dual-rol) o "proveedor" (solo oferente),
@@ -744,11 +765,17 @@
     btnSubmit.disabled = true;
     btnSubmit.textContent = 'Enviando...';
 
+    var metadata = Object.assign({ tipo_cuenta: tipoCuenta, nombre: nombre, telefono: telefono }, metadataExtra);
+
     var resultado = await supabaseClient.auth.signUp({
       email: email,
       password: password,
       options: {
-        data: { tipo_cuenta: tipoCuenta, nombre: nombre, telefono: telefono },
+        // Se guarda todo el detalle del wizard aquí (no solo tipo_cuenta/nombre/
+        // telefono) porque con la confirmación de correo activada no hay sesión
+        // para insertar perfiles_demandante/perfiles_oferente en este momento —
+        // login.html completa el perfil leyendo esto la primera vez que entra.
+        data: metadata,
         // El "Site URL" del dashboard de Supabase solo aplica como dominio base,
         // no respeta una ruta — hay que pedir la página exacta aquí para que el
         // link del correo de confirmación caiga en login.html y no en la raíz.

@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-client.js"></script>
 <style>
   :root{
     --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e; --muted:#93a1c2; --line:#243050;
@@ -111,7 +113,7 @@
         <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>Mi perfil</a>
         <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>Ayuda</a>
         <div class="nav-divider"></div>
-        <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Cerrar sesión</a>
+        <a class="nav-item logout-link" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Cerrar sesión</a>
       </nav>
 
       <nav id="navEmpresa" class="flex flex-col gap-1" hidden>
@@ -127,7 +129,7 @@
         <a class="nav-item" href="planes.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 12.6 12 21.2a2 2 0 0 1-2.8 0l-7.4-7.4a2 2 0 0 1 0-2.8L10.4 2.4a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v7.4a2 2 0 0 1-.6 1.4Z"/><circle cx="14.5" cy="7.5" r="1.5"/></svg>Planes</a>
         <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>Ayuda</a>
         <div class="nav-divider"></div>
-        <a class="nav-item" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Cerrar sesión</a>
+        <a class="nav-item logout-link" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Cerrar sesión</a>
       </nav>
     </aside>
 
@@ -137,7 +139,7 @@
       <div id="viewDemandante">
         <div class="flex items-start justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h1 class="text-[22px] font-bold">Hola, Carlos 👋</h1>
+            <h1 class="text-[22px] font-bold">Hola, <span id="saludoNombreDemandante">Carlos</span> 👋</h1>
             <p class="text-[14px] mt-1" style="color:var(--muted)">Aquí tienes el resumen de tus oportunidades.</p>
           </div>
           <button type="button" class="flex items-center gap-2 text-white font-semibold text-[13.5px] px-5 py-2.5 rounded-xl" style="background:linear-gradient(90deg,var(--blue),var(--violet))">
@@ -187,7 +189,7 @@
       <div id="viewEmpresa" hidden>
         <div class="flex items-start justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h1 class="text-[22px] font-bold">Hola, Constructora ABC S.A.S. 👋</h1>
+            <h1 class="text-[22px] font-bold">Hola, <span id="saludoNombreEmpresa">Constructora ABC S.A.S.</span> 👋</h1>
             <p class="text-[14px] mt-1" style="color:var(--muted)">Descubre nuevas oportunidades de negocio.</p>
           </div>
         </div>
@@ -250,16 +252,22 @@
   demoBtnDemandante.addEventListener('click', function(){ showView('demandante'); });
   demoBtnEmpresa.addEventListener('click', function(){ showView('empresa'); });
 
-  // ---- Tipo de cuenta según el login (?tipo=empresa|proveedor) ----
-  // Un proveedor solo puede ser oferente: se bloquea en la vista Empresa, sin selector.
-  // Una empresa puede ser demandante y oferente: conserva el selector, ya sin el aviso de "solo demo".
+  // ---- Tipo de cuenta según el login (?tipo=empresa|proveedor|demandante) ----
+  // demandante: solo publica necesidades, nunca paga — no ve ni puede pasar a la vista Empresa.
+  // proveedor: solo puede ser oferente — se bloquea en la vista Empresa, sin selector.
+  // empresa: puede ser demandante y oferente — conserva el selector.
   var tipo = new URLSearchParams(window.location.search).get('tipo');
   var demoBar = document.getElementById('demoBar');
   var demoBarLabel = document.getElementById('demoBarLabel');
   var demoPill = document.getElementById('demoPill');
   var demoBarNote = document.getElementById('demoBarNote');
 
-  if (tipo === 'proveedor') {
+  if (tipo === 'demandante') {
+    showView('demandante');
+    demoPill.hidden = true;
+    demoBarLabel.textContent = 'Cuenta de demandante —';
+    demoBarNote.textContent = 'Tu cuenta solo publica necesidades — para buscar oportunidades hay que crear una cuenta de empresa.';
+  } else if (tipo === 'proveedor') {
     showView('empresa');
     demoPill.hidden = true;
     demoBarLabel.textContent = 'Cuenta de proveedor —';
@@ -268,6 +276,27 @@
     demoBarLabel.textContent = 'Actuando como —';
     demoBarNote.textContent = 'Tu cuenta de empresa puede publicar necesidades y también buscar oportunidades.';
   }
+
+  // ---- Sesión real: si no hay nadie logueado, no tiene sentido mostrar el panel ----
+  document.querySelectorAll('.logout-link').forEach(function(a){
+    a.addEventListener('click', async function(e){
+      e.preventDefault();
+      await supabaseClient.auth.signOut();
+      window.location.href = '../login.html';
+    });
+  });
+
+  (async function cargarSesion(){
+    var sesion = await supabaseClient.auth.getSession();
+    if(!sesion.data.session){
+      window.location.href = '../login.html';
+      return;
+    }
+    var perfil = await supabaseClient.from('perfiles').select('nombre').eq('id', sesion.data.session.user.id).single();
+    var nombre = (perfil.data && perfil.data.nombre) || sesion.data.session.user.email;
+    document.getElementById('saludoNombreDemandante').textContent = nombre;
+    document.getElementById('saludoNombreEmpresa').textContent = nombre;
+  })();
 </script>
 </body>
 </html>

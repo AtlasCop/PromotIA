@@ -169,11 +169,58 @@
     'Email not confirmed': 'Todavía no confirmaste tu correo — revisa tu bandeja de entrada (y spam) y haz click en el enlace de confirmación antes de iniciar sesión.'
   };
 
-  async function irADashboard(userId){
-    // El tipo de cuenta real vive en la base de datos, no en la pestaña que se
-    // haya tocado antes de iniciar sesión — esa pestaña es solo informativa.
-    var perfil = await supabaseClient.from('perfiles').select('tipo_cuenta').eq('id', userId).single();
-    var tipoReal = (perfil.data && perfil.data.tipo_cuenta) || tipoActivo;
+  // Con la confirmación de correo activada, no hay sesión en el momento del
+  // registro para crear perfiles_demandante/perfiles_oferente — quedó guardado
+  // en los metadatos de la cuenta (registro.html) y se completa aquí, la
+  // primera vez que hay sesión real.
+  async function completarPerfilSiFalta(user){
+    var meta = user.user_metadata || {};
+    var rol = meta.registro_rol;
+    if(!rol) return; // cuentas creadas antes de este cambio: no hay nada que completar
+
+    if(rol === 'demandante'){
+      var existente = await supabaseClient.from('perfiles_demandante').select('perfil_id').eq('perfil_id', user.id).maybeSingle();
+      if(!existente.data){
+        await supabaseClient.from('perfiles_demandante').insert({
+          perfil_id: user.id,
+          tipo_cliente: meta.d_tipo_cliente || 'persona',
+          ciudad: meta.d_ciudad || null,
+          sector_economico: meta.d_sector || null
+        });
+      }
+    } else if(rol === 'oferente'){
+      var existenteOf = await supabaseClient.from('perfiles_oferente').select('oferente_id').eq('oferente_id', user.id).maybeSingle();
+      if(!existenteOf.data){
+        var especialidadesIds = [];
+        if(meta.o_especialidades && meta.o_especialidades.length){
+          var resInd = await supabaseClient.from('industrias').select('id, nombre').in('nombre', meta.o_especialidades);
+          especialidadesIds = (resInd.data || []).map(function(i){ return i.id; });
+        }
+        await supabaseClient.from('perfiles_oferente').insert({
+          oferente_id: user.id,
+          nombre_empresa: meta.o_nombre_empresa || null,
+          nit: meta.o_nit || null,
+          experiencia_anios: meta.o_experiencia ? Number(meta.o_experiencia) : null,
+          correo_contacto: meta.o_correo_contacto || null,
+          especialidades: especialidadesIds,
+          ciudades_operacion: meta.o_ciudades || [],
+          certificaciones: meta.o_certificaciones || [],
+          tamano_empresa: meta.o_empleados || null,
+          sitio_web: meta.o_web || null,
+          portafolio_url: meta.o_portafolio || null
+        });
+      }
+    }
+  }
+
+  async function irADashboard(user){
+    await completarPerfilSiFalta(user);
+    // Quién puede ver las dos pestañas (Demandante/Empresa) ya no depende de
+    // tipo_cuenta sino de si la cuenta realmente tiene un perfil de oferente:
+    // quien solo se registró para publicar una necesidad no debe ver ni poder
+    // pasar a la vista de empresa — para eso hay que registrarse como empresa.
+    var tieneOferente = await supabaseClient.from('perfiles_oferente').select('oferente_id').eq('oferente_id', user.id).maybeSingle();
+    var tipoReal = tieneOferente.data ? 'empresa' : 'demandante';
     window.location.href = 'app/dashboard.html?tipo=' + tipoReal;
   }
 
@@ -184,7 +231,7 @@
   (async function revisarSesionExistente(){
     var sesion = await supabaseClient.auth.getSession();
     if(sesion.data.session){
-      await irADashboard(sesion.data.session.user.id);
+      await irADashboard(sesion.data.session.user);
     }
   })();
 
@@ -208,7 +255,7 @@
       return;
     }
 
-    await irADashboard(resultado.data.user.id);
+    await irADashboard(resultado.data.user);
   });
 </script>
 </body>
