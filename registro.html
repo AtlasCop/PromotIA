@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <style>
   :root{
     --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
@@ -229,6 +231,10 @@
               <input type="email" id="d_correo" name="d_correo" placeholder="tucorreo@ejemplo.com" required>
             </div>
             <div class="field">
+              <label for="d_password">Contraseña</label>
+              <input type="password" id="d_password" name="d_password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+            </div>
+            <div class="field">
               <label for="d_telefono">Teléfono</label>
               <input type="tel" id="d_telefono" name="d_telefono" placeholder="+57 300 000 0000" required>
             </div>
@@ -259,6 +265,10 @@
               <label for="o_correo">Correo de contacto</label>
               <input type="email" id="o_correo" name="o_correo" placeholder="contacto@empresa.com" required>
               <p class="hint">Se agregó este campo porque necesitamos un canal para avisarte de nuevas oportunidades.</p>
+            </div>
+            <div class="field">
+              <label for="o_password">Contraseña</label>
+              <input type="password" id="o_password" name="o_password" placeholder="Mínimo 6 caracteres" minlength="6" required>
             </div>
           </div>
 
@@ -310,6 +320,8 @@
           </div>
         </div>
 
+        <p id="registroError" class="text-center text-[13.5px] mt-4" style="color:#dc2626" hidden></p>
+
         <div class="flex gap-3 mt-9">
           <button type="button" id="btnBack" class="btn-secondary font-semibold text-[14.5px] px-6 py-3 rounded-xl" style="background:var(--paper-raised)" hidden>Atrás</button>
           <button type="button" id="btnNext" class="btn-primary flex-1 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl">Siguiente</button>
@@ -319,9 +331,9 @@
 
       <div id="successState" class="text-center py-10" hidden>
         <div class="text-4xl mb-3">✓</div>
-        <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Listo, recibimos tu registro!</h3>
-        <p class="mt-2 text-[14.5px] max-w-[42ch] mx-auto" style="color:var(--muted)">Promot IA todavía está en construcción — te escribiremos a tu correo apenas abramos el acceso anticipado.</p>
-        <button type="button" id="btnIrPublicar" class="btn-primary mt-6 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl" hidden>Publicar mi primera necesidad →</button>
+        <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Revisa tu correo!</h3>
+        <p class="mt-2 text-[14.5px] max-w-[42ch] mx-auto" style="color:var(--muted)">Te enviamos un correo de confirmación a <strong id="successEmail"></strong>. Haz click en el enlace para activar tu cuenta y luego inicia sesión.</p>
+        <a href="login.html" class="btn-primary mt-6 inline-block text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl">Ir a iniciar sesión →</a>
       </div>
 
       </div>
@@ -596,16 +608,100 @@
   });
   btnBack.addEventListener('click', function(){ step--; render(); });
 
-  var btnIrPublicar = document.getElementById('btnIrPublicar');
-  form.addEventListener('submit', function(e){
+  async function completarPerfilExtendido(userId){
+    try{
+      if(role === 'demandante'){
+        await supabaseClient.from('perfiles_demandante').insert({
+          perfil_id: userId,
+          tipo_cliente: document.querySelector('input[name="d_tipo"]:checked').value,
+          ciudad: document.getElementById('d_ciudad').value,
+          sector_economico: document.getElementById('d_sector').value
+        });
+      } else {
+        var ciudadesTexto = document.getElementById('o_ciudades_valor').value;
+        var ciudades = ciudadesTexto ? ciudadesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+        var certificacionesTexto = document.getElementById('o_certificaciones_valor').value;
+        var certificaciones = certificacionesTexto ? certificacionesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+
+        var especialidadesIds = [];
+        if(especialidadesSeleccionadas.length){
+          var resIndustrias = await supabaseClient.from('industrias').select('id, nombre').in('nombre', especialidadesSeleccionadas);
+          especialidadesIds = (resIndustrias.data || []).map(function(i){ return i.id; });
+        }
+
+        await supabaseClient.from('perfiles_oferente').insert({
+          oferente_id: userId,
+          nombre_empresa: document.getElementById('o_empresa').value,
+          nit: document.getElementById('o_nit').value,
+          experiencia_anios: Number(document.getElementById('o_experiencia').value) || null,
+          correo_contacto: document.getElementById('o_correo').value,
+          especialidades: especialidadesIds,
+          ciudades_operacion: ciudades,
+          certificaciones: certificaciones,
+          tamano_empresa: document.getElementById('o_empleados').value || null,
+          sitio_web: document.getElementById('o_web').value || null,
+          portafolio_url: document.getElementById('o_portafolio').value || null
+        });
+      }
+    } catch(err){
+      // El registro (cuenta + correo) ya quedó hecho aunque esto falle — solo
+      // se pierde el detalle extendido del perfil, que se puede completar después.
+      console.error('No se pudo completar el perfil extendido:', err);
+    }
+  }
+
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
     if(!validateStep()) return;
+
+    var errorEl = document.getElementById('registroError');
+    errorEl.hidden = true;
+
+    var email, password, nombre, telefono;
+    if(role === 'demandante'){
+      email = document.getElementById('d_correo').value;
+      password = document.getElementById('d_password').value;
+      telefono = document.getElementById('d_telefono').value;
+      nombre = email.split('@')[0];
+    } else {
+      email = document.getElementById('o_correo').value;
+      password = document.getElementById('o_password').value;
+      telefono = '';
+      nombre = document.getElementById('o_empresa').value;
+    }
+    // Solo las cuentas "empresa" pueden ser demandante; el wizard de oferente
+    // no pregunta hoy si es "empresa" (dual-rol) o "proveedor" (solo oferente),
+    // así que por ahora se asume "empresa" — falta decidir si agregar esa
+    // pregunta al wizard de oferente.
+    var tipoCuenta = 'empresa';
+
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Enviando...';
+
+    var resultado = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { tipo_cuenta: tipoCuenta, nombre: nombre, telefono: telefono } }
+    });
+
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = 'Enviar registro';
+
+    if(resultado.error){
+      errorEl.textContent = resultado.error.message;
+      errorEl.hidden = false;
+      return;
+    }
+
+    if(resultado.data.session){
+      // La confirmación de correo está desactivada en el proyecto: ya hay
+      // sesión activa, así que completamos el perfil extendido de una vez.
+      await completarPerfilExtendido(resultado.data.user.id);
+    }
+
     form.hidden = true;
     successState.hidden = false;
-    btnIrPublicar.hidden = role !== 'demandante';
-  });
-  btnIrPublicar.addEventListener('click', function(){
-    window.location.href = 'publicar.html';
+    document.getElementById('successEmail').textContent = email;
   });
 
   // Si se llega con ?rol=demandante|oferente (ej. desde los botones del landing), salta el selector.

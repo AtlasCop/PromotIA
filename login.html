@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <style>
   :root{
     --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
@@ -105,7 +107,8 @@
         <div class="text-right">
           <a href="#" class="text-[13px] font-medium" style="color:var(--blue)">¿Olvidaste tu contraseña?</a>
         </div>
-        <button type="submit" class="btn-primary w-full text-white font-semibold text-[15px] px-6 py-3 rounded-xl transition">
+        <p id="loginError" class="text-[13.5px] text-center" style="color:#dc2626" hidden></p>
+        <button type="submit" id="loginSubmit" class="btn-primary w-full text-white font-semibold text-[15px] px-6 py-3 rounded-xl transition">
           Iniciar sesión
         </button>
       </form>
@@ -134,9 +137,40 @@
   tabEmpresa.addEventListener('click', function(){ setTipo('empresa'); });
   tabProveedor.addEventListener('click', function(){ setTipo('proveedor'); });
 
-  loginForm.addEventListener('submit', function(e){
+  var loginSubmit = document.getElementById('loginSubmit');
+  var loginError = document.getElementById('loginError');
+
+  var MENSAJES_ERROR = {
+    'Invalid login credentials': 'Correo o contraseña incorrectos.',
+    'Email not confirmed': 'Todavía no confirmaste tu correo — revisa tu bandeja de entrada (y spam) y haz click en el enlace de confirmación antes de iniciar sesión.'
+  };
+
+  loginForm.addEventListener('submit', async function(e){
     e.preventDefault();
-    window.location.href = 'app/dashboard.html?tipo=' + tipoActivo;
+    loginError.hidden = true;
+
+    var email = document.getElementById('loginEmail').value;
+    var password = document.getElementById('loginPassword').value;
+
+    loginSubmit.disabled = true;
+    loginSubmit.textContent = 'Ingresando...';
+
+    var resultado = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+
+    if(resultado.error){
+      loginSubmit.disabled = false;
+      loginSubmit.textContent = 'Iniciar sesión';
+      loginError.textContent = MENSAJES_ERROR[resultado.error.message] || resultado.error.message;
+      loginError.hidden = false;
+      return;
+    }
+
+    // El tipo de cuenta real vive en la base de datos, no en la pestaña que se
+    // haya tocado antes de iniciar sesión — esa pestaña es solo informativa.
+    var perfil = await supabaseClient.from('perfiles').select('tipo_cuenta').eq('id', resultado.data.user.id).single();
+    var tipoReal = (perfil.data && perfil.data.tipo_cuenta) || tipoActivo;
+
+    window.location.href = 'app/dashboard.html?tipo=' + tipoReal;
   });
 </script>
 </body>
