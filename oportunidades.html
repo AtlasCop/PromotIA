@@ -100,13 +100,19 @@
       <p class="mt-3 text-[15px] max-w-[52ch] mx-auto" style="color:var(--muted)">Búscalas y fíltralas como en un catálogo — para ver los datos de contacto completos, crea tu cuenta de empresa oferente y desbloquéalas.</p>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-3 mb-8">
+    <div class="flex flex-col sm:flex-row gap-3 mb-3">
       <div class="relative flex-1">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         <input type="text" id="oppBuscar" class="filter-input w-full" style="padding-left:40px" placeholder="Buscar por título...">
       </div>
       <select id="oppIndustria" class="filter-select"><option value="">Todas las industrias</option></select>
       <select id="oppCiudad" class="filter-select"><option value="">Todas las ciudades</option></select>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-8">
+      <span class="text-[13px] font-semibold" style="color:var(--muted)">Presupuesto (COP):</span>
+      <input type="number" id="oppPresupuestoMin" class="filter-select" style="width:180px" min="0" step="1000000" placeholder="Desde">
+      <input type="number" id="oppPresupuestoMax" class="filter-select" style="width:180px" min="0" step="1000000" placeholder="Hasta">
     </div>
 
     <p id="oppCount" class="text-[13px] mb-4" style="color:var(--muted)"></p>
@@ -188,6 +194,8 @@
   var industriaSelect = document.getElementById('oppIndustria');
   var ciudadSelect = document.getElementById('oppCiudad');
   var buscarInput = document.getElementById('oppBuscar');
+  var presupuestoMinInput = document.getElementById('oppPresupuestoMin');
+  var presupuestoMaxInput = document.getElementById('oppPresupuestoMax');
   var grid = document.getElementById('oppGrid');
   var countLabel = document.getElementById('oppCount');
   var emptyState = document.getElementById('oppEmpty');
@@ -206,11 +214,16 @@
     var q = buscarInput.value.trim().toLowerCase();
     var industria = industriaSelect.value;
     var ciudad = ciudadSelect.value;
+    var presupuestoMin = presupuestoMinInput.value ? Number(presupuestoMinInput.value) : null;
+    var presupuestoMax = presupuestoMaxInput.value ? Number(presupuestoMaxInput.value) : null;
     var filtradas = NECESIDADES.filter(function(n){
       var matchQ = !q || n.titulo.toLowerCase().indexOf(q) !== -1;
       var matchIndustria = !industria || n.industria === industria;
       var matchCiudad = !ciudad || n.ciudad === ciudad;
-      return matchQ && matchIndustria && matchCiudad;
+      var matchPresupuesto =
+        (presupuestoMin === null || n.presupuestoMax >= presupuestoMin) &&
+        (presupuestoMax === null || n.presupuestoMin <= presupuestoMax);
+      return matchQ && matchIndustria && matchCiudad && matchPresupuesto;
     });
     grid.innerHTML = filtradas.map(cardHTML).join('');
     emptyState.hidden = filtradas.length > 0;
@@ -220,6 +233,8 @@
   buscarInput.addEventListener('input', render);
   industriaSelect.addEventListener('change', render);
   ciudadSelect.addEventListener('change', render);
+  presupuestoMinInput.addEventListener('input', render);
+  presupuestoMaxInput.addEventListener('input', render);
 
   render();
 })();
