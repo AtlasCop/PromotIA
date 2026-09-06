@@ -709,6 +709,13 @@
     }
   }
 
+  var MENSAJES_ERROR_REGISTRO = {
+    'email rate limit exceeded': 'Se alcanzó el límite de correos que Supabase puede enviar por ahora — espera un rato (usualmente se libera en una hora) e inténtalo de nuevo.',
+    'User already registered': 'Ya existe una cuenta con ese correo. Si es tuya, inicia sesión en vez de registrarte de nuevo.',
+    'Password should be at least 6 characters': 'La contraseña debe tener al menos 6 caracteres.',
+    'Unable to validate email address: invalid format': 'Ese correo no tiene un formato válido.'
+  };
+
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     if(!validateStep()) return;
@@ -747,7 +754,7 @@
     btnSubmit.textContent = 'Enviar registro';
 
     if(resultado.error){
-      errorEl.textContent = resultado.error.message;
+      errorEl.textContent = MENSAJES_ERROR_REGISTRO[resultado.error.message] || resultado.error.message;
       errorEl.hidden = false;
       return;
     }
