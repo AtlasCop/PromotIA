@@ -233,7 +233,7 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 | Plata | 10 créditos | USD $99 |
 | Oro | Ilimitado | USD $299 |
 
-**Confirmado:** son planes de **suscripción mensual** — los créditos se renuevan cada ciclo de facturación (un oferente Plata vuelve a tener sus 10 créditos disponibles al iniciar el nuevo mes). Recomendación por defecto: los créditos no usados no se acumulan al mes siguiente (patrón estándar de planes SaaS) — a confirmar si prefieres permitir acumulación.
+**Confirmado:** son planes de **suscripción mensual** — cada ciclo de facturación se suman los créditos del plan a los que ya tenía disponibles el oferente (un oferente Plata que le quedaron 3 créditos pasa a tener 13 al iniciar el nuevo mes). Los créditos no usados **sí se acumulan** entre periodos, no se pierden al cerrar el mes.
 
 **Facturación anual (confirmado):** cada plan tiene también una opción de pago anual con **10% de descuento** sobre el total (un solo cobro por adelantado en vez de 12 mensuales) — ej. Bronce pasa de $19/mes a un equivalente de $17,10/mes ($205,20 facturados una vez al año).
 
