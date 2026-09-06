@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oportunidades — Promot IA</title>
+<meta name="description" content="Explora las necesidades publicadas en Promot IA — filtra por industria, ciudad y urgencia como en un catálogo de productos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
+    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e;
+      --muted:#93a1c2; --line:#243050; --accent-soft:#182238;
+      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{background:var(--paper); color:var(--ink); font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;}
+  h1,h2,.brand-word{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  .grad-text{
+    background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--blue),var(--violet)); box-shadow:0 12px 28px -12px rgba(59,108,244,.55);}
+  .btn-primary:hover{filter:brightness(1.08);}
+
+  .filter-input, .filter-select{
+    padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper-raised); color:var(--ink); font-size:14px; font-family:'Source Sans 3',sans-serif;
+  }
+  .filter-input:focus, .filter-select:focus{outline:none; border-color:var(--blue);}
+
+  /* ---- tarjeta de necesidad (misma familia visual que .preview-card) ---- */
+  .opp-card{
+    background:#15181d; border-radius:20px; padding:24px;
+    color:#f4f5f7; font-family:'Sora',sans-serif; box-shadow:0 20px 50px -20px rgba(0,0,0,.45);
+  }
+  .opp-card .oc-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .opp-card .oc-eyebrow{font-size:11.5px; color:#9aa1ad; font-weight:500; margin:0;}
+  .opp-card .oc-priority{
+    border:1px solid #2fae66; color:#3ecf7a; font-size:11px; font-weight:600; padding:4px 11px;
+    border-radius:999px; white-space:nowrap;
+  }
+  .opp-card .oc-priority.media{border-color:#c98a1f; color:#f5b94d;}
+  .opp-card .oc-priority.baja{border-color:#5b6472; color:#9aa1ad;}
+  .opp-card .oc-title{font-size:21px; margin:10px 0 0; font-weight:700; line-height:1.25;}
+  .opp-card .oc-meta{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-top:14px; font-size:13px; color:#c7cbd3; font-family:'Source Sans 3',sans-serif;}
+  .opp-card .oc-loc{display:flex; align-items:center; gap:6px;}
+  .opp-card .oc-price{display:flex; align-items:center; gap:5px; color:#3ecf7a; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:13px;}
+  .opp-card hr{border:none; border-top:1px solid #2a2e35; margin:14px 0;}
+  .opp-card .oc-desc{font-size:13.5px; color:#b6bac2; line-height:1.6; font-family:'Source Sans 3',sans-serif;}
+  .opp-card .oc-footer{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;}
+  .opp-card .oc-time{font-size:12.5px; color:#8a909c; font-family:'Source Sans 3',sans-serif;}
+  .opp-card .oc-unlock{
+    display:inline-flex; align-items:center; gap:7px; background:#fff; color:#15181d;
+    font-family:'Source Sans 3',sans-serif; font-weight:700; font-size:13.5px; padding:10px 18px; border-radius:999px; transition:filter .15s;
+  }
+  .opp-card .oc-unlock:hover{filter:brightness(.94);}
+</style>
+</head>
+<body class="antialiased">
+
+  <header class="max-w-6xl mx-auto px-6 sm:px-8 py-6 flex items-center justify-between">
+    <a href="landing/index.html" class="flex items-center gap-2.5">
+      <svg viewBox="0 0 40 40" fill="none" class="w-8 h-8">
+        <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/><circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+        <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/><circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+        <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/><circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+        <g stroke="url(#navgrad)" stroke-width="1.4">
+          <line x1="14" y1="9" x2="5" y2="17"/><line x1="14" y1="9" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="23" y2="20"/><line x1="5" y1="17" x2="12" y2="26"/>
+          <line x1="23" y1="20" x2="23" y2="30"/><line x1="23" y1="20" x2="12" y2="26"/>
+          <line x1="12" y1="26" x2="23" y2="30"/><line x1="12" y1="26" x2="14" y2="35"/>
+          <line x1="23" y1="30" x2="14" y2="35"/>
+        </g>
+        <defs><linearGradient id="navgrad" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="brand-word font-bold text-[17px]">Promot<span class="grad-text">IA</span></span>
+    </a>
+    <nav class="flex items-center gap-6 text-[14px] font-medium">
+      <a href="login.html">Iniciar sesión</a>
+      <a href="registro.html?rol=oferente" class="btn-primary text-white font-semibold text-[13.5px] px-5 py-2.5 rounded-lg transition">Regístrate como empresa</a>
+    </nav>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 sm:px-8 pb-20">
+
+    <div class="text-center mb-10 mt-4">
+      <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Oportunidades</p>
+      <h1 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Necesidades publicadas en Promot IA</h1>
+      <p class="mt-3 text-[15px] max-w-[52ch] mx-auto" style="color:var(--muted)">Búscalas y fíltralas como en un catálogo — para ver los datos de contacto completos, crea tu cuenta de empresa oferente y desbloquéalas.</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 mb-8">
+      <div class="relative flex-1">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="oppBuscar" class="filter-input w-full" style="padding-left:40px" placeholder="Buscar por título...">
+      </div>
+      <select id="oppIndustria" class="filter-select"><option value="">Todas las industrias</option></select>
+      <select id="oppCiudad" class="filter-select"><option value="">Todas las ciudades</option></select>
+    </div>
+
+    <p id="oppCount" class="text-[13px] mb-4" style="color:var(--muted)"></p>
+
+    <div id="oppGrid" class="grid sm:grid-cols-2 gap-6"></div>
+
+    <p id="oppEmpty" hidden class="text-center py-16 text-[14.5px]" style="color:var(--muted)">No hay oportunidades que coincidan con tu búsqueda.</p>
+
+  </main>
+
+<script>
+(function(){
+  var NECESIDADES = [
+    {
+      titulo: 'Automatización de línea de empaque', ciudad: 'Medellín', industria: 'Manufactura',
+      presupuestoMin: 50000000, presupuestoMax: 80000000, urgencia: 'alta',
+      descripcion: 'Automatizar el proceso de empaque secundario de una línea de producción de alimentos.',
+      publicado: 'Publicado hace 2 horas'
+    },
+    {
+      titulo: 'Remodelación de bodega industrial', ciudad: 'Bogotá', industria: 'Construcción y obra civil',
+      presupuestoMin: 30000000, presupuestoMax: 45000000, urgencia: 'media',
+      descripcion: 'Adecuación de bodega de 800m² para almacenamiento y despacho.',
+      publicado: 'Publicado hace 5 horas'
+    },
+    {
+      titulo: 'Diseño estructural para nueva planta', ciudad: 'Cali', industria: 'Ingeniería civil y estructural',
+      presupuestoMin: 80000000, presupuestoMax: 120000000, urgencia: 'baja',
+      descripcion: 'Cálculo y diseño estructural para planta industrial de dos niveles.',
+      publicado: 'Publicado hace 1 día'
+    },
+    {
+      titulo: 'Instalación de subestación eléctrica', ciudad: 'Barranquilla', industria: 'Ingeniería eléctrica',
+      presupuestoMin: 120000000, presupuestoMax: 180000000, urgencia: 'alta',
+      descripcion: 'Instalación y puesta en marcha de una subestación eléctrica para ampliar la capacidad de una planta industrial.',
+      publicado: 'Publicado hace 8 horas'
+    },
+    {
+      titulo: 'Interventoría de obra civil', ciudad: 'Bucaramanga', industria: 'Gerencia y consultoría de proyectos',
+      presupuestoMin: 150000000, presupuestoMax: 220000000, urgencia: 'media',
+      descripcion: 'Interventoría técnica y administrativa para un proyecto de obra civil en ejecución.',
+      publicado: 'Publicado hace 2 días'
+    }
+  ];
+
+  var PRIORIDAD_LABEL = { alta: 'Alta prioridad', media: 'Media prioridad', baja: 'Baja prioridad' };
+
+  function fmtMoney(v){ return '$' + Number(v).toLocaleString('es-CO'); }
+
+  function cardHTML(n){
+    return (
+      '<div class="opp-card">' +
+        '<div class="oc-top">' +
+          '<p class="oc-eyebrow">Necesidad detectada</p>' +
+          '<span class="oc-priority ' + n.urgencia + '">' + PRIORIDAD_LABEL[n.urgencia] + '</span>' +
+        '</div>' +
+        '<h3 class="oc-title">' + n.titulo + '</h3>' +
+        '<div class="oc-meta">' +
+          '<span class="oc-loc">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>' +
+            n.ciudad + ' · ' + n.industria +
+          '</span>' +
+          '<span class="oc-price">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2.5 0 0 1 2.5-1.5c1.5 0 2.5 1 2.5 2s-1 1.5-2.5 2-2.5 1-2.5 2 1 2 2.5 2a2.5 2.5 0 0 0 2.5-1.5"/></svg>' +
+            fmtMoney(n.presupuestoMin) + ' – ' + fmtMoney(n.presupuestoMax) +
+          '</span>' +
+        '</div>' +
+        '<hr>' +
+        '<p class="oc-desc">' + n.descripcion + '</p>' +
+        '<hr>' +
+        '<div class="oc-footer">' +
+          '<span class="oc-time">' + n.publicado + '</span>' +
+          '<a href="registro.html?rol=oferente" class="oc-unlock">→ Desbloquear contacto</a>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  var industriaSelect = document.getElementById('oppIndustria');
+  var ciudadSelect = document.getElementById('oppCiudad');
+  var buscarInput = document.getElementById('oppBuscar');
+  var grid = document.getElementById('oppGrid');
+  var countLabel = document.getElementById('oppCount');
+  var emptyState = document.getElementById('oppEmpty');
+
+  function uniqueSorted(values){
+    return values.filter(function(v, i){ return values.indexOf(v) === i; }).sort();
+  }
+  uniqueSorted(NECESIDADES.map(function(n){ return n.industria; })).forEach(function(ind){
+    var opt = document.createElement('option'); opt.textContent = ind; industriaSelect.appendChild(opt);
+  });
+  uniqueSorted(NECESIDADES.map(function(n){ return n.ciudad; })).forEach(function(c){
+    var opt = document.createElement('option'); opt.textContent = c; ciudadSelect.appendChild(opt);
+  });
+
+  function render(){
+    var q = buscarInput.value.trim().toLowerCase();
+    var industria = industriaSelect.value;
+    var ciudad = ciudadSelect.value;
+    var filtradas = NECESIDADES.filter(function(n){
+      var matchQ = !q || n.titulo.toLowerCase().indexOf(q) !== -1;
+      var matchIndustria = !industria || n.industria === industria;
+      var matchCiudad = !ciudad || n.ciudad === ciudad;
+      return matchQ && matchIndustria && matchCiudad;
+    });
+    grid.innerHTML = filtradas.map(cardHTML).join('');
+    emptyState.hidden = filtradas.length > 0;
+    countLabel.textContent = filtradas.length + (filtradas.length === 1 ? ' oportunidad encontrada' : ' oportunidades encontradas');
+  }
+
+  buscarInput.addEventListener('input', render);
+  industriaSelect.addEventListener('change', render);
+  ciudadSelect.addEventListener('change', render);
+
+  render();
+})();
+</script>
+</body>
+</html>
