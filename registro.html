@@ -42,7 +42,7 @@
   .field label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
   .field .hint{font-size:12px; color:var(--muted); margin-top:4px;}
   .field input[type=text], .field input[type=email], .field input[type=tel],
-  .field input[type=number], .field input[type=url], .field select{
+  .field input[type=number], .field input[type=url], .field input[type=password], .field select{
     width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
     background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
   }
@@ -235,6 +235,10 @@
               <input type="password" id="d_password" name="d_password" placeholder="Mínimo 6 caracteres" minlength="6" required>
             </div>
             <div class="field">
+              <label for="d_password_confirmar">Confirmar contraseña</label>
+              <input type="password" id="d_password_confirmar" placeholder="Escribe la misma contraseña" minlength="6" required>
+            </div>
+            <div class="field">
               <label for="d_telefono">Teléfono</label>
               <input type="tel" id="d_telefono" name="d_telefono" placeholder="+57 300 000 0000" required>
             </div>
@@ -269,6 +273,10 @@
             <div class="field">
               <label for="o_password">Contraseña</label>
               <input type="password" id="o_password" name="o_password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+            </div>
+            <div class="field">
+              <label for="o_password_confirmar">Confirmar contraseña</label>
+              <input type="password" id="o_password_confirmar" placeholder="Escribe la misma contraseña" minlength="6" required>
             </div>
           </div>
 
@@ -598,6 +606,15 @@
     var fields = panel.querySelectorAll('input[required], select[required]');
     for(var i=0; i<fields.length; i++){
       if(!fields[i].checkValidity()){ fields[i].reportValidity(); return false; }
+    }
+    var passwords = panel.querySelectorAll('input[type=password]');
+    if(passwords.length === 2){
+      if(passwords[0].value !== passwords[1].value){
+        passwords[1].setCustomValidity('Las contraseñas no coinciden');
+        passwords[1].reportValidity();
+        return false;
+      }
+      passwords[1].setCustomValidity('');
     }
     return true;
   }
