@@ -5,7 +5,9 @@ Esquema completo generado a partir de `docs/ARQUITECTURA.md` (secciones 5-14) y
 
 ## Cómo correrlo
 
-En el **SQL Editor** de tu proyecto de Supabase, en este orden exacto:
+**Opción rápida — un solo archivo:** copia todo `00_setup_completo.sql` y pégalo de una sola vez en el **SQL Editor** de tu proyecto de Supabase, luego dale "Run". Es exactamente lo mismo que los tres archivos de abajo, ya pegados en el orden correcto.
+
+**Opción por partes** (más fácil de leer/revisar), en este orden exacto:
 
 1. `schema.sql` — extensiones, tipos, tablas, índices, funciones/triggers y las 7 vistas de la Capa 3.
 2. `rls.sql` — activa Row Level Security y crea las políticas de acceso en cada tabla, más las vistas públicas seguras (`perfiles_publico`, `necesidad_adjuntos_publico`).
