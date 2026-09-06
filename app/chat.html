@@ -33,6 +33,8 @@
   .nav-badge{margin-left:auto; background:var(--blue); color:#fff; font-size:10.5px; font-weight:700; padding:1px 7px; border-radius:99px;}
   .nav-divider{height:1px; background:var(--line); margin:14px 8px;}
   #navDemandante[hidden], #navEmpresa[hidden], #chatViewDemandante[hidden], #chatViewEmpresa[hidden]{display:none;}
+  .chat-view{display:flex; flex:1; min-width:0;}
+  .chat-view-col{display:flex; flex:1; min-width:0; flex-direction:column;}
 
   .chat-list{width:300px; flex:none; border-right:1px solid var(--line); overflow-y:auto;}
   .chat-list-header{padding:18px 18px 12px;}
@@ -67,6 +69,44 @@
   .chat-input:focus{outline:none; border-color:var(--blue);}
   .icon-btn{width:40px; height:40px; border-radius:10px; background:var(--paper-raised); border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--muted); flex:none;}
   .send-btn{width:42px; height:42px; border-radius:12px; background:linear-gradient(90deg,var(--blue),var(--violet)); display:flex; align-items:center; justify-content:center; color:#fff; flex:none;}
+
+  .ver-perfil-btn{
+    margin-left:auto; display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:var(--blue);
+    background:var(--accent-soft); border:1.5px solid var(--line); padding:7px 13px; border-radius:99px; cursor:pointer;
+  }
+  .ver-perfil-btn:hover{border-color:var(--blue);}
+  .demandante-nota{font-size:12px; color:var(--muted); padding:12px 18px; border-bottom:1px solid var(--line); background:var(--accent-soft);}
+
+  /* ---- Perfil de empresa (reutiliza el mismo diseño que antes vivía en el landing) ---- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,8,16,.7); display:flex; align-items:center; justify-content:center;
+    padding:20px; z-index:50;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal-box{width:100%; max-width:460px; max-height:90vh; overflow-y:auto;}
+  .rep-card{background:var(--paper-raised); border:1.5px solid var(--line); border-radius:20px; padding:24px; position:relative;}
+  .rep-close{position:absolute; top:16px; right:16px; color:var(--muted); background:none; border:none; cursor:pointer; padding:4px;}
+  .rep-close:hover{color:var(--ink);}
+  .rep-avatar{
+    width:52px; height:52px; border-radius:14px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--blue),var(--violet)); color:#fff; font-weight:700; font-size:16px; font-family:'Sora',sans-serif;
+  }
+  .verified-badge{
+    display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:600; color:#3ecf7a;
+    background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.35); padding:5px 12px; border-radius:999px; white-space:nowrap;
+  }
+  .verified-chip{
+    display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:500; color:var(--ink);
+    background:var(--accent-soft); border:1px solid var(--line); padding:6px 12px; border-radius:999px;
+  }
+  .verified-chip .check{color:#3ecf7a; font-weight:700;}
+  .rep-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .rep-stat{text-align:center; padding:16px 8px; border-radius:14px; background:var(--accent-soft); border:1px solid var(--line);}
+  .rep-stat .val{display:block; font-family:'Sora',sans-serif; font-weight:800; font-size:22px; color:var(--ink); font-variant-numeric:tabular-nums;}
+  .rep-stat .lbl{display:block; font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.3;}
+  .stars{position:relative; display:inline-block; font-size:15px; line-height:1; letter-spacing:2px;}
+  .stars .base{color:var(--line);}
+  .stars .fill{position:absolute; top:0; left:0; overflow:hidden; white-space:nowrap; color:#f5a524;}
 </style>
 </head>
 <body>
@@ -123,7 +163,9 @@
       </nav>
     </aside>
 
-    <div id="chatViewDemandante" style="display:flex; flex:1; min-width:0;" hidden>
+    <div id="chatViewDemandante" class="chat-view-col" hidden>
+      <p class="demandante-nota">Una conversación aparece aquí en cuanto una empresa aplica a una de tus necesidades publicadas — mientras tanto, esta sección permanece vacía. Lo que ves abajo es un ejemplo de cómo se verá.</p>
+      <div class="chat-view">
       <div class="chat-list">
         <div class="chat-list-header">
           <input type="text" class="chat-search" placeholder="Buscar conversación...">
@@ -154,7 +196,11 @@
             <h2 class="font-bold text-[15.5px]">Automatización de línea de empaque</h2>
             <p class="text-[12.5px]" style="color:var(--muted)">Con Constructora ABC S.A.S. · Medellín, Colombia</p>
           </div>
-          <span class="status-tag negociacion" style="margin-left:auto">En negociación</span>
+          <span class="status-tag negociacion">En negociación</span>
+          <button type="button" class="ver-perfil-btn" id="btnVerPerfilEmpresa">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/></svg>
+            Ver perfil de la empresa
+          </button>
         </div>
 
         <div class="chat-messages">
@@ -182,9 +228,10 @@
           </button>
         </div>
       </main>
+      </div>
     </div>
 
-    <div id="chatViewEmpresa" style="display:flex; flex:1; min-width:0;">
+    <div id="chatViewEmpresa" class="chat-view">
       <div class="chat-list">
         <div class="chat-list-header">
           <input type="text" class="chat-search" placeholder="Buscar conversación...">
@@ -251,6 +298,54 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="modalPerfilEmpresa" hidden>
+    <div class="modal-box">
+      <div class="rep-card">
+        <button type="button" class="rep-close" id="btnCerrarPerfilEmpresa" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="rep-avatar">CA</div>
+          <div class="flex-1 min-w-[160px]">
+            <h3 class="font-bold text-[16px]" style="color:var(--ink)">Constructora ABC S.A.S.</h3>
+            <p class="text-[13px]" style="color:var(--muted)">Medellín · Miembro desde marzo 2024 (1 año)</p>
+          </div>
+          <span class="verified-badge">✓ Empresa verificada</span>
+        </div>
+
+        <div class="mt-6">
+          <p class="text-[12px] font-semibold uppercase tracking-wide" style="color:var(--muted)">Especialidades verificadas</p>
+          <div class="flex flex-wrap gap-2 mt-2.5">
+            <span class="verified-chip"><span class="check">✓</span>Construcción y obra civil</span>
+            <span class="verified-chip"><span class="check">✓</span>Ingeniería civil y estructural</span>
+          </div>
+        </div>
+
+        <div class="rep-stats mt-6">
+          <div class="rep-stat">
+            <span class="val">47</span>
+            <span class="lbl">Proyectos atendidos</span>
+          </div>
+          <div class="rep-stat">
+            <span class="val">&lt; 3h</span>
+            <span class="lbl">Tiempo prom. de respuesta</span>
+          </div>
+          <div class="rep-stat">
+            <span class="val">
+              <span class="stars" aria-label="4.8 de 5 estrellas">
+                <span class="base">★★★★★</span>
+                <span class="fill" style="width:96%">★★★★★</span>
+              </span>
+            </span>
+            <span class="lbl">4.8 · 32 calificaciones</span>
+          </div>
+        </div>
+
+        <p class="text-[12px] mt-5" style="color:var(--muted)">La verificación se basa en el NIT registrado y la validación de datos de contacto — no es solo un formulario que la empresa llena.</p>
+      </div>
+    </div>
+  </div>
+
 <script>
   var tipoChat = new URLSearchParams(window.location.search).get('tipo');
   var esDemandante = tipoChat === 'demandante';
@@ -258,6 +353,19 @@
   document.getElementById('navEmpresa').hidden = esDemandante;
   document.getElementById('chatViewDemandante').hidden = !esDemandante;
   document.getElementById('chatViewEmpresa').hidden = esDemandante;
+
+  var modalPerfilEmpresa = document.getElementById('modalPerfilEmpresa');
+  var btnVerPerfilEmpresa = document.getElementById('btnVerPerfilEmpresa');
+  if(btnVerPerfilEmpresa){
+    btnVerPerfilEmpresa.addEventListener('click', function(){ modalPerfilEmpresa.hidden = false; });
+  }
+  document.getElementById('btnCerrarPerfilEmpresa').addEventListener('click', function(){ modalPerfilEmpresa.hidden = true; });
+  modalPerfilEmpresa.addEventListener('click', function(e){
+    if(e.target === modalPerfilEmpresa) modalPerfilEmpresa.hidden = true;
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') modalPerfilEmpresa.hidden = true;
+  });
 </script>
 
 </body>
