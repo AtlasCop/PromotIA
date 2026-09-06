@@ -45,6 +45,15 @@
     background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
   }
   .field input:focus, .field select:focus{outline:none; border-color:var(--blue);}
+  /* El navegador fuerza un fondo (ej. amarillo) al autocompletar — lo forzamos de vuelta al de la página. */
+  .field input:-webkit-autofill,
+  .field input:-webkit-autofill:hover,
+  .field input:-webkit-autofill:focus,
+  .tag-input-box input:-webkit-autofill{
+    -webkit-box-shadow:0 0 0 1000px var(--paper) inset;
+    -webkit-text-fill-color:var(--ink);
+    transition:background-color 9999s ease-in-out 0s;
+  }
   .radio-pair{display:flex; gap:10px;}
   .radio-pair label{
     flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:11px;
@@ -67,6 +76,16 @@
     color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet)); white-space:nowrap;
   }
   .tag-pill button{width:18px; height:18px; border-radius:99px; background:rgba(255,255,255,.25); font-size:12px; line-height:1;}
+  .autocomplete-wrap{position:relative;}
+  .autocomplete-list{
+    position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:20;
+    background:var(--paper-raised); border:1.5px solid var(--line); border-radius:10px;
+    max-height:200px; overflow-y:auto; box-shadow:0 12px 28px -12px rgba(16,23,41,.35);
+    list-style:none; margin:0; padding:6px;
+  }
+  .autocomplete-list[hidden]{display:none;}
+  .autocomplete-item{padding:8px 12px; border-radius:8px; font-size:14px; color:var(--ink); cursor:pointer;}
+  .autocomplete-item.active, .autocomplete-item:hover{background:var(--accent-soft);}
   .step-panel[hidden]{display:none;}
   #registroSelector[hidden]{display:none;}
 
@@ -176,7 +195,10 @@
             </div>
             <div class="field">
               <label for="d_ciudad">Ciudad</label>
-              <input type="text" id="d_ciudad" name="d_ciudad" placeholder="Ej. Medellín" required>
+              <div class="autocomplete-wrap">
+                <input type="text" id="d_ciudad" name="d_ciudad" placeholder="Ej. Medellín" autocomplete="off" required>
+                <ul class="autocomplete-list" id="d_ciudad_lista" hidden></ul>
+              </div>
             </div>
             <div class="field">
               <label for="d_sector">Sector económico</label>
@@ -248,8 +270,11 @@
             </div>
             <div class="field">
               <label for="o_ciudades_input">Ciudades donde opera</label>
-              <div class="tag-input-box" id="o_ciudades_box">
-                <input type="text" id="o_ciudades_input" placeholder="Escribe una ciudad y presiona Enter">
+              <div class="autocomplete-wrap">
+                <div class="tag-input-box" id="o_ciudades_box">
+                  <input type="text" id="o_ciudades_input" placeholder="Escribe una ciudad y presiona Enter" autocomplete="off">
+                </div>
+                <ul class="autocomplete-list" id="o_ciudades_lista" hidden></ul>
               </div>
               <input type="hidden" name="o_ciudades_valor" id="o_ciudades_valor">
               <p class="hint">Puedes agregar varias.</p>
@@ -318,6 +343,68 @@
     'Sostenibilidad y certificaciones','Equipos, maquinaria y logística','Seguridad industrial y SST',
     'Servicios especializados de cierre de obra','Otro'
   ];
+
+  // Compartida con publicar.html — ciudades principales de Colombia para el autocompletado.
+  var CIUDADES_COLOMBIA = [
+    'Armenia','Arauca','Barranquilla','Bello','Bogotá','Bucaramanga','Buenaventura','Cali','Cartagena',
+    'Chía','Cúcuta','Dosquebradas','Envigado','Facatativá','Florencia','Girardot','Ibagué','Inírida',
+    'Itagüí','Leticia','Manizales','Medellín','Mitú','Mocoa','Montería','Neiva','Palmira','Pasto',
+    'Pereira','Popayán','Puerto Carreño','Quibdó','Riohacha','Rionegro','Sabaneta','San Andrés',
+    'Santa Marta','Sincelejo','Soacha','Soledad','Tuluá','Tunja','Valledupar','Villavicencio','Yopal',
+    'Zipaquirá'
+  ];
+
+  var MAPA_ACENTOS = {'á':'a','é':'e','í':'i','ó':'o','ú':'u','ñ':'n','ü':'u'};
+  function normalizarTexto(s){
+    return s.toLowerCase().split('').map(function(ch){ return MAPA_ACENTOS[ch] || ch; }).join('');
+  }
+
+  // Autocompletado genérico para un <input> de texto simple (ej. una sola ciudad).
+  function attachAutocomplete(input, listEl, opciones, onSelect){
+    var activo = -1;
+    function coincidencias(q){
+      q = normalizarTexto(q.trim());
+      if(!q) return [];
+      var empiezan = opciones.filter(function(o){ return normalizarTexto(o).indexOf(q) === 0; });
+      var contienen = opciones.filter(function(o){ return empiezan.indexOf(o) === -1 && normalizarTexto(o).indexOf(q) !== -1; });
+      return empiezan.concat(contienen).slice(0, 8);
+    }
+    function pintar(items){
+      listEl.innerHTML = '';
+      items.forEach(function(op){
+        var li = document.createElement('li');
+        li.className = 'autocomplete-item';
+        li.textContent = op;
+        li.addEventListener('mousedown', function(e){ e.preventDefault(); seleccionar(op); });
+        listEl.appendChild(li);
+      });
+      listEl.hidden = items.length === 0;
+      activo = -1;
+    }
+    function seleccionar(valor){
+      if(onSelect) onSelect(valor); else input.value = valor;
+      listEl.hidden = true;
+    }
+    function resaltar(){
+      listEl.querySelectorAll('.autocomplete-item').forEach(function(it, i){
+        it.classList.toggle('active', i === activo);
+        if(i === activo) it.scrollIntoView({block:'nearest'});
+      });
+    }
+    input.addEventListener('input', function(){ pintar(coincidencias(input.value)); });
+    input.addEventListener('focus', function(){ pintar(coincidencias(input.value)); });
+    input.addEventListener('keydown', function(e){
+      var items = listEl.querySelectorAll('.autocomplete-item');
+      if(listEl.hidden || !items.length) return;
+      if(e.key === 'ArrowDown'){ e.preventDefault(); activo = Math.min(activo + 1, items.length - 1); resaltar(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); activo = Math.max(activo - 1, 0); resaltar(); }
+      else if(e.key === 'Enter' && activo >= 0){ e.preventDefault(); seleccionar(items[activo].textContent); }
+      else if(e.key === 'Escape'){ listEl.hidden = true; }
+    });
+    document.addEventListener('click', function(e){
+      if(e.target !== input && !listEl.contains(e.target)) listEl.hidden = true;
+    });
+  }
 </script>
 
 <script>
@@ -346,10 +433,11 @@
     especialidadesWrap.appendChild(chip);
   });
 
-  function setupTagInput(inputId, boxId, hiddenId){
+  function setupTagInput(inputId, boxId, hiddenId, listaId, opciones){
     var input = document.getElementById(inputId);
     var box = document.getElementById(boxId);
     var hidden = document.getElementById(hiddenId);
+    var listEl = listaId ? document.getElementById(listaId) : null;
     var tags = [];
     function render(){
       box.querySelectorAll('.tag-pill').forEach(function(p){ p.remove(); });
@@ -366,20 +454,71 @@
       });
       hidden.value = tags.join(', ');
     }
+    function agregar(val){
+      val = val.trim();
+      if(val && tags.indexOf(val) === -1){ tags.push(val); input.value=''; render(); }
+      if(listEl) listEl.hidden = true;
+    }
+
+    var activo = -1;
+    function coincidencias(q){
+      q = normalizarTexto(q.trim());
+      if(!q || !opciones) return [];
+      var empiezan = opciones.filter(function(o){ return normalizarTexto(o).indexOf(q) === 0; });
+      var contienen = opciones.filter(function(o){ return empiezan.indexOf(o) === -1 && normalizarTexto(o).indexOf(q) !== -1; });
+      return empiezan.concat(contienen).slice(0, 8);
+    }
+    function pintarSugerencias(){
+      if(!listEl) return;
+      var items = coincidencias(input.value);
+      listEl.innerHTML = '';
+      items.forEach(function(op){
+        var li = document.createElement('li');
+        li.className = 'autocomplete-item';
+        li.textContent = op;
+        li.addEventListener('mousedown', function(e){ e.preventDefault(); agregar(op); });
+        listEl.appendChild(li);
+      });
+      listEl.hidden = items.length === 0;
+      activo = -1;
+    }
+    if(listEl && opciones){
+      input.addEventListener('input', pintarSugerencias);
+      input.addEventListener('focus', pintarSugerencias);
+      document.addEventListener('click', function(e){
+        if(e.target !== input && !listEl.contains(e.target)) listEl.hidden = true;
+      });
+    }
+
+    // Un solo manejador de teclado: si hay una sugerencia resaltada, Enter la
+    // selecciona; si no, Enter/coma agrega el texto escrito tal cual.
     input.addEventListener('keydown', function(e){
+      var items = listEl ? listEl.querySelectorAll('.autocomplete-item') : [];
+      if(listEl && !listEl.hidden && items.length){
+        if(e.key === 'ArrowDown'){ e.preventDefault(); activo = Math.min(activo + 1, items.length - 1); resaltar(items); return; }
+        if(e.key === 'ArrowUp'){ e.preventDefault(); activo = Math.max(activo - 1, 0); resaltar(items); return; }
+        if(e.key === 'Escape'){ listEl.hidden = true; return; }
+        if(e.key === 'Enter' && activo >= 0){ e.preventDefault(); agregar(items[activo].textContent); return; }
+      }
       if(e.key === 'Enter' || e.key === ','){
         e.preventDefault();
-        var val = input.value.trim();
-        if(val && tags.indexOf(val) === -1){ tags.push(val); input.value=''; render(); }
+        agregar(input.value);
       }
     });
+    function resaltar(items){
+      items.forEach(function(it, i){
+        it.classList.toggle('active', i === activo);
+        if(i === activo) it.scrollIntoView({block:'nearest'});
+      });
+    }
     input.addEventListener('blur', function(){
-      var val = input.value.trim();
-      if(val && tags.indexOf(val) === -1){ tags.push(val); input.value=''; render(); }
+      setTimeout(function(){ agregar(input.value); }, 0);
     });
   }
-  setupTagInput('o_ciudades_input','o_ciudades_box','o_ciudades_valor');
+  setupTagInput('o_ciudades_input','o_ciudades_box','o_ciudades_valor','o_ciudades_lista', CIUDADES_COLOMBIA);
   setupTagInput('o_certificaciones_input','o_certificaciones_box','o_certificaciones_valor');
+
+  attachAutocomplete(document.getElementById('d_ciudad'), document.getElementById('d_ciudad_lista'), CIUDADES_COLOMBIA);
 
   var STEPS = { demandante: 2, oferente: 3 };
   var role = 'demandante';

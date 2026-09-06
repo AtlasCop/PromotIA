@@ -45,6 +45,14 @@
     background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
   }
   .field input:focus{outline:none; border-color:var(--blue);}
+  /* El navegador fuerza un fondo (ej. amarillo) al autocompletar — lo forzamos de vuelta al de la página. */
+  .field input:-webkit-autofill,
+  .field input:-webkit-autofill:hover,
+  .field input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 1000px var(--paper) inset;
+    -webkit-text-fill-color:var(--ink);
+    transition:background-color 9999s ease-in-out 0s;
+  }
 
   #tipoSubtitle[data-tipo="proveedor"] .txt-empresa{display:none;}
   #tipoSubtitle[data-tipo="empresa"] .txt-proveedor{display:none;}

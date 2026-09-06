@@ -40,6 +40,24 @@
     background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
   }
   .field input:focus, .field select:focus{outline:none; border-color:var(--blue);}
+  /* El navegador fuerza un fondo (ej. amarillo) al autocompletar — lo forzamos de vuelta al de la página. */
+  .field input:-webkit-autofill,
+  .field input:-webkit-autofill:hover,
+  .field input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 1000px var(--paper) inset;
+    -webkit-text-fill-color:var(--ink);
+    transition:background-color 9999s ease-in-out 0s;
+  }
+  .autocomplete-wrap{position:relative;}
+  .autocomplete-list{
+    position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:20;
+    background:var(--paper-raised); border:1.5px solid var(--line); border-radius:10px;
+    max-height:200px; overflow-y:auto; box-shadow:0 12px 28px -12px rgba(16,23,41,.35);
+    list-style:none; margin:0; padding:6px;
+  }
+  .autocomplete-list[hidden]{display:none;}
+  .autocomplete-item{padding:8px 12px; border-radius:8px; font-size:14px; color:var(--ink); cursor:pointer;}
+  .autocomplete-item.active, .autocomplete-item:hover{background:var(--accent-soft);}
   .field textarea{
     width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
     background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
@@ -184,7 +202,10 @@
           </div>
           <div class="field">
             <label for="p_ciudad">Ciudad</label>
-            <input type="text" id="p_ciudad" name="p_ciudad" placeholder="Ej. Medellín" required>
+            <div class="autocomplete-wrap">
+              <input type="text" id="p_ciudad" name="p_ciudad" placeholder="Ej. Medellín" autocomplete="off" required>
+              <ul class="autocomplete-list" id="p_ciudad_lista" hidden></ul>
+            </div>
           </div>
         </div>
 
@@ -286,6 +307,69 @@
     'Sostenibilidad y certificaciones','Equipos, maquinaria y logística','Seguridad industrial y SST',
     'Servicios especializados de cierre de obra','Otro'
   ];
+
+  // Compartida con registro.html — ciudades principales de Colombia para el autocompletado.
+  var CIUDADES_COLOMBIA = [
+    'Armenia','Arauca','Barranquilla','Bello','Bogotá','Bucaramanga','Buenaventura','Cali','Cartagena',
+    'Chía','Cúcuta','Dosquebradas','Envigado','Facatativá','Florencia','Girardot','Ibagué','Inírida',
+    'Itagüí','Leticia','Manizales','Medellín','Mitú','Mocoa','Montería','Neiva','Palmira','Pasto',
+    'Pereira','Popayán','Puerto Carreño','Quibdó','Riohacha','Rionegro','Sabaneta','San Andrés',
+    'Santa Marta','Sincelejo','Soacha','Soledad','Tuluá','Tunja','Valledupar','Villavicencio','Yopal',
+    'Zipaquirá'
+  ];
+
+  var MAPA_ACENTOS = {'á':'a','é':'e','í':'i','ó':'o','ú':'u','ñ':'n','ü':'u'};
+  function normalizarTexto(s){
+    return s.toLowerCase().split('').map(function(ch){ return MAPA_ACENTOS[ch] || ch; }).join('');
+  }
+
+  function attachAutocomplete(input, listEl, opciones, onSelect){
+    var activo = -1;
+    function coincidencias(q){
+      q = normalizarTexto(q.trim());
+      if(!q) return [];
+      var empiezan = opciones.filter(function(o){ return normalizarTexto(o).indexOf(q) === 0; });
+      var contienen = opciones.filter(function(o){ return empiezan.indexOf(o) === -1 && normalizarTexto(o).indexOf(q) !== -1; });
+      return empiezan.concat(contienen).slice(0, 8);
+    }
+    function pintar(items){
+      listEl.innerHTML = '';
+      items.forEach(function(op){
+        var li = document.createElement('li');
+        li.className = 'autocomplete-item';
+        li.textContent = op;
+        li.addEventListener('mousedown', function(e){ e.preventDefault(); seleccionar(op); });
+        listEl.appendChild(li);
+      });
+      listEl.hidden = items.length === 0;
+      activo = -1;
+    }
+    function seleccionar(valor){
+      if(onSelect) onSelect(valor); else input.value = valor;
+      listEl.hidden = true;
+    }
+    function resaltar(){
+      listEl.querySelectorAll('.autocomplete-item').forEach(function(it, i){
+        it.classList.toggle('active', i === activo);
+        if(i === activo) it.scrollIntoView({block:'nearest'});
+      });
+    }
+    input.addEventListener('input', function(){ pintar(coincidencias(input.value)); });
+    input.addEventListener('focus', function(){ pintar(coincidencias(input.value)); });
+    input.addEventListener('keydown', function(e){
+      var items = listEl.querySelectorAll('.autocomplete-item');
+      if(listEl.hidden || !items.length) return;
+      if(e.key === 'ArrowDown'){ e.preventDefault(); activo = Math.min(activo + 1, items.length - 1); resaltar(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); activo = Math.max(activo - 1, 0); resaltar(); }
+      else if(e.key === 'Enter' && activo >= 0){ e.preventDefault(); seleccionar(items[activo].textContent); }
+      else if(e.key === 'Escape'){ listEl.hidden = true; }
+    });
+    document.addEventListener('click', function(e){
+      if(e.target !== input && !listEl.contains(e.target)) listEl.hidden = true;
+    });
+  }
+
+  attachAutocomplete(document.getElementById('p_ciudad'), document.getElementById('p_ciudad_lista'), CIUDADES_COLOMBIA);
 </script>
 
 <script>

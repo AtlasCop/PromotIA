@@ -36,6 +36,14 @@
     background:var(--paper-raised); color:var(--ink); font-size:14px; font-family:'Source Sans 3',sans-serif;
   }
   .filter-input:focus, .filter-select:focus{outline:none; border-color:var(--blue);}
+  /* El navegador fuerza un fondo (ej. amarillo) al autocompletar — lo forzamos de vuelta al de la página. */
+  .filter-input:-webkit-autofill,
+  .filter-input:-webkit-autofill:hover,
+  .filter-input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 1000px var(--paper-raised) inset;
+    -webkit-text-fill-color:var(--ink);
+    transition:background-color 9999s ease-in-out 0s;
+  }
 
   /* ---- tarjeta de necesidad (misma familia visual que .preview-card) ---- */
   .opp-card{
