@@ -83,6 +83,7 @@ Formulario que llena el demandante al publicar:
 | Ciudad | Selector/texto | Visible en el teaser; la dirección exacta no |
 | Presupuesto estimado | Rango (mín–máx) | Visible en el teaser — ayuda al oferente a decidir si vale la pena desbloquear |
 | Descripción detallada | Texto largo | Visible en el teaser |
+| Fecha requerida | Fecha concreta | Distinta de la urgencia — ayuda a la empresa a organizar su agenda; visible en el teaser |
 | Urgencia | Baja / Media / Alta | Se muestra como etiqueta ("Alta prioridad") en el teaser |
 | Adjuntos | Archivos (PDF, planos, fotos, video) | **Miniatura pública como gancho; archivo completo solo tras desbloqueo** |
 

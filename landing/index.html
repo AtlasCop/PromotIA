@@ -671,6 +671,11 @@
             </div>
           </div>
           <div class="field">
+            <label for="p_fecha">¿Para cuándo necesitas esto resuelto?</label>
+            <input type="date" id="p_fecha" name="p_fecha" required>
+            <p class="hint">Una fecha concreta — distinta del nivel de urgencia, ayuda a las empresas a organizar su agenda.</p>
+          </div>
+          <div class="field">
             <label>Urgencia</label>
             <div class="urgency-group" id="p_urgencia_group">
               <div class="urgency-opt" data-level="baja"><span class="dot"></span>Baja</div>
@@ -702,6 +707,7 @@
               <span class="p-tag" id="pv_urgencia">—</span>
             </div>
             <div class="p-meta"><span id="pv_ubicacion">—</span><span class="p-price" id="pv_presupuesto">—</span></div>
+            <p style="font-size:12px; color:#8a909c; margin-top:6px;">Fecha requerida: <span id="pv_fecha">—</span></p>
             <hr>
             <div class="p-desc space-y-3">
               <div><b>Necesita</b><span id="pv_necesita">—</span></div>
@@ -1114,12 +1120,19 @@
     return '$' + Number(v).toLocaleString('es-CO');
   }
 
+  function fmtFecha(v){
+    if(!v) return '—';
+    var d = new Date(v + 'T00:00:00');
+    return d.toLocaleDateString('es-CO', { day:'numeric', month:'long', year:'numeric' });
+  }
+
   function renderPreview(){
     document.getElementById('pv_titulo').textContent = document.getElementById('p_titulo').value || '—';
     document.getElementById('pv_ubicacion').textContent =
       (document.getElementById('p_ciudad').value || '—') + ' · ' + (document.getElementById('p_industria').value || '—');
     document.getElementById('pv_presupuesto').textContent =
       fmtMoney(document.getElementById('p_presupuesto_min').value) + ' – ' + fmtMoney(document.getElementById('p_presupuesto_max').value);
+    document.getElementById('pv_fecha').textContent = fmtFecha(document.getElementById('p_fecha').value);
     var nivel = urgenciaValor.value;
     document.getElementById('pv_urgencia').textContent = nivel ? nivel.charAt(0).toUpperCase()+nivel.slice(1)+' prioridad' : '—';
     document.getElementById('pv_necesita').textContent = document.getElementById('p_necesita').value || '—';
