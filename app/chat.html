@@ -36,7 +36,12 @@
   .chat-list{width:300px; flex:none; border-right:1px solid var(--line); overflow-y:auto;}
   .chat-list-header{padding:18px 18px 12px;}
   .chat-search{width:100%; background:var(--paper-raised); border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; color:var(--ink); font-size:13.5px;}
-  .chat-item{display:block; width:100%; text-align:left; padding:13px 18px; border-left:3px solid transparent; border-bottom:1px solid var(--line); transition:background .15s;}
+  .chat-item{
+    display:block; width:100%; text-align:left; padding:13px 18px; font:inherit; color:inherit; cursor:pointer;
+    background:transparent; border:none; border-left:3px solid transparent; border-bottom:1px solid var(--line);
+    border-radius:0; transition:background .15s;
+  }
+  .chat-item:focus-visible{outline:2px solid var(--blue); outline-offset:-2px;}
   .chat-item:hover{background:var(--accent-soft);}
   .chat-item.active{background:var(--accent-soft); border-left-color:var(--blue);}
   .chat-item .row1{display:flex; justify-content:space-between; align-items:baseline; gap:8px;}
