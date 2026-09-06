@@ -747,7 +747,13 @@
     var resultado = await supabaseClient.auth.signUp({
       email: email,
       password: password,
-      options: { data: { tipo_cuenta: tipoCuenta, nombre: nombre, telefono: telefono } }
+      options: {
+        data: { tipo_cuenta: tipoCuenta, nombre: nombre, telefono: telefono },
+        // El "Site URL" del dashboard de Supabase solo aplica como dominio base,
+        // no respeta una ruta — hay que pedir la página exacta aquí para que el
+        // link del correo de confirmación caiga en login.html y no en la raíz.
+        emailRedirectTo: window.location.origin + '/login.html'
+      }
     });
 
     btnSubmit.disabled = false;
