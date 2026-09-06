@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar sesión — Promot IA</title>
+<meta name="description" content="Inicia sesión en Promot IA como empresa o como proveedor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
+    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e;
+      --muted:#93a1c2; --line:#243050; --accent-soft:#182238;
+      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{background:var(--paper); min-height:100%;}
+  body{color:var(--ink); font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;}
+  h1,.brand-word{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  .grad-text{
+    background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--blue),var(--violet)); box-shadow:0 12px 28px -12px rgba(59,108,244,.55);}
+  .btn-primary:hover{filter:brightness(1.08);}
+
+  .auth-card{background:var(--paper-raised); border:1.5px solid var(--line); border-radius:20px; box-shadow:0 20px 50px -24px rgba(16,23,41,.25);}
+
+  .role-btn{
+    flex:1; padding:12px 14px; border-radius:12px; font-weight:600; font-size:14px;
+    border:1.5px solid var(--line); color:var(--muted); background:var(--paper); transition:all .15s; cursor:pointer;
+  }
+  .role-btn.active{border-color:transparent; color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet));}
+
+  .field label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
+  .field input{
+    width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--paper); color:var(--ink); font-size:14.5px; font-family:'Source Sans 3',sans-serif;
+  }
+  .field input:focus{outline:none; border-color:var(--blue);}
+
+  #tipoSubtitle[data-tipo="proveedor"] .txt-empresa{display:none;}
+  #tipoSubtitle[data-tipo="empresa"] .txt-proveedor{display:none;}
+</style>
+</head>
+<body class="antialiased">
+
+  <div class="min-h-screen flex flex-col items-center justify-center px-6 py-12">
+
+    <a href="landing/index.html" class="flex items-center gap-2.5 mb-8">
+      <svg viewBox="0 0 40 40" fill="none" class="w-8 h-8">
+        <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/><circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+        <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/><circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+        <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/><circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+        <g stroke="url(#navgrad)" stroke-width="1.4">
+          <line x1="14" y1="9" x2="5" y2="17"/><line x1="14" y1="9" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="23" y2="20"/><line x1="5" y1="17" x2="12" y2="26"/>
+          <line x1="23" y1="20" x2="23" y2="30"/><line x1="23" y1="20" x2="12" y2="26"/>
+          <line x1="12" y1="26" x2="23" y2="30"/><line x1="12" y1="26" x2="14" y2="35"/>
+          <line x1="23" y1="30" x2="14" y2="35"/>
+        </g>
+        <defs><linearGradient id="navgrad" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="brand-word font-bold text-[17px]">Promot<span class="grad-text">IA</span></span>
+    </a>
+
+    <div class="auth-card w-full max-w-[400px] p-7 sm:p-8">
+      <h1 class="text-[21px] font-extrabold text-center mb-1">Inicia sesión</h1>
+      <p id="tipoSubtitle" data-tipo="empresa" class="text-[13.5px] text-center mb-6" style="color:var(--muted)">
+        <span class="txt-empresa">Publica necesidades y descubre oportunidades de negocio.</span>
+        <span class="txt-proveedor">Descubre oportunidades de negocio para tu empresa.</span>
+      </p>
+
+      <div class="flex gap-3 mb-6">
+        <button type="button" id="tabEmpresa" class="role-btn active">Soy una empresa</button>
+        <button type="button" id="tabProveedor" class="role-btn">Soy un proveedor</button>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div class="field">
+          <label for="loginEmail">Correo electrónico</label>
+          <input type="email" id="loginEmail" required placeholder="nombre@empresa.com">
+        </div>
+        <div class="field">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <div class="text-right">
+          <a href="#" class="text-[13px] font-medium" style="color:var(--blue)">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-primary w-full text-white font-semibold text-[15px] px-6 py-3 rounded-xl transition">
+          Iniciar sesión
+        </button>
+      </form>
+
+      <p class="text-[13.5px] text-center mt-6" style="color:var(--muted)">
+        ¿No tienes cuenta?
+        <a href="landing/index.html#registro" class="font-semibold" style="color:var(--blue)">Regístrate</a>
+      </p>
+    </div>
+
+  </div>
+
+<script>
+  var tabEmpresa = document.getElementById('tabEmpresa');
+  var tabProveedor = document.getElementById('tabProveedor');
+  var tipoSubtitle = document.getElementById('tipoSubtitle');
+  var loginForm = document.getElementById('loginForm');
+  var tipoActivo = 'empresa';
+
+  function setTipo(tipo){
+    tipoActivo = tipo;
+    tabEmpresa.classList.toggle('active', tipo === 'empresa');
+    tabProveedor.classList.toggle('active', tipo === 'proveedor');
+    tipoSubtitle.setAttribute('data-tipo', tipo);
+  }
+  tabEmpresa.addEventListener('click', function(){ setTipo('empresa'); });
+  tabProveedor.addEventListener('click', function(){ setTipo('proveedor'); });
+
+  loginForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    window.location.href = 'app/dashboard.html?tipo=' + tipoActivo;
+  });
+</script>
+</body>
+</html>

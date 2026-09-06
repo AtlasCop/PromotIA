@@ -41,6 +41,7 @@
   .nav-badge{margin-left:auto; background:var(--blue); color:#fff; font-size:10.5px; font-weight:700; padding:1px 7px; border-radius:99px;}
   .nav-divider{height:1px; background:var(--line); margin:14px 8px;}
   #navDemandante[hidden], #navEmpresa[hidden], #viewDemandante[hidden], #viewEmpresa[hidden]{display:none;}
+  #demoPill[hidden]{display:none;}
 
   .stat-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:18px 20px;}
   .stat-value{font-weight:800; font-size:25px; font-variant-numeric:tabular-nums;}
@@ -69,13 +70,13 @@
 </head>
 <body>
 
-  <div class="demo-bar">
-    <span>Vista previa —</span>
-    <div class="demo-pill">
+  <div class="demo-bar" id="demoBar">
+    <span id="demoBarLabel">Vista previa —</span>
+    <div class="demo-pill" id="demoPill">
       <button type="button" id="demoBtnDemandante" class="active">Demandante</button>
       <button type="button" id="demoBtnEmpresa">Empresa</button>
     </div>
-    <span style="margin-left:auto; opacity:.7">Este selector es solo para revisar ambas pantallas — no es parte del producto real.</span>
+    <span id="demoBarNote" style="margin-left:auto; opacity:.7">Este selector es solo para revisar ambas pantallas — no es parte del producto real.</span>
   </div>
 
   <div class="app-shell">
@@ -248,6 +249,25 @@
   }
   demoBtnDemandante.addEventListener('click', function(){ showView('demandante'); });
   demoBtnEmpresa.addEventListener('click', function(){ showView('empresa'); });
+
+  // ---- Tipo de cuenta según el login (?tipo=empresa|proveedor) ----
+  // Un proveedor solo puede ser oferente: se bloquea en la vista Empresa, sin selector.
+  // Una empresa puede ser demandante y oferente: conserva el selector, ya sin el aviso de "solo demo".
+  var tipo = new URLSearchParams(window.location.search).get('tipo');
+  var demoBar = document.getElementById('demoBar');
+  var demoBarLabel = document.getElementById('demoBarLabel');
+  var demoPill = document.getElementById('demoPill');
+  var demoBarNote = document.getElementById('demoBarNote');
+
+  if (tipo === 'proveedor') {
+    showView('empresa');
+    demoPill.hidden = true;
+    demoBarLabel.textContent = 'Cuenta de proveedor —';
+    demoBarNote.textContent = 'Un proveedor solo puede buscar y responder oportunidades, no publicar necesidades.';
+  } else if (tipo === 'empresa') {
+    demoBarLabel.textContent = 'Actuando como —';
+    demoBarNote.textContent = 'Tu cuenta de empresa puede publicar necesidades y también buscar oportunidades.';
+  }
 </script>
 </body>
 </html>
