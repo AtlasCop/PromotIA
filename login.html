@@ -169,6 +169,25 @@
     'Email not confirmed': 'Todavía no confirmaste tu correo — revisa tu bandeja de entrada (y spam) y haz click en el enlace de confirmación antes de iniciar sesión.'
   };
 
+  async function irADashboard(userId){
+    // El tipo de cuenta real vive en la base de datos, no en la pestaña que se
+    // haya tocado antes de iniciar sesión — esa pestaña es solo informativa.
+    var perfil = await supabaseClient.from('perfiles').select('tipo_cuenta').eq('id', userId).single();
+    var tipoReal = (perfil.data && perfil.data.tipo_cuenta) || tipoActivo;
+    window.location.href = 'app/dashboard.html?tipo=' + tipoReal;
+  }
+
+  // Si se llega aquí con una sesión ya activa (ej. justo después de confirmar
+  // el correo, que deja logueado automáticamente vía el link de confirmación),
+  // saltar el formulario y entrar directo — no tiene sentido pedir de nuevo
+  // correo/contraseña si ya hay sesión.
+  (async function revisarSesionExistente(){
+    var sesion = await supabaseClient.auth.getSession();
+    if(sesion.data.session){
+      await irADashboard(sesion.data.session.user.id);
+    }
+  })();
+
   loginForm.addEventListener('submit', async function(e){
     e.preventDefault();
     loginError.hidden = true;
@@ -189,12 +208,7 @@
       return;
     }
 
-    // El tipo de cuenta real vive en la base de datos, no en la pestaña que se
-    // haya tocado antes de iniciar sesión — esa pestaña es solo informativa.
-    var perfil = await supabaseClient.from('perfiles').select('tipo_cuenta').eq('id', resultado.data.user.id).single();
-    var tipoReal = (perfil.data && perfil.data.tipo_cuenta) || tipoActivo;
-
-    window.location.href = 'app/dashboard.html?tipo=' + tipoReal;
+    await irADashboard(resultado.data.user.id);
   });
 </script>
 </body>
