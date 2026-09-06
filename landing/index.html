@@ -139,6 +139,16 @@
     background:linear-gradient(135deg,var(--blue),var(--violet)); color:#fff; flex:none;
   }
 
+  /* ---- Barra de indicadores del hero, enlazados a ejemplos ya construidos en la plataforma ---- */
+  .hero-stat-item{display:flex; align-items:center; gap:11px; color:inherit; text-decoration:none; transition:opacity .15s;}
+  .hero-stat-item:hover{opacity:.75;}
+  .hero-stat-icon{
+    width:38px; height:38px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:var(--accent-soft); color:var(--blue);
+  }
+  .hero-stat-value{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:19px; color:var(--ink); display:block;}
+  .hero-stat-label{font-size:12px; color:var(--muted); line-height:1.3; display:block;}
+
   /* ---- Módulo 5: recomendación con IA ---- */
   .notif-banner{
     display:flex; align-items:center; gap:12px; background:var(--accent-soft); border:1px solid var(--line);
@@ -312,6 +322,47 @@
         </svg>
       </div>
 
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 pb-14 lg:pb-20 -mt-6 lg:-mt-10">
+      <div class="pt-9 grid grid-cols-2 sm:grid-cols-4 gap-6" style="border-top:1px solid var(--line)">
+        <a href="../app/panel-inteligencia.html" class="hero-stat-item">
+          <span class="hero-stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </span>
+          <span>
+            <span class="hero-stat-value">127</span>
+            <span class="hero-stat-label">Oportunidades publicadas</span>
+          </span>
+        </a>
+        <a href="../publicar.html" class="hero-stat-item">
+          <span class="hero-stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01M9 8h.01M15 8h.01"/></svg>
+          </span>
+          <span>
+            <span class="hero-stat-value">12</span>
+            <span class="hero-stat-label">Industrias disponibles</span>
+          </span>
+        </a>
+        <a href="../app/panel-inteligencia.html" class="hero-stat-item">
+          <span class="hero-stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <span>
+            <span class="hero-stat-value">71%</span>
+            <span class="hero-stat-label">Necesidades atendidas</span>
+          </span>
+        </a>
+        <a href="../app/panel-inteligencia.html" class="hero-stat-item">
+          <span class="hero-stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </span>
+          <span>
+            <span class="hero-stat-value">2,6 h</span>
+            <span class="hero-stat-label">Tiempo promedio de respuesta</span>
+          </span>
+        </a>
+      </div>
     </div>
     </section>
 
