@@ -235,7 +235,11 @@ Este es el mecanismo crítico del negocio — todo el modelo de ingresos del MVP
 
 **Confirmado:** son planes de **suscripción mensual** — los créditos se renuevan cada ciclo de facturación (un oferente Plata vuelve a tener sus 10 créditos disponibles al iniciar el nuevo mes). Recomendación por defecto: los créditos no usados no se acumulan al mes siguiente (patrón estándar de planes SaaS) — a confirmar si prefieres permitir acumulación.
 
-Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
+**Facturación anual (confirmado):** cada plan tiene también una opción de pago anual con **10% de descuento** sobre el total (un solo cobro por adelantado en vez de 12 mensuales) — ej. Bronce pasa de $19/mes a un equivalente de $17,10/mes ($205,20 facturados una vez al año).
+
+**Prueba gratis (confirmado):** toda cuenta nueva de oferente recibe **1 crédito de bienvenida** al registrarse, sin necesidad de suscribirse a un plan ni de ingresar un método de pago — permite desbloquear una sola oportunidad para experimentar el flujo completo (contacto, adjuntos, chat interno) antes de decidir un plan. Es un mecanismo por uso (una oportunidad), no por tiempo (no son "7 días gratis") — encaja con que el valor real de la plataforma se mide en desbloqueos, no en días transcurridos.
+
+Los pagos y la gestión de suscripciones no deben construirse a mano: se recomienda un procesador como **Stripe Billing** (encaja bien con precios en USD, y con planes mensuales/anuales), que maneja el cobro recurrente y que informa a la plataforma vía webhooks cuándo se pagó — la plataforma nunca debe asignar créditos porque el frontend "dice" que se pagó, sino porque el procesador de pago lo confirma del lado del servidor. Esto también evita que Promot IA tenga que tocar o almacenar datos de tarjetas (cumplimiento PCI lo asume el procesador).
 
 ## 11. Chat interno
 

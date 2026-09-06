@@ -50,6 +50,18 @@
   .plan-features li svg{flex:none; margin-top:2px; color:#3ecf7a;}
   .plan-btn{margin-top:26px; width:100%; padding:12px; border-radius:12px; font-weight:600; font-size:14px; text-align:center; border:1.5px solid var(--line); color:var(--ink); background:transparent; cursor:pointer;}
   .plan-btn.featured{border:none; background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff;}
+
+  .trial-banner{
+    display:flex; align-items:center; gap:12px; background:var(--accent-soft); border:1px solid var(--line);
+    border-left:3px solid #3ecf7a; border-radius:14px; padding:14px 18px; font-size:13.5px; max-width:640px; margin:0 auto 32px;
+  }
+  .trial-banner .icon{font-size:20px; flex:none;}
+
+  .billing-toggle{display:inline-flex; background:var(--paper-raised); border:1px solid var(--line); border-radius:999px; padding:4px; margin:0 auto 8px; }
+  .billing-toggle button{font-size:13px; font-weight:600; padding:8px 18px; border-radius:999px; color:var(--muted); background:transparent; border:none; cursor:pointer; display:flex; align-items:center; gap:7px;}
+  .billing-toggle button.active{background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff;}
+  .save-tag{font-size:10px; font-weight:700; background:rgba(62,207,122,.18); color:#3ecf7a; padding:1px 7px; border-radius:99px;}
+  .plan-sub{font-size:11.5px; color:var(--muted); margin-top:3px;}
 </style>
 </head>
 <body>
@@ -92,16 +104,29 @@
     </aside>
 
     <main class="flex-1 p-8 max-w-4xl">
-      <div class="text-center mb-10">
+      <div class="text-center mb-8">
         <h1 class="text-[22px] font-bold">Elige el plan que mejor se adapte a tu empresa</h1>
-        <p class="text-[13.5px] mt-2" style="color:var(--muted)">Créditos para desbloquear intenciones de demanda, ordenadas por tu Índice de Afinidad Comercial (IAC). Precios en USD, facturación mensual.</p>
+        <p class="text-[13.5px] mt-2" style="color:var(--muted)">Créditos para desbloquear intenciones de demanda, ordenadas por tu Índice de Afinidad Comercial (IAC). Precios en USD.</p>
+      </div>
+
+      <div class="trial-banner">
+        <span class="icon">🎁</span>
+        <span><strong>Prueba gratis:</strong> toda cuenta nueva recibe 1 crédito de bienvenida — desbloquea tu primera oportunidad sin costo y sin tarjeta, antes de elegir un plan.</span>
+      </div>
+
+      <div class="text-center mb-10">
+        <div class="billing-toggle" id="billingToggle">
+          <button type="button" id="btnMensual" class="active">Mensual</button>
+          <button type="button" id="btnAnual">Anual <span class="save-tag">Ahorra 10%</span></button>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
 
         <div class="plan-card">
           <span class="plan-name">Bronce</span>
-          <div class="plan-price">$19<span class="period">/mes</span></div>
+          <div class="plan-price"><span id="priceBronce">$19</span><span class="period">/mes</span></div>
+          <p class="plan-sub" id="subBronce">Facturado mensualmente</p>
           <p class="plan-credits">1 crédito mensual</p>
           <ul class="plan-features">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Feed ordenado por IAC</li>
@@ -114,7 +139,8 @@
         <div class="plan-card featured">
           <span class="plan-ribbon">Más popular</span>
           <span class="plan-name">Plata</span>
-          <div class="plan-price">$99<span class="period">/mes</span></div>
+          <div class="plan-price"><span id="pricePlata">$99</span><span class="period">/mes</span></div>
+          <p class="plan-sub" id="subPlata">Facturado mensualmente</p>
           <p class="plan-credits">10 créditos mensuales</p>
           <ul class="plan-features">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Feed ordenado por IAC + IO</li>
@@ -127,7 +153,8 @@
 
         <div class="plan-card">
           <span class="plan-name">Oro</span>
-          <div class="plan-price">$299<span class="period">/mes</span></div>
+          <div class="plan-price"><span id="priceOro">$299</span><span class="period">/mes</span></div>
+          <p class="plan-sub" id="subOro">Facturado mensualmente</p>
           <p class="plan-credits">Créditos ilimitados</p>
           <ul class="plan-features">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acceso ilimitado a oportunidades</li>
@@ -144,5 +171,43 @@
     </main>
   </div>
 
+<script>
+  var PLANS = {
+    Bronce: 19,
+    Plata: 99,
+    Oro: 299
+  };
+  var DESCUENTO_ANUAL = 0.10;
+
+  function fmt(n){ return '$' + n.toLocaleString('en-US', {maximumFractionDigits:2, minimumFractionDigits: (n % 1 !== 0) ? 2 : 0}); }
+
+  function renderPrecios(anual){
+    Object.keys(PLANS).forEach(function(nombre){
+      var mensual = PLANS[nombre];
+      var priceEl = document.getElementById('price' + nombre);
+      var subEl = document.getElementById('sub' + nombre);
+      if(anual){
+        var totalAnual = mensual * 12 * (1 - DESCUENTO_ANUAL);
+        var equivalenteMensual = totalAnual / 12;
+        priceEl.textContent = fmt(equivalenteMensual);
+        subEl.textContent = fmt(totalAnual) + ' facturados una vez al año';
+      } else {
+        priceEl.textContent = fmt(mensual);
+        subEl.textContent = 'Facturado mensualmente';
+      }
+    });
+  }
+
+  var btnMensual = document.getElementById('btnMensual');
+  var btnAnual = document.getElementById('btnAnual');
+  btnMensual.addEventListener('click', function(){
+    btnMensual.classList.add('active'); btnAnual.classList.remove('active');
+    renderPrecios(false);
+  });
+  btnAnual.addEventListener('click', function(){
+    btnAnual.classList.add('active'); btnMensual.classList.remove('active');
+    renderPrecios(true);
+  });
+</script>
 </body>
 </html>
