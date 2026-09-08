@@ -34,11 +34,6 @@
   .btn-primary:hover{filter:brightness(1.08);}
   .btn-secondary{border:1.5px solid var(--line); color:var(--ink);}
 
-  .role-btn{
-    flex:1; padding:14px 18px; border-radius:12px; font-weight:600; font-size:14.5px;
-    border:1.5px solid var(--line); color:var(--muted); background:var(--paper); transition:all .15s;
-  }
-  .role-btn.active{border-color:transparent; color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet));}
   .field label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;}
   .field .hint{font-size:12px; color:var(--muted); margin-top:4px;}
   .field input[type=text], .field input[type=email], .field input[type=tel],
@@ -97,7 +92,6 @@
   .autocomplete-item.active, .autocomplete-item:hover{background:var(--accent-soft);}
   .step-panel[hidden]{display:none;}
   #registroSelector[hidden]{display:none;}
-  #roleToggle[hidden]{display:none;}
 
   .role-card{
     flex:1; border:1.5px solid var(--line); border-radius:20px; padding:32px 26px; text-align:center;
@@ -208,11 +202,6 @@
       </div>
 
       <div id="registroWizard" hidden>
-
-      <div id="roleToggle" class="flex gap-3 mb-8 mt-2">
-        <button type="button" id="roleBtnDemandante" class="role-btn active">Tengo una necesidad</button>
-        <button type="button" id="roleBtnOferente" class="role-btn">Busco oportunidades</button>
-      </div>
 
       <form id="registroForm" novalidate>
 
@@ -702,8 +691,6 @@
   var role = 'demandante';
   var step = 1;
 
-  var roleBtnDemandante = document.getElementById('roleBtnDemandante');
-  var roleBtnOferente = document.getElementById('roleBtnOferente');
   var panelDemandante = document.querySelector('[data-panel="demandante"]');
   var panelOferente = document.querySelector('[data-panel="oferente"]');
   var STEPPER_PREFIX = { demandante: 'sd', oferente: 'so' };
@@ -734,8 +721,6 @@
   function render(){
     panelDemandante.hidden = role !== 'demandante';
     panelOferente.hidden = role !== 'oferente';
-    roleBtnDemandante.classList.toggle('active', role === 'demandante');
-    roleBtnOferente.classList.toggle('active', role === 'oferente');
 
     currentPanel().querySelectorAll('.step-panel').forEach(function(p){
       p.hidden = Number(p.getAttribute('data-step')) !== step;
@@ -752,10 +737,15 @@
     role = newRole; step = 1;
     form.hidden = false; successState.hidden = true;
     registroSelector.hidden = true; registroWizard.hidden = false;
+    if(newRole === 'demandante'){
+      document.getElementById('registroIntroTitulo').textContent = 'Publica tu necesidad';
+      document.getElementById('registroIntroSub').textContent = 'Cuéntanos qué necesitas para empezar a recibir propuestas de empresas.';
+    } else {
+      document.getElementById('registroIntroTitulo').textContent = 'Regístrate como empresa';
+      document.getElementById('registroIntroSub').textContent = 'Completa tu perfil para empezar a descubrir oportunidades de negocio.';
+    }
     render();
   }
-  roleBtnDemandante.addEventListener('click', function(){ selectRole('demandante'); });
-  roleBtnOferente.addEventListener('click', function(){ selectRole('oferente'); });
   document.getElementById('selectorDemandante').addEventListener('click', function(){ selectRole('demandante'); });
   document.getElementById('selectorOferente').addEventListener('click', function(){ selectRole('oferente'); });
 
@@ -941,14 +931,6 @@
   var rolParam = new URLSearchParams(window.location.search).get('rol');
   if (rolParam === 'demandante' || rolParam === 'oferente') {
     selectRole(rolParam);
-    document.getElementById('roleToggle').hidden = true;
-    if(rolParam === 'demandante'){
-      document.getElementById('registroIntroTitulo').textContent = 'Publica tu necesidad';
-      document.getElementById('registroIntroSub').textContent = 'Cuéntanos qué necesitas para empezar a recibir propuestas de empresas.';
-    } else {
-      document.getElementById('registroIntroTitulo').textContent = 'Regístrate como empresa';
-      document.getElementById('registroIntroSub').textContent = 'Completa tu perfil para empezar a descubrir oportunidades de negocio.';
-    }
   } else {
     render();
   }
