@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Cookies — Promot IA</title>
+<meta name="description" content="Qué cookies y tecnologías similares usa Promot IA, y cómo controlarlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
+    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e;
+      --muted:#93a1c2; --line:#243050; --accent-soft:#182238;
+      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{background:var(--paper); color:var(--ink); font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;}
+  h1,h2,.brand-word{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  .grad-text{
+    background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .mono{font-family:'IBM Plex Mono', ui-monospace, monospace;}
+  a.inline-link{color:var(--blue); font-weight:600;}
+  a.inline-link:hover{text-decoration:underline;}
+
+  .doc-meta{font-size:13px; color:var(--muted);}
+  .doc-toc{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:20px 22px;}
+  .doc-toc p.titulo{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:12px;}
+  .doc-toc ol{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
+  .doc-toc a{font-size:13.5px; color:var(--ink); display:flex; gap:8px;}
+  .doc-toc a:hover{color:var(--blue);}
+  .doc-toc a .n{color:var(--blue); font-weight:700; flex:none; width:1.4em;}
+
+  article section{padding-top:38px; padding-bottom:6px; border-top:1px solid var(--line); scroll-margin-top:24px;}
+  article section:first-of-type{border-top:none;}
+  article h2{font-size:19px; font-weight:800; color:var(--ink); display:flex; gap:10px; align-items:baseline;}
+  article h2 .n{color:var(--blue); font-family:'IBM Plex Mono',monospace; font-size:15px;}
+  article p, article li{font-size:14.5px; line-height:1.75; color:var(--ink);}
+  article p{margin-top:12px;}
+  article ul{margin-top:12px; padding-left:22px; display:flex; flex-direction:column; gap:8px; list-style:disc;}
+  article strong{color:var(--ink);}
+  article code{background:var(--accent-soft); padding:2px 7px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:13px;}
+
+  .cookie-table{width:100%; border-collapse:collapse; margin-top:16px; font-size:13.5px;}
+  .cookie-table th, .cookie-table td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  .cookie-table th{background:var(--accent-soft); font-weight:700; color:var(--ink);}
+  .cookie-table td{color:var(--ink);}
+  .table-wrap{overflow-x:auto;}
+</style>
+</head>
+<body class="antialiased">
+
+  <div class="max-w-6xl mx-auto px-6 sm:px-8 py-10">
+
+    <a href="landing/index.html" class="flex items-center gap-2.5 mb-10">
+      <svg viewBox="0 0 40 40" fill="none" class="w-8 h-8">
+        <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/><circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+        <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/><circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+        <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/><circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+        <g stroke="url(#navgrad)" stroke-width="1.4">
+          <line x1="14" y1="9" x2="5" y2="17"/><line x1="14" y1="9" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="23" y2="20"/><line x1="5" y1="17" x2="12" y2="26"/>
+          <line x1="23" y1="20" x2="23" y2="30"/><line x1="23" y1="20" x2="12" y2="26"/>
+          <line x1="12" y1="26" x2="23" y2="30"/><line x1="12" y1="26" x2="14" y2="35"/>
+          <line x1="23" y1="30" x2="14" y2="35"/>
+        </g>
+        <defs><linearGradient id="navgrad" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="brand-word font-bold text-[17px]">Promot<span class="grad-text">IA</span></span>
+    </a>
+
+    <div class="max-w-2xl mx-auto">
+
+      <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Legal</p>
+      <h1 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Política de Cookies</h1>
+      <p class="doc-meta mt-2">Última actualización: 8 de septiembre de 2026.</p>
+
+      <div class="doc-toc mt-8">
+        <p class="titulo">Contenido</p>
+        <ol>
+          <li><a href="#s1"><span class="n">1.</span>¿Qué son las cookies?</a></li>
+          <li><a href="#s2"><span class="n">2.</span>¿Qué usa Promot IA hoy?</a></li>
+          <li><a href="#s3"><span class="n">3.</span>Cookies y almacenamiento que usamos</a></li>
+          <li><a href="#s4"><span class="n">4.</span>Servicios de terceros que cargamos</a></li>
+          <li><a href="#s5"><span class="n">5.</span>Cómo controlar o borrar cookies</a></li>
+          <li><a href="#s6"><span class="n">6.</span>Cambios a esta política</a></li>
+          <li><a href="#s7"><span class="n">7.</span>Contacto</a></li>
+        </ol>
+      </div>
+
+      <article class="mt-4">
+
+        <section id="s1">
+          <h2><span class="n">1.</span>¿Qué son las cookies?</h2>
+          <p>Las cookies son pequeños archivos de texto que un sitio web guarda en tu navegador para recordar información entre visitas — por ejemplo, si ya iniciaste sesión. Esta política también cubre el <strong>almacenamiento local del navegador</strong> (<code>localStorage</code>), una tecnología similar que usamos en lugar de cookies para algunas funciones.</p>
+        </section>
+
+        <section id="s2">
+          <h2><span class="n">2.</span>¿Qué usa Promot IA hoy?</h2>
+          <p>Promot IA <strong>no usa cookies de publicidad ni de analítica</strong>. No hay píxeles de rastreo, ni perfiles de comportamiento, ni venta de datos de navegación a terceros. Lo único que guardamos en tu navegador es lo estrictamente necesario para que la plataforma funcione — mantener tu sesión iniciada y recordar preferencias simples de la interfaz.</p>
+        </section>
+
+        <section id="s3">
+          <h2><span class="n">3.</span>Cookies y almacenamiento que usamos</h2>
+          <div class="table-wrap">
+            <table class="cookie-table">
+              <tr><th>Nombre / tipo</th><th>Finalidad</th><th>Duración</th></tr>
+              <tr>
+                <td><code>sb-*-auth-token</code><br>(localStorage, no es una cookie)</td>
+                <td>Mantiene tu sesión iniciada entre visitas, para que no tengas que volver a escribir tu correo y contraseña cada vez.</td>
+                <td>Hasta que cierres sesión o borres los datos del sitio en tu navegador.</td>
+              </tr>
+              <tr>
+                <td><code>promotia_cookies_ok</code><br>(localStorage)</td>
+                <td>Recuerda que ya viste y cerraste el aviso de cookies, para no mostrártelo en cada visita.</td>
+                <td>Permanente hasta que borres los datos del sitio.</td>
+              </tr>
+            </table>
+          </div>
+          <p>Ninguna de estas dos es una cookie de terceros ni se comparte con nadie fuera de Promot IA.</p>
+        </section>
+
+        <section id="s4">
+          <h2><span class="n">4.</span>Servicios de terceros que cargamos</h2>
+          <p>Algunas páginas cargan recursos alojados por terceros para funcionar (tipografías, íconos de gráficos, generación de PDF). Estos son <strong>archivos estáticos</strong>, no rastreadores publicitarios, pero al cargarlos tu navegador hace una solicitud directa al servidor de ese tercero, que queda sujeto a su propia política:</p>
+          <ul>
+            <li><strong>Google Fonts</strong> (<code>fonts.googleapis.com</code>) — entrega las tipografías del sitio.</li>
+            <li><strong>Supabase</strong> — nuestra base de datos y autenticación; ahí vive la sesión mencionada en la sección 3.</li>
+            <li><strong>cdnjs / jsdelivr</strong> — entregan librerías de código (gráficos, generación de PDF) usadas por algunas pantallas.</li>
+          </ul>
+          <p>Si en el futuro incorporamos un procesador de pagos (ej. Stripe) o herramientas de analítica, actualizaremos esta sección antes de activarlas.</p>
+        </section>
+
+        <section id="s5">
+          <h2><span class="n">5.</span>Cómo controlar o borrar cookies</h2>
+          <p>Puedes borrar las cookies y el almacenamiento local de Promot IA en cualquier momento desde la configuración de privacidad de tu navegador (usualmente bajo "Borrar datos de navegación" o "Configuración del sitio"). Ten en cuenta que borrar el almacenamiento local cerrará tu sesión y hará que se te muestre de nuevo el aviso de cookies.</p>
+        </section>
+
+        <section id="s6">
+          <h2><span class="n">6.</span>Cambios a esta política</h2>
+          <p>Si en el futuro agregamos cookies de analítica, publicidad o un procesador de pagos, actualizaremos esta página y, si aplica, pediremos tu consentimiento explícito antes de activarlas.</p>
+        </section>
+
+        <section id="s7">
+          <h2><span class="n">7.</span>Contacto</h2>
+          <p>¿Preguntas sobre esta política? Escríbenos a <a class="inline-link" href="mailto:iconsultoriaygestion@gmail.com">iconsultoriaygestion@gmail.com</a>. Ver también nuestra <a class="inline-link" href="politica-datos.html">Política de Tratamiento de Datos Personales</a>.</p>
+        </section>
+
+      </article>
+
+      <p class="text-[13.5px] text-center mt-10" style="color:var(--muted)">
+        <a href="landing/index.html" class="inline-link">← Volver al inicio</a>
+      </p>
+
+    </div>
+  </div>
+</body>
+</html>

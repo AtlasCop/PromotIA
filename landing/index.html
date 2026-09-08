@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="../cookie-consent.js"></script>
 <style>
   :root{
     --ink:#0d1526;
@@ -674,7 +675,7 @@
           <div class="flex flex-col gap-2.5">
             <a class="footer-link" href="#">Términos y Condiciones</a>
             <a class="footer-link" href="../politica-datos.html">Política de tratamiento de datos</a>
-            <a class="footer-link" href="#">Política de Cookies</a>
+            <a class="footer-link" href="../politica-cookies.html">Política de Cookies</a>
           </div>
         </div>
 
@@ -793,6 +794,8 @@
     node.addEventListener('blur', deactivate);
   });
 })();
+
+initCookieConsent('../politica-cookies.html');
 </script>
 
 </body>
