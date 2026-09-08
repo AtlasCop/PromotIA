@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
     --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
@@ -293,6 +294,11 @@
         <div class="text-4xl mb-3">🚀</div>
         <h3 class="text-[20px] font-bold" style="color:var(--ink)">¡Tu necesidad fue publicada!</h3>
         <p class="mt-2 text-[14.5px] max-w-[46ch] mx-auto" style="color:var(--muted)">En la plataforma real, las empresas de tu industria ya empezarían a verla en su feed. Promot IA todavía está en construcción — esta es una vista previa de cómo se sentirá.</p>
+        <button type="button" id="btnDescargarPDF" class="btn-primary mt-6 inline-flex items-center gap-2 text-white font-semibold text-[14.5px] px-6 py-3 rounded-xl">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+          Descargar PDF de soporte
+        </button>
+        <p class="mt-2 text-[12px]" style="color:var(--muted)">Guarda este comprobante con el detalle de tu necesidad — te sirve como respaldo de lo que publicaste.</p>
       </div>
 
     </div>
@@ -504,6 +510,82 @@
     form.hidden = true;
     successState.hidden = false;
   });
+
+  function generarPDFNecesidad(){
+    var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'letter' });
+    var margin = 56;
+    var pageWidth = doc.internal.pageSize.getWidth();
+    var pageHeight = doc.internal.pageSize.getHeight();
+    var maxWidth = pageWidth - margin * 2;
+    var y = margin;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(59, 108, 244);
+    doc.text('Promot IA', margin, y);
+    y += 24;
+    doc.setFontSize(13.5);
+    doc.setTextColor(13, 21, 38);
+    doc.text('Comprobante de publicación de necesidad', margin, y);
+    y += 10;
+    doc.setDrawColor(221, 227, 240);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 26;
+
+    function campo(etiqueta, valor){
+      var lines = doc.splitTextToSize(valor || '—', maxWidth);
+      var altoNecesario = 14 + lines.length * 15 + 16;
+      if(y + altoNecesario > pageHeight - margin){ doc.addPage(); y = margin; }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(91, 100, 120);
+      doc.text(etiqueta.toUpperCase(), margin, y);
+      y += 15;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor(13, 21, 38);
+      doc.text(lines, margin, y);
+      y += lines.length * 15 + 16;
+    }
+
+    var titulo = document.getElementById('p_titulo').value || '—';
+    var industria = document.getElementById('p_industria').value || '—';
+    var ciudad = document.getElementById('p_ciudad').value || '—';
+    var pais = document.getElementById('p_pais').value || '—';
+    var nivel = urgenciaValor.value;
+    var urgenciaTexto = nivel ? nivel.charAt(0).toUpperCase() + nivel.slice(1) + ' prioridad' : '—';
+    var archivosTexto = archivos.length ? archivos.join(', ') : 'Ninguno';
+    var fechaGeneracion = new Date().toLocaleDateString('es-CO', { day:'numeric', month:'long', year:'numeric' });
+
+    campo('Título', titulo);
+    campo('Industria', industria);
+    campo('Ubicación', ciudad + ', ' + pais);
+    campo('Presupuesto estimado (COP)',
+      fmtMoney(document.getElementById('p_presupuesto_min').value) + ' – ' + fmtMoney(document.getElementById('p_presupuesto_max').value));
+    campo('Fecha requerida', fmtFecha(document.getElementById('p_fecha').value));
+    campo('Urgencia', urgenciaTexto);
+    campo('¿Qué necesitas específicamente?', document.getElementById('p_necesita').value);
+    campo('¿Qué problema quieres resolver?', document.getElementById('p_problema').value);
+    campo('¿Qué resultado esperas obtener?', document.getElementById('p_resultado').value);
+    campo('Archivos adjuntos', archivosTexto);
+
+    if(y + 40 > pageHeight - margin){ doc.addPage(); y = margin; }
+    doc.setDrawColor(221, 227, 240);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 20;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(91, 100, 120);
+    doc.text('Generado el ' + fechaGeneracion + ' — Promot IA es una marca de Atlas Corporation S.A.S.', margin, y);
+    y += 13;
+    doc.text('Documento de soporte con el detalle de la necesidad tal como fue publicada.', margin, y);
+
+    var nombreArchivo = 'necesidad-' + titulo.toLowerCase()
+      .replace(/[^a-z0-9áéíóúñ]+/gi, '-').replace(/(^-|-$)/g, '') + '.pdf';
+    doc.save(nombreArchivo || 'necesidad-promotia.pdf');
+  }
+
+  document.getElementById('btnDescargarPDF').addEventListener('click', generarPDFNecesidad);
 
   render();
 })();
