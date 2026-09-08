@@ -11,13 +11,13 @@
 <style>
   :root{
     --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
-    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff; --amber:#b45309; --amber-soft:#fef3e2;
+    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e;
       --muted:#93a1c2; --line:#243050; --accent-soft:#182238;
-      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7; --amber:#f5a524; --amber-soft:#241a0c;
+      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7;
     }
   }
   *{box-sizing:border-box;}
@@ -31,12 +31,6 @@
   .mono{font-family:'IBM Plex Mono', ui-monospace, monospace;}
   a.inline-link{color:var(--blue); font-weight:600;}
   a.inline-link:hover{text-decoration:underline;}
-
-  .borrador-banner{
-    display:flex; gap:12px; align-items:flex-start; background:var(--amber-soft); border:1px solid var(--amber);
-    border-radius:14px; padding:16px 18px; font-size:13.5px; line-height:1.6; color:var(--ink);
-  }
-  .borrador-banner .icon{flex:none; font-size:18px;}
 
   .doc-meta{font-size:13px; color:var(--muted);}
   .doc-toc{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:20px 22px;}
@@ -87,11 +81,6 @@
       <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Legal</p>
       <h1 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Política de Tratamiento de Datos Personales</h1>
       <p class="doc-meta mt-2">Última actualización: 8 de septiembre de 2026 · Basada en la Ley 1581 de 2012 y el Decreto 1377 de 2013 (Colombia).</p>
-
-      <div class="borrador-banner mt-6">
-        <span class="icon">⚠️</span>
-        <span><strong>Borrador — pendiente de revisión por un abogado antes de considerarse definitivo.</strong> Este documento describe con precisión el mecanismo real de la plataforma (en particular, que los datos de contacto de un demandante se revelan a un tercero a cambio de un pago que este realiza, y que se genera una miniatura pública de cada adjunto), pero todavía no ha pasado por una revisión legal formal.</span>
-      </div>
 
       <div class="doc-toc mt-8">
         <p class="titulo">Contenido</p>
