@@ -14,17 +14,17 @@ function initCookieConsent(rutaPolitica){
   var estilo = document.createElement('style');
   estilo.textContent =
     '.cookie-banner{' +
-      'position:fixed; left:16px; right:16px; bottom:16px; z-index:80; max-width:640px; margin:0 auto;' +
+      'position:fixed; right:16px; bottom:16px; left:auto; z-index:80; max-width:min(300px, calc(100vw - 32px));' +
       'background:var(--paper-raised); border:1.5px solid var(--line); border-radius:16px;' +
       'padding:18px 20px; box-shadow:0 20px 45px -20px rgba(0,0,0,.35);' +
-      'display:flex; flex-wrap:wrap; align-items:center; gap:14px;' +
+      'display:flex; flex-direction:column; gap:12px;' +
       'font-family:"Source Sans 3",ui-sans-serif,system-ui,sans-serif; color:var(--ink);' +
     '}' +
-    '.cookie-banner p{flex:1; min-width:220px; font-size:13.5px; line-height:1.55; margin:0; color:var(--ink);}' +
+    '.cookie-banner p{font-size:13px; line-height:1.55; margin:0; color:var(--ink);}' +
     '.cookie-banner a{color:var(--blue); font-weight:600; text-decoration:none;}' +
     '.cookie-banner a:hover{text-decoration:underline;}' +
     '.cookie-banner button{' +
-      'flex:none; border:none; cursor:pointer; font-weight:600; font-size:13.5px; padding:10px 20px;' +
+      'border:none; cursor:pointer; font-weight:600; font-size:13.5px; padding:10px 20px;' +
       'border-radius:10px; color:#fff; background:linear-gradient(90deg,var(--blue),var(--violet));' +
     '}';
   document.head.appendChild(estilo);
