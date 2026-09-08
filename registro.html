@@ -97,6 +97,7 @@
   .autocomplete-item.active, .autocomplete-item:hover{background:var(--accent-soft);}
   .step-panel[hidden]{display:none;}
   #registroSelector[hidden]{display:none;}
+  #roleToggle[hidden]{display:none;}
 
   .role-card{
     flex:1; border:1.5px solid var(--line); border-radius:20px; padding:32px 26px; text-align:center;
@@ -179,8 +180,8 @@
 
       <div class="text-center mb-8">
         <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Regístrate</p>
-        <h1 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">¿Qué deseas hacer hoy?</h1>
-        <p class="mt-3 text-[15px]" style="color:var(--muted)">Selecciona la opción que mejor te describe para personalizar tu experiencia.</p>
+        <h1 id="registroIntroTitulo" class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">¿Qué deseas hacer hoy?</h1>
+        <p id="registroIntroSub" class="mt-3 text-[15px]" style="color:var(--muted)">Selecciona la opción que mejor te describe para personalizar tu experiencia.</p>
       </div>
 
       <div id="registroSelector" class="flex flex-col sm:flex-row gap-5">
@@ -941,6 +942,13 @@
   if (rolParam === 'demandante' || rolParam === 'oferente') {
     selectRole(rolParam);
     document.getElementById('roleToggle').hidden = true;
+    if(rolParam === 'demandante'){
+      document.getElementById('registroIntroTitulo').textContent = 'Publica tu necesidad';
+      document.getElementById('registroIntroSub').textContent = 'Cuéntanos qué necesitas para empezar a recibir propuestas de empresas.';
+    } else {
+      document.getElementById('registroIntroTitulo').textContent = 'Regístrate como empresa';
+      document.getElementById('registroIntroSub').textContent = 'Completa tu perfil para empezar a descubrir oportunidades de negocio.';
+    }
   } else {
     render();
   }
