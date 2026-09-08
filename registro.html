@@ -758,10 +758,16 @@
   var rolPendiente = null;
   var modalYaTieneCuenta = document.getElementById('modalYaTieneCuenta');
 
-  // Antes de mostrar el formulario, preguntamos si ya tiene cuenta — así no
-  // termina llenando todo el wizard de nuevo si en realidad solo necesitaba
-  // iniciar sesión.
+  // Antes de mostrar el formulario del demandante preguntamos si ya tiene
+  // cuenta — "Tengo una necesidad" es ambiguo, puede ser alguien que ya está
+  // registrado y solo quiere publicar otra necesidad. El de empresa siempre
+  // se llega desde un botón que ya dice "Regístrate", así que ahí no hace
+  // falta preguntarlo de nuevo.
   function selectRole(newRole){
+    if(newRole === 'oferente'){
+      mostrarFormularioRegistro(newRole);
+      return;
+    }
     rolPendiente = newRole;
     modalYaTieneCuenta.hidden = false;
   }
