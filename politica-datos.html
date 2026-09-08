@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Tratamiento de Datos — Promot IA</title>
+<meta name="description" content="Cómo Promot IA recolecta, usa y protege los datos personales de demandantes y empresas oferentes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#0d1526; --paper:#f6f8fc; --paper-raised:#ffffff; --muted:#5b6478; --line:#dde3f0;
+    --cyan:#18b8dd; --blue:#3b6cf4; --violet:#7c3aed; --accent-soft:#eaf0ff; --amber:#b45309; --amber-soft:#fef3e2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e9edf7; --paper:#0b1220; --paper-raised:#111a2e;
+      --muted:#93a1c2; --line:#243050; --accent-soft:#182238;
+      --cyan:#3fd2f2; --blue:#6f92ff; --violet:#a685f7; --amber:#f5a524; --amber-soft:#241a0c;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{background:var(--paper); color:var(--ink); font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;}
+  h1,h2,.brand-word{font-family:'Sora', ui-sans-serif, system-ui, sans-serif;}
+  .grad-text{
+    background:linear-gradient(90deg,var(--cyan),var(--blue) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .mono{font-family:'IBM Plex Mono', ui-monospace, monospace;}
+  a.inline-link{color:var(--blue); font-weight:600;}
+  a.inline-link:hover{text-decoration:underline;}
+
+  .borrador-banner{
+    display:flex; gap:12px; align-items:flex-start; background:var(--amber-soft); border:1px solid var(--amber);
+    border-radius:14px; padding:16px 18px; font-size:13.5px; line-height:1.6; color:var(--ink);
+  }
+  .borrador-banner .icon{flex:none; font-size:18px;}
+
+  .doc-meta{font-size:13px; color:var(--muted);}
+  .doc-toc{background:var(--paper-raised); border:1px solid var(--line); border-radius:16px; padding:20px 22px;}
+  .doc-toc p.titulo{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:12px;}
+  .doc-toc ol{list-style:none; margin:0; padding:0; display:grid; gap:8px;}
+  .doc-toc a{font-size:13.5px; color:var(--ink); display:flex; gap:8px;}
+  .doc-toc a:hover{color:var(--blue);}
+  .doc-toc a .n{color:var(--blue); font-weight:700; flex:none; width:1.4em;}
+
+  article section{padding-top:38px; padding-bottom:6px; border-top:1px solid var(--line); scroll-margin-top:24px;}
+  article section:first-of-type{border-top:none;}
+  article h2{font-size:19px; font-weight:800; color:var(--ink); display:flex; gap:10px; align-items:baseline;}
+  article h2 .n{color:var(--blue); font-family:'IBM Plex Mono',monospace; font-size:15px;}
+  article p, article li{font-size:14.5px; line-height:1.75; color:var(--ink);}
+  article p{margin-top:12px;}
+  article ul, article ol.contenido{margin-top:12px; padding-left:22px; display:flex; flex-direction:column; gap:8px;}
+  article ul{list-style:disc;}
+  article ol.contenido{list-style:decimal;}
+  article strong{color:var(--ink);}
+  article code{background:var(--accent-soft); padding:2px 7px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-size:13px;}
+</style>
+</head>
+<body class="antialiased">
+
+  <div class="max-w-6xl mx-auto px-6 sm:px-8 py-10">
+
+    <a href="landing/index.html" class="flex items-center gap-2.5 mb-10">
+      <svg viewBox="0 0 40 40" fill="none" class="w-8 h-8">
+        <circle cx="14" cy="9" r="3.2" fill="#3fd2f2"/><circle cx="5" cy="17" r="3.2" fill="#18b8dd"/>
+        <circle cx="23" cy="20" r="3.2" fill="#3b6cf4"/><circle cx="23" cy="30" r="3.2" fill="#7c3aed"/>
+        <circle cx="12" cy="26" r="3.2" fill="#7c3aed"/><circle cx="14" cy="35" r="3.2" fill="#7c3aed"/>
+        <g stroke="url(#navgrad)" stroke-width="1.4">
+          <line x1="14" y1="9" x2="5" y2="17"/><line x1="14" y1="9" x2="23" y2="20"/>
+          <line x1="5" y1="17" x2="23" y2="20"/><line x1="5" y1="17" x2="12" y2="26"/>
+          <line x1="23" y1="20" x2="23" y2="30"/><line x1="23" y1="20" x2="12" y2="26"/>
+          <line x1="12" y1="26" x2="23" y2="30"/><line x1="12" y1="26" x2="14" y2="35"/>
+          <line x1="23" y1="30" x2="14" y2="35"/>
+        </g>
+        <defs><linearGradient id="navgrad" x1="0" y1="0" x2="40" y2="40">
+          <stop offset="0" stop-color="#3fd2f2"/><stop offset="1" stop-color="#7c3aed"/>
+        </linearGradient></defs>
+      </svg>
+      <span class="brand-word font-bold text-[17px]">Promot<span class="grad-text">IA</span></span>
+    </a>
+
+    <div class="max-w-2xl mx-auto">
+
+      <p class="text-[12px] font-semibold uppercase tracking-wider mb-3" style="color:var(--blue)">Legal</p>
+      <h1 class="text-[26px] sm:text-[30px] font-extrabold" style="color:var(--ink)">Política de Tratamiento de Datos Personales</h1>
+      <p class="doc-meta mt-2">Última actualización: 8 de septiembre de 2026 · Basada en la Ley 1581 de 2012 y el Decreto 1377 de 2013 (Colombia).</p>
+
+      <div class="borrador-banner mt-6">
+        <span class="icon">⚠️</span>
+        <span><strong>Borrador — pendiente de revisión por un abogado antes de considerarse definitivo.</strong> Este documento describe con precisión el mecanismo real de la plataforma (en particular, que los datos de contacto de un demandante se revelan a un tercero a cambio de un pago que este realiza, y que se genera una miniatura pública de cada adjunto), pero todavía no ha pasado por una revisión legal formal.</span>
+      </div>
+
+      <div class="doc-toc mt-8">
+        <p class="titulo">Contenido</p>
+        <ol>
+          <li><a href="#s1"><span class="n">1.</span>Responsable del tratamiento</a></li>
+          <li><a href="#s2"><span class="n">2.</span>Definiciones clave</a></li>
+          <li><a href="#s3"><span class="n">3.</span>Datos que recolectamos</a></li>
+          <li><a href="#s4"><span class="n">4.</span>Finalidades del tratamiento</a></li>
+          <li><a href="#s5"><span class="n">5.</span>Autorización del titular</a></li>
+          <li><a href="#s6"><span class="n">6.</span>El mecanismo de desbloqueo, en términos de datos personales</a></li>
+          <li><a href="#s7"><span class="n">7.</span>Transferencia y transmisión de datos a terceros</a></li>
+          <li><a href="#s8"><span class="n">8.</span>Derechos de los titulares</a></li>
+          <li><a href="#s9"><span class="n">9.</span>Cómo ejercer estos derechos</a></li>
+          <li><a href="#s10"><span class="n">10.</span>Seguridad de la información</a></li>
+          <li><a href="#s11"><span class="n">11.</span>Menores de edad</a></li>
+          <li><a href="#s12"><span class="n">12.</span>Vigencia y modificaciones</a></li>
+          <li><a href="#s13"><span class="n">13.</span>Aceptación</a></li>
+        </ol>
+      </div>
+
+      <article class="mt-4">
+
+        <section id="s1">
+          <h2><span class="n">1.</span>Responsable del tratamiento</h2>
+          <p><strong>Promot IA es una marca de Atlas Corporation S.A.S.</strong>, empresa dueña de la idea y que opera la plataforma bajo esta marca, con domicilio en Medellín, Colombia. NIT <span class="mono">902096484</span>. Correo de contacto para temas de datos personales: <a class="inline-link" href="mailto:iconsultoriaygestion@gmail.com">iconsultoriaygestion@gmail.com</a>.</p>
+        </section>
+
+        <section id="s2">
+          <h2><span class="n">2.</span>Definiciones clave</h2>
+          <ul>
+            <li><strong>Titular</strong>: la persona natural cuyos datos se recolectan (quien publica una Intención de Demanda, o el contacto registrado por una empresa).</li>
+            <li><strong>Intención de Demanda (ID)</strong>: la necesidad publicada por un demandante en la plataforma.</li>
+            <li><strong>Demandante</strong>: quien publica una ID.</li>
+            <li><strong>Oferente</strong>: la empresa que paga por acceder a los datos de contacto de una ID.</li>
+            <li><strong>Desbloqueo</strong>: el acto de un oferente de pagar (con un crédito de su plan) para acceder a los datos de contacto y adjuntos de una ID específica.</li>
+          </ul>
+        </section>
+
+        <section id="s3">
+          <h2><span class="n">3.</span>Datos que recolectamos</h2>
+          <ul>
+            <li><strong>Datos de cuenta</strong>: nombre, correo, teléfono, empresa (si aplica), tipo y número de documento.</li>
+            <li><strong>Datos de la Intención de Demanda</strong>: título, industria, país, ciudad, presupuesto estimado, descripción, urgencia.</li>
+            <li><strong>Adjuntos</strong>: archivos que el demandante decida subir (PDF, planos, fotos, videos) — pueden contener datos personales o de terceros; el demandante es responsable de contar con autorización para compartirlos si incluyen datos de personas distintas a él. De cada adjunto se genera además una <strong>miniatura/vista previa que se muestra públicamente</strong> (a cualquier oferente, sin necesidad de pagar) como incentivo para el desbloqueo — el demandante es informado de esto explícitamente al subir el archivo, ya que implica un nivel de exposición pública distinto al del archivo completo.</li>
+            <li><strong>Datos de uso</strong>: mensajes del chat interno, historial de desbloqueos, tiempos de respuesta, metadatos de navegación.</li>
+            <li><strong>Datos de pago</strong>: Promot IA <strong>no almacena datos de tarjetas</strong> — el procesamiento de pagos lo realiza un tercero certificado (ej. Stripe), que entrega a Promot IA solo la confirmación del pago, nunca el número de tarjeta completo.</li>
+          </ul>
+        </section>
+
+        <section id="s4">
+          <h2><span class="n">4.</span>Finalidades del tratamiento</h2>
+          <ol class="contenido">
+            <li>Operar la plataforma: publicar y clasificar Intenciones de Demanda, permitir el descubrimiento por parte de oferentes.</li>
+            <li><strong>Revelar los datos de contacto y adjuntos de una ID a la(s) empresa(s) que la desbloqueen mediante pago</strong> — esta es la finalidad central y más sensible del tratamiento; se explica en detalle en la sección 6.</li>
+            <li>Procesar pagos y gestionar suscripciones/créditos.</li>
+            <li>Habilitar y registrar la comunicación entre demandante y oferente dentro del chat interno.</li>
+            <li>Generar métricas de calidad (tiempo de respuesta, tasa de conversión) para calificar oferentes.</li>
+            <li>Generar reportes agregados y <strong>anonimizados</strong> de tendencias de demanda (inteligencia de mercado) — en ningún caso estos reportes exponen datos que permitan identificar a una persona o empresa puntual.</li>
+            <li>Seguridad, prevención de fraude y cumplimiento de obligaciones legales.</li>
+          </ol>
+        </section>
+
+        <section id="s5">
+          <h2><span class="n">5.</span>Autorización del titular</h2>
+          <p>Al crear una cuenta y publicar una Intención de Demanda, el demandante acepta expresamente que <strong>sus datos de contacto y los adjuntos de esa ID serán revelados a las empresas que decidan pagar por desbloquearla</strong>. Esta autorización se solicita de forma clara y explícita en el propio formulario de publicación (casilla de aceptación), no solo mediante un enlace genérico a esta política — dado que es el punto más sensible del producto, no basta con un aviso pasivo.</p>
+        </section>
+
+        <section id="s6">
+          <h2><span class="n">6.</span>El mecanismo de desbloqueo, en términos de datos personales</h2>
+          <p>Esta sección existe porque el mecanismo central de Promot IA es, en esencia, un tratamiento de datos personales condicionado a un pago hecho por un tercero — algo que debe quedar descrito sin ambigüedad:</p>
+          <ul>
+            <li>Antes de que cualquier oferente pague, solo se muestra la información <strong>no identificable</strong> de la ID: título, industria, ciudad, rango de presupuesto, urgencia, descripción y una <strong>miniatura/vista previa reducida</strong> de cada adjunto. No se muestran datos de contacto ni el archivo original de los adjuntos.</li>
+            <li>Cuando un oferente paga (consume un crédito) para desbloquear una ID específica, se revelan a <strong>ese oferente en particular</strong> los datos de contacto del demandante y los archivos adjuntos completos, en su resolución original.</li>
+            <li>Una misma ID puede ser desbloqueada por varias empresas distintas; cada una paga su propio desbloqueo y accede a los mismos datos de contacto.</li>
+            <li>El demandante puede ver qué empresas han desbloqueado su ID.</li>
+            <li>El dinero del desbloqueo lo paga el oferente a Promot IA — el demandante nunca paga por publicar ni por recibir interés.</li>
+          </ul>
+        </section>
+
+        <section id="s7">
+          <h2><span class="n">7.</span>Transferencia y transmisión de datos a terceros</h2>
+          <ul>
+            <li><strong>Procesador de pagos</strong> (ej. Stripe): recibe los datos necesarios para procesar el cobro al oferente; no participa en el tratamiento de los datos del demandante.</li>
+            <li><strong>Proveedores de infraestructura</strong> (ej. Supabase, Vercel): almacenan y sirven los datos de la plataforma; pueden operar con servidores fuera de Colombia, lo que constituye una <strong>transferencia internacional de datos</strong> — se informará el/los país(es) exactos una vez se confirme la infraestructura definitiva, conforme a lo exigido por la Ley 1581 de 2012 para este tipo de transferencias.</li>
+            <li>Promot IA no vende ni comparte datos de contacto con nadie fuera de este mecanismo — nunca se entregan datos de contacto a una empresa que no haya pagado el desbloqueo correspondiente.</li>
+          </ul>
+        </section>
+
+        <section id="s8">
+          <h2><span class="n">8.</span>Derechos de los titulares</h2>
+          <p>Conforme a la Ley 1581 de 2012, todo titular tiene derecho a:</p>
+          <ul>
+            <li>Conocer, actualizar y rectificar sus datos personales.</li>
+            <li>Solicitar prueba de la autorización otorgada.</li>
+            <li>Ser informado sobre el uso que se ha dado a sus datos.</li>
+            <li>Presentar quejas ante la Superintendencia de Industria y Comercio (SIC) por infracciones a la ley.</li>
+            <li>Revocar la autorización y/o solicitar la supresión de sus datos, cuando no exista un deber legal o contractual que impida eliminarlos.</li>
+            <li>Acceder de forma gratuita a sus datos personales.</li>
+          </ul>
+        </section>
+
+        <section id="s9">
+          <h2><span class="n">9.</span>Cómo ejercer estos derechos</h2>
+          <p>Cualquier solicitud puede enviarse a <a class="inline-link" href="mailto:iconsultoriaygestion@gmail.com">iconsultoriaygestion@gmail.com</a>. Los tiempos de respuesta siguen lo establecido por la ley: consultas en máximo 10 días hábiles, reclamos en máximo 15 días hábiles (con posibilidad de una prórroga de 8 días hábiles adicionales, notificando al titular).</p>
+        </section>
+
+        <section id="s10">
+          <h2><span class="n">10.</span>Seguridad de la información</h2>
+          <p>Promot IA aplica medidas técnicas y administrativas para proteger los datos personales, incluyendo control de acceso basado en roles, cifrado en tránsito y en reposo, y registro de auditoría de accesos.</p>
+        </section>
+
+        <section id="s11">
+          <h2><span class="n">11.</span>Menores de edad</h2>
+          <p>La plataforma no está dirigida a menores de edad; no se permite el registro de personas menores de 18 años.</p>
+        </section>
+
+        <section id="s12">
+          <h2><span class="n">12.</span>Vigencia y modificaciones</h2>
+          <p>Esta política puede actualizarse; los cambios sustanciales se notificarán a los usuarios registrados.</p>
+        </section>
+
+        <section id="s13">
+          <h2><span class="n">13.</span>Aceptación</h2>
+          <p>El uso de la plataforma implica la aceptación de esta política, sin perjuicio de las autorizaciones específicas solicitadas en momentos puntuales del producto (como la publicación de una Intención de Demanda, descrita en la sección 5).</p>
+        </section>
+
+      </article>
+
+      <p class="text-[13.5px] text-center mt-10" style="color:var(--muted)">
+        <a href="landing/index.html" class="inline-link">← Volver al inicio</a>
+      </p>
+
+    </div>
+  </div>
+</body>
+</html>
