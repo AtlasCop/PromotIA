@@ -4,7 +4,7 @@
 
 ## 1. Responsable del tratamiento
 
-**Promot IA es una marca de Atlas Corporation S.A.S.** (confirmado — Atlas Corporation S.A.S. es la empresa dueña de la idea y opera la plataforma bajo esta marca), con domicilio en Medellín, Colombia. NIT: [pendiente]. Correo de contacto para temas de datos personales: [pendiente — definir un correo dedicado, ej. `datos@promotia.co`].
+**Promot IA es una marca de Atlas Corporation S.A.S.** (confirmado — Atlas Corporation S.A.S. es la empresa dueña de la idea y opera la plataforma bajo esta marca), con domicilio en Medellín, Colombia. NIT: 902096484. Correo de contacto para temas de datos personales: `iconsultoriaygestion@gmail.com` (mismo correo de contacto que usa Atlas Corporation S.A.S., confirmado por el usuario — no hay uno dedicado a Promot IA todavía).
 
 ## 2. Definiciones clave
 
