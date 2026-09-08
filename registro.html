@@ -132,23 +132,26 @@
 
   /* ---- Paso "Elige tu plan" (solo empresas/oferentes) ---- */
   .plan-card{
-    background:var(--paper-raised); border:1.5px solid var(--line); border-radius:16px; padding:20px 16px;
-    display:flex; flex-direction:column; position:relative; text-align:left;
+    background:var(--paper-raised); border:1.5px solid var(--line); border-radius:20px; padding:28px 24px;
+    display:flex; flex-direction:column; position:relative; text-align:left; height:100%;
   }
-  .plan-card.featured{border-color:var(--blue);}
+  .plan-card.featured{border-color:var(--blue); box-shadow:0 20px 45px -22px rgba(59,108,244,.35);}
   .plan-card.selected{border-color:var(--blue); box-shadow:0 0 0 2px var(--blue);}
   .plan-ribbon{
-    position:absolute; top:-11px; left:50%; transform:translateX(-50%); white-space:nowrap;
-    background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff; font-size:10px; font-weight:700;
-    padding:3px 12px; border-radius:999px;
+    position:absolute; top:-13px; left:50%; transform:translateX(-50%); white-space:nowrap;
+    background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff; font-size:10.5px; font-weight:700;
+    padding:4px 14px; border-radius:999px;
   }
-  .plan-name{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
-  .plan-price{font-size:24px; font-weight:800; margin-top:8px; font-family:'IBM Plex Mono',monospace; color:var(--ink);}
-  .plan-price .period{font-size:12px; font-weight:500; color:var(--muted); font-family:'Source Sans 3',sans-serif;}
-  .plan-credits{font-size:12.5px; color:var(--blue); font-weight:600; margin-top:4px;}
-  .plan-sub{font-size:11px; color:var(--muted); margin-top:2px;}
+  .plan-name{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);}
+  .plan-price{font-size:32px; font-weight:800; margin-top:10px; font-family:'IBM Plex Mono',monospace; color:var(--ink);}
+  .plan-price .period{font-size:13px; font-weight:500; color:var(--muted); font-family:'Source Sans 3',sans-serif;}
+  .plan-credits{font-size:13px; color:var(--blue); font-weight:600; margin-top:4px;}
+  .plan-sub{font-size:11.5px; color:var(--muted); margin-top:3px;}
+  .plan-features{margin-top:22px; flex:1; display:flex; flex-direction:column; gap:12px; padding:0; list-style:none;}
+  .plan-features li{display:flex; gap:9px; align-items:flex-start; font-size:13.5px; color:var(--ink);}
+  .plan-features li svg{flex:none; margin-top:2px; color:#3ecf7a;}
   .plan-btn{
-    margin-top:16px; width:100%; padding:9px; border-radius:10px; font-weight:600; font-size:13px; text-align:center;
+    margin-top:26px; width:100%; padding:12px; border-radius:12px; font-weight:600; font-size:14px; text-align:center;
     border:1.5px solid var(--line); color:var(--ink); background:transparent; cursor:pointer;
   }
   .plan-btn.featured{border:none; background:linear-gradient(90deg,var(--blue),var(--violet)); color:#fff;}
@@ -398,28 +401,47 @@
                 <button type="button" id="wizBtnAnual">Anual <span class="save-tag">Ahorra 10%</span></button>
               </div>
             </div>
-            <div class="grid sm:grid-cols-3 gap-4" id="wizPlanesGrid">
-              <div class="plan-card" data-plan="bronce">
-                <span class="plan-name">Bronce</span>
-                <div class="plan-price"><span id="wizPriceBronce">$19</span><span class="period">/mes</span></div>
-                <p class="plan-sub" id="wizSubBronce">Facturado mensualmente</p>
-                <p class="plan-credits">1 crédito mensual</p>
-                <button type="button" class="plan-btn" data-plan-btn="bronce">Seleccionar</button>
-              </div>
-              <div class="plan-card featured" data-plan="plata">
-                <span class="plan-ribbon">Más popular</span>
-                <span class="plan-name">Plata</span>
-                <div class="plan-price"><span id="wizPricePlata">$99</span><span class="period">/mes</span></div>
-                <p class="plan-sub" id="wizSubPlata">Facturado mensualmente</p>
-                <p class="plan-credits">10 créditos mensuales</p>
-                <button type="button" class="plan-btn featured" data-plan-btn="plata">Seleccionar</button>
-              </div>
-              <div class="plan-card" data-plan="oro">
-                <span class="plan-name">Oro</span>
-                <div class="plan-price"><span id="wizPriceOro">$299</span><span class="period">/mes</span></div>
-                <p class="plan-sub" id="wizSubOro">Facturado mensualmente</p>
-                <p class="plan-credits">Créditos ilimitados</p>
-                <button type="button" class="plan-btn" data-plan-btn="oro">Seleccionar</button>
+            <div style="width:100vw; position:relative; left:50%; transform:translateX(-50%); padding:0 20px;">
+              <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto" id="wizPlanesGrid">
+                <div class="plan-card" data-plan="bronce">
+                  <span class="plan-name">Bronce</span>
+                  <div class="plan-price"><span id="wizPriceBronce">$19</span><span class="period">/mes</span></div>
+                  <p class="plan-sub" id="wizSubBronce">Facturado mensualmente</p>
+                  <p class="plan-credits">1 crédito mensual</p>
+                  <ul class="plan-features">
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Feed ordenado por IAC</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alertas por correo</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Soporte estándar</li>
+                  </ul>
+                  <button type="button" class="plan-btn" data-plan-btn="bronce">Seleccionar</button>
+                </div>
+                <div class="plan-card featured" data-plan="plata">
+                  <span class="plan-ribbon">Más popular</span>
+                  <span class="plan-name">Plata</span>
+                  <div class="plan-price"><span id="wizPricePlata">$99</span><span class="period">/mes</span></div>
+                  <p class="plan-sub" id="wizSubPlata">Facturado mensualmente</p>
+                  <p class="plan-credits">10 créditos mensuales</p>
+                  <ul class="plan-features">
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Feed ordenado por IAC + IO</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alertas prioritarias del IAC</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alertas en tiempo real</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Soporte prioritario</li>
+                  </ul>
+                  <button type="button" class="plan-btn featured" data-plan-btn="plata">Seleccionar</button>
+                </div>
+                <div class="plan-card" data-plan="oro">
+                  <span class="plan-name">Oro</span>
+                  <div class="plan-price"><span id="wizPriceOro">$299</span><span class="period">/mes</span></div>
+                  <p class="plan-sub" id="wizSubOro">Facturado mensualmente</p>
+                  <p class="plan-credits">Créditos ilimitados</p>
+                  <ul class="plan-features">
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acceso ilimitado a oportunidades</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Perfil empresarial destacado</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Verificación reforzada incluida</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Soporte VIP</li>
+                  </ul>
+                  <button type="button" class="plan-btn" data-plan-btn="oro">Seleccionar</button>
+                </div>
               </div>
             </div>
             <input type="hidden" id="o_plan_valor" name="o_plan_valor" value="plata">
