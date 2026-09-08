@@ -208,7 +208,7 @@
 
       <div id="registroWizard" hidden>
 
-      <div class="flex gap-3 mb-8 mt-2">
+      <div id="roleToggle" class="flex gap-3 mb-8 mt-2">
         <button type="button" id="roleBtnDemandante" class="role-btn active">Tengo una necesidad</button>
         <button type="button" id="roleBtnOferente" class="role-btn">Busco oportunidades</button>
       </div>
@@ -934,10 +934,13 @@
     document.getElementById('successEmail').textContent = email;
   });
 
-  // Si se llega con ?rol=demandante|oferente (ej. desde los botones del landing), salta el selector.
+  // Si se llega con ?rol=demandante|oferente (ej. desde los botones del landing), salta el
+  // selector y oculta el interruptor de rol — ya se eligió con qué botón entrar, no hay que
+  // ofrecer cambiarlo aquí.
   var rolParam = new URLSearchParams(window.location.search).get('rol');
   if (rolParam === 'demandante' || rolParam === 'oferente') {
     selectRole(rolParam);
+    document.getElementById('roleToggle').hidden = true;
   } else {
     render();
   }
