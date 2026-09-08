@@ -181,12 +181,13 @@
     if(rol === 'demandante'){
       var existente = await supabaseClient.from('perfiles_demandante').select('perfil_id').eq('perfil_id', user.id).maybeSingle();
       if(!existente.data){
-        await supabaseClient.from('perfiles_demandante').insert({
+        var resD = await supabaseClient.from('perfiles_demandante').insert({
           perfil_id: user.id,
           tipo_cliente: meta.d_tipo_cliente || 'persona',
           ciudad: meta.d_ciudad || null,
           sector_economico: meta.d_sector || null
         });
+        if(resD.error) console.error('No se pudo crear perfiles_demandante:', resD.error);
       }
     } else if(rol === 'oferente'){
       var existenteOf = await supabaseClient.from('perfiles_oferente').select('oferente_id').eq('oferente_id', user.id).maybeSingle();
@@ -196,7 +197,7 @@
           var resInd = await supabaseClient.from('industrias').select('id, nombre').in('nombre', meta.o_especialidades);
           especialidadesIds = (resInd.data || []).map(function(i){ return i.id; });
         }
-        await supabaseClient.from('perfiles_oferente').insert({
+        var resO = await supabaseClient.from('perfiles_oferente').insert({
           oferente_id: user.id,
           nombre_empresa: meta.o_nombre_empresa || null,
           nit: meta.o_nit || null,
@@ -209,6 +210,7 @@
           sitio_web: meta.o_web || null,
           portafolio_url: meta.o_portafolio || null
         });
+        if(resO.error) console.error('No se pudo crear perfiles_oferente:', resO.error);
       }
     }
   }

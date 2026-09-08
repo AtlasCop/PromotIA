@@ -35,6 +35,8 @@
   #navDemandante[hidden], #navEmpresa[hidden], #chatViewDemandante[hidden], #chatViewEmpresa[hidden]{display:none;}
   .chat-view{display:flex; flex:1; min-width:0;}
   .chat-view-col{display:flex; flex:1; min-width:0; flex-direction:column;}
+  .sidebar-toggle{display:none;}
+  .sidebar-backdrop{display:none;}
 
   .chat-list{width:300px; flex:none; border-right:1px solid var(--line); overflow-y:auto;}
   .chat-list-header{padding:18px 18px 12px;}
@@ -107,11 +109,37 @@
   .stars{position:relative; display:inline-block; font-size:15px; line-height:1; letter-spacing:2px;}
   .stars .base{color:var(--line);}
   .stars .fill{position:absolute; top:0; left:0; overflow:hidden; white-space:nowrap; color:#f5a524;}
+
+  /* ---- Responsive: sidebar colapsable + lista/conversación apiladas en móvil ---- */
+  @media (max-width: 860px){
+    .sidebar{
+      position:fixed; top:0; left:0; height:100vh; z-index:45; width:250px;
+      transform:translateX(-100%); transition:transform .25s ease;
+    }
+    .sidebar.open{transform:translateX(0);}
+    .sidebar-toggle{
+      display:flex; align-items:center; justify-content:center; width:40px; height:40px;
+      border-radius:10px; background:var(--paper-raised); border:1px solid var(--line); color:var(--ink);
+      position:fixed; top:14px; left:14px; z-index:46; cursor:pointer;
+    }
+    .sidebar-backdrop.visible{
+      display:block; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:44;
+    }
+    .chat-view{flex-direction:column;}
+    .chat-list{width:100%; max-height:38vh; border-right:none; border-bottom:1px solid var(--line);}
+    .chat-main{width:100%;}
+    .chat-list-header{padding-top:58px;}
+    .demandante-nota{padding-top:58px;}
+  }
 </style>
 </head>
 <body>
 
   <div class="app-shell">
+    <button type="button" id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     <aside class="sidebar">
       <div class="sidebar-brand">
         <svg viewBox="0 0 40 40" fill="none" class="w-7 h-7">
@@ -366,6 +394,19 @@
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') modalPerfilEmpresa.hidden = true;
   });
+
+  // ---- Menú lateral colapsable en móvil ----
+  (function(){
+    var toggle = document.getElementById('sidebarToggle');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    var sidebar = document.querySelector('.sidebar');
+    if(!toggle) return;
+    toggle.addEventListener('click', function(){ sidebar.classList.add('open'); backdrop.classList.add('visible'); });
+    backdrop.addEventListener('click', function(){ sidebar.classList.remove('open'); backdrop.classList.remove('visible'); });
+    sidebar.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ sidebar.classList.remove('open'); backdrop.classList.remove('visible'); });
+    });
+  })();
 </script>
 
 </body>

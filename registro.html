@@ -857,12 +857,13 @@
   async function completarPerfilExtendido(userId){
     try{
       if(role === 'demandante'){
-        await supabaseClient.from('perfiles_demandante').insert({
+        var resD = await supabaseClient.from('perfiles_demandante').insert({
           perfil_id: userId,
           tipo_cliente: document.querySelector('input[name="d_tipo"]:checked').value,
           ciudad: document.getElementById('d_ciudad').value,
           sector_economico: document.getElementById('d_sector').value
         });
+        if(resD.error) console.error('No se pudo crear perfiles_demandante:', resD.error);
       } else {
         var ciudadesTexto = document.getElementById('o_ciudades_valor').value;
         var ciudades = ciudadesTexto ? ciudadesTexto.split(',').map(function(s){ return s.trim(); }).filter(Boolean) : [];
@@ -875,7 +876,7 @@
           especialidadesIds = (resIndustrias.data || []).map(function(i){ return i.id; });
         }
 
-        await supabaseClient.from('perfiles_oferente').insert({
+        var resO = await supabaseClient.from('perfiles_oferente').insert({
           oferente_id: userId,
           nombre_empresa: document.getElementById('o_empresa').value,
           nit: document.getElementById('o_nit').value,
@@ -888,6 +889,7 @@
           sitio_web: document.getElementById('o_web').value || null,
           portafolio_url: document.getElementById('o_portafolio').value || null
         });
+        if(resO.error) console.error('No se pudo crear perfiles_oferente:', resO.error);
       }
     } catch(err){
       // El registro (cuenta + correo) ya quedó hecho aunque esto falle — solo
